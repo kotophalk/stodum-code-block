@@ -71,6 +71,15 @@ class StoDum_Code_Block {
                 'light_bg'     => '#fafafa',
                 'light_toolbar'=> '#e8eaed',
             ],
+            'tokyo-night' => [
+                'label'        => 'Tokyo Night',
+                'dark_css'     => 'tokyo-night-dark',
+                'light_css'    => 'tokyo-night-light',
+                'dark_bg'      => '#1a1b26',
+                'dark_toolbar' => '#16161e',
+                'light_bg'     => '#d5d6db',
+                'light_toolbar'=> '#c8c9ce',
+            ],
             'vs2015' => [
                 'label'        => 'VS 2015 / VS Code',
                 'dark_css'     => 'vs2015',
@@ -79,7 +88,70 @@ class StoDum_Code_Block {
                 'dark_toolbar' => '#181818',
                 'light_bg'     => '#fff',
                 'light_toolbar'=> '#f3f3f3',
-            ]
+            ],
+            'stackoverflow' => [
+                'label'        => 'Stack Overflow',
+                'dark_css'     => 'stackoverflow-dark',
+                'light_css'    => 'stackoverflow-light',
+                'dark_bg'      => '#1c1b1b',
+                'dark_toolbar' => '#151414',
+                'light_bg'     => '#f6f6f6',
+                'light_toolbar'=> '#e8e8e8',
+            ],
+            'night-owl' => [
+                'label'        => 'Night Owl',
+                'dark_css'     => 'night-owl',
+                'light_css'    => 'atom-one-light',
+                'dark_bg'      => '#011627',
+                'dark_toolbar' => '#001122',
+                'light_bg'     => '#fafafa',
+                'light_toolbar'=> '#e8eaed',
+            ],
+            'gruvbox' => [
+                'label'        => 'Gruvbox',
+                'dark_css'     => 'base16/gruvbox-dark-hard',
+                'light_css'    => 'base16/gruvbox-light-hard',
+                'dark_bg'      => '#1d2021',
+                'dark_toolbar' => '#171819',
+                'light_bg'     => '#f9f5d7',
+                'light_toolbar'=> '#ece8c8',
+            ],
+            'solarized' => [
+                'label'        => 'Solarized',
+                'dark_css'     => 'base16/solarized-dark',
+                'light_css'    => 'base16/solarized-light',
+                'dark_bg'      => '#002b36',
+                'dark_toolbar' => '#002530',
+                'light_bg'     => '#fdf6e3',
+                'light_toolbar'=> '#eee8d5',
+            ],
+            'panda' => [
+                'label'        => 'Panda',
+                'dark_css'     => 'panda-syntax-dark',
+                'light_css'    => 'panda-syntax-light',
+                'dark_bg'      => '#292a2b',
+                'dark_toolbar' => '#222324',
+                'light_bg'     => '#e6e6e6',
+                'light_toolbar'=> '#d9d9d9',
+            ],
+            'tomorrow' => [
+                'label'        => 'Tomorrow Night',
+                'dark_css'     => 'tomorrow-night-bright',
+                'light_css'    => 'atom-one-light',
+                'dark_bg'      => '#000',
+                'dark_toolbar' => '#0a0a0a',
+                'light_bg'     => '#fafafa',
+                'light_toolbar'=> '#e8eaed',
+            ],
+            'shades-of-purple' => [
+                'label'        => 'Shades of Purple',
+                'dark_css'     => 'shades-of-purple',
+                'light_css'    => 'atom-one-light',
+                'dark_bg'      => '#2d2b55',
+                'dark_toolbar' => '#252347',
+                'light_bg'     => '#fafafa',
+                'light_toolbar'=> '#e8eaed',
+            ],
         ];
     }
 
@@ -175,8 +247,8 @@ class StoDum_Code_Block {
     }
 public static function add_tools_page() {
         add_management_page(
-            'CloudScale DevTools',
-            '🌩️ CloudScale DevTools',
+            'StoDum Code Block',
+            'StoDum Code Block',
             'manage_options',
             self::TOOLS_SLUG,
             [ __CLASS__, 'render_tools_page' ]
