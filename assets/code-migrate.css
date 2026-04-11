@@ -1,0 +1,431 @@
+/* StoDum Code Block Migrator Admin Styles */
+
+.cs-migrate-wrap {
+    max-width: 1200px;
+}
+
+.cs-migrate-desc {
+    font-size: 14px;
+    color: #555;
+    margin-bottom: 20px;
+}
+
+.cs-migrate-hint {
+    color: #888;
+    font-style: italic;
+    padding: 40px 20px;
+    text-align: center;
+    background: #fafafa;
+    border: 1px dashed #ddd;
+    border-radius: 4px;
+}
+
+/* Toolbar */
+.cs-migrate-toolbar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    padding: 15px 20px;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.cs-migrate-toolbar .button {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.cs-migrate-toolbar .dashicons {
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
+    line-height: 16px;
+    margin-top: 2px;
+}
+
+.cs-status {
+    font-size: 13px;
+    color: #666;
+    margin-left: 10px;
+}
+
+.cs-status.success {
+    color: #00a32a;
+    font-weight: 600;
+}
+
+.cs-status.error {
+    color: #d63638;
+    font-weight: 600;
+}
+
+/* Summary bar */
+.cs-migrate-summary {
+    display: flex;
+    gap: 20px;
+    padding: 15px 20px;
+    background: #f0f6fc;
+    border: 1px solid #c3ddf5;
+    border-radius: 4px;
+    margin-bottom: 20px;
+    font-size: 14px;
+}
+
+.cs-migrate-summary strong {
+    font-size: 20px;
+    display: block;
+    color: #1d2327;
+}
+
+.cs-migrate-summary .cs-stat {
+    color: #555;
+}
+
+/* Posts table */
+.cs-migrate-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.cs-migrate-table th {
+    text-align: left;
+    padding: 12px 15px;
+    background: #f6f7f7;
+    border-bottom: 1px solid #ddd;
+    font-size: 13px;
+    font-weight: 600;
+    color: #1d2327;
+}
+
+.cs-migrate-table td {
+    padding: 12px 15px;
+    border-bottom: 1px solid #f0f0f0;
+    font-size: 13px;
+    vertical-align: middle;
+}
+
+.cs-migrate-table tr:last-child td {
+    border-bottom: none;
+}
+
+.cs-migrate-table tr:hover td {
+    background: #f9fbfd;
+}
+
+.cs-migrate-table .cs-post-title {
+    font-weight: 600;
+    color: #1d2327;
+}
+
+.cs-migrate-table .cs-post-title a {
+    text-decoration: none;
+    color: #2271b1;
+}
+
+.cs-migrate-table .cs-post-title a:hover {
+    text-decoration: underline;
+}
+
+.cs-migrate-table .cs-post-meta {
+    font-size: 12px;
+    color: #888;
+    margin-top: 3px;
+}
+
+.cs-migrate-table .cs-block-count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 28px;
+    height: 28px;
+    padding: 0 8px;
+    background: #e8f0fe;
+    color: #1a56db;
+    border-radius: 14px;
+    font-weight: 700;
+    font-size: 13px;
+}
+
+.cs-migrate-table .cs-actions {
+    display: flex;
+    gap: 6px;
+}
+
+.cs-migrate-table .cs-actions .button {
+    font-size: 12px;
+    padding: 2px 10px;
+    min-height: 28px;
+}
+
+/* Row migrated state */
+.cs-migrate-table tr.cs-migrated td {
+    background: #f0faf0;
+    opacity: 0.7;
+}
+
+.cs-migrate-table .cs-migrated-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 3px 10px;
+    background: #00a32a;
+    color: #fff;
+    border-radius: 3px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.cs-migrate-table .cs-migrated-badge .dashicons {
+    font-size: 14px;
+    width: 14px;
+    height: 14px;
+}
+
+/* Modal */
+.cs-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 100100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.cs-modal-backdrop {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.6);
+}
+
+.cs-modal-content {
+    position: relative;
+    background: #fff;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 900px;
+    max-height: 85vh;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+}
+
+.cs-modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px 20px;
+    border-bottom: 1px solid #ddd;
+}
+
+.cs-modal-header h2 {
+    margin: 0;
+    font-size: 16px;
+}
+
+.cs-modal-close {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: #888;
+    padding: 0 5px;
+    line-height: 1;
+}
+
+.cs-modal-close:hover {
+    color: #d63638;
+}
+
+.cs-modal-body {
+    padding: 20px;
+    overflow-y: auto;
+    flex: 1;
+}
+
+.cs-modal-footer {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 15px 20px;
+    border-top: 1px solid #ddd;
+    justify-content: flex-end;
+}
+
+.cs-modal-footer .button {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.cs-modal-footer .dashicons {
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
+}
+
+/* Preview blocks inside modal */
+.cs-preview-block {
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+.cs-preview-block-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 15px;
+    background: #f6f7f7;
+    border-bottom: 1px solid #ddd;
+    font-size: 13px;
+}
+
+.cs-preview-block-header .cs-block-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    background: #2271b1;
+    color: #fff;
+    border-radius: 50%;
+    font-size: 12px;
+    font-weight: 700;
+    flex-shrink: 0;
+}
+
+.cs-preview-block-header .cs-block-lang {
+    padding: 2px 8px;
+    background: #e8f0fe;
+    color: #1a56db;
+    border-radius: 3px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.cs-preview-block-header .cs-block-firstline {
+    color: #888;
+    font-family: monospace;
+    font-size: 12px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    flex: 1;
+}
+
+.cs-preview-diff {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+}
+
+.cs-preview-side {
+    padding: 0;
+}
+
+.cs-preview-side-label {
+    padding: 6px 12px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.cs-preview-side.cs-before .cs-preview-side-label {
+    background: #fef2f2;
+    color: #b91c1c;
+    border-bottom: 1px solid #fecaca;
+}
+
+.cs-preview-side.cs-after .cs-preview-side-label {
+    background: #f0fdf4;
+    color: #15803d;
+    border-bottom: 1px solid #bbf7d0;
+}
+
+.cs-preview-side pre {
+    margin: 0;
+    padding: 12px;
+    font-size: 11px;
+    line-height: 1.5;
+    overflow-x: auto;
+    background: #fafafa;
+    white-space: pre-wrap;
+    word-break: break-all;
+    max-height: 200px;
+    border: none;
+}
+
+.cs-preview-side.cs-before pre {
+    background: #fff5f5;
+    border-left: 3px solid #fecaca;
+}
+
+.cs-preview-side.cs-after pre {
+    background: #f0fff4;
+    border-left: 3px solid #bbf7d0;
+}
+
+/* Migrate all confirmation */
+.cs-confirm-all {
+    padding: 20px;
+    background: #fff8e1;
+    border: 1px solid #ffe082;
+    border-radius: 6px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.cs-confirm-all p {
+    margin: 0 0 15px;
+    font-size: 14px;
+}
+
+.cs-confirm-all .button {
+    margin: 0 5px;
+}
+
+/* Disabled button state */
+.cs-btn-orange:disabled,
+.cs-btn-primary:disabled {
+    opacity: 0.5;
+    pointer-events: none;
+    cursor: not-allowed;
+}
+
+/* Loading spinner */
+.cs-loading {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: #666;
+}
+
+.cs-spinner {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border: 2px solid #ddd;
+    border-top-color: #2271b1;
+    border-radius: 50%;
+    animation: cs-spin 0.6s linear infinite;
+}
+
+@keyframes cs-spin {
+    to { transform: rotate(360deg); }
+}

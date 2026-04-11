@@ -1,0 +1,308 @@
+/**
+ * StoDum Code Block — Frontend Styles v1.7.5
+ *
+ * Uses CSS custom properties (--cs-bg, --cs-toolbar-bg, etc.) set by the
+ * frontend JS from csCodeConfig, so any highlight.js theme pair works.
+ */
+
+/* 1. WRAPPER: full width by default */
+.stodum-code-wrapper {
+    --cs-bg: #282c34;
+    --cs-toolbar-bg: #21252b;
+    --cs-toolbar-border: rgba(255,255,255,0.08);
+    --cs-text-muted: rgba(255,255,255,0.80);
+    --cs-text-title: #9da5b4;
+    --cs-hover-bg: rgba(255,255,255,0.08);
+    --cs-hover-color: #abb2bf;
+    --cs-scrollbar-track: var(--cs-bg);
+    --cs-scrollbar-thumb: rgba(255,255,255,0.15);
+    --cs-line-border: rgba(255,255,255,0.08);
+    --cs-line-color: rgba(255,255,255,0.2);
+    --cs-active-accent: #61afef;
+    --cs-active-accent-bg: rgba(97,175,239,0.12);
+
+    position: relative;
+    margin: 1.5em 0;
+    border-radius: 8px;
+    overflow: hidden;
+    width: 100%;
+    max-width: 100%;
+    font-family: 'SF Mono', 'Fira Code', 'Fira Mono', 'Roboto Mono', 'Consolas', 'Liberation Mono', 'Courier New', monospace;
+    font-size: 0.875rem;
+    line-height: 1.6;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+    box-sizing: border-box;
+    background: var(--cs-bg);
+}
+
+/* Light mode overrides applied by JS via data-active-theme="light" */
+.stodum-code-wrapper[data-active-theme="light"] {
+    --cs-toolbar-border: rgba(0,0,0,0.1);
+    --cs-text-muted: rgba(0,0,0,0.70);
+    --cs-text-title: #5c6370;
+    --cs-hover-bg: rgba(0,0,0,0.08);
+    --cs-hover-color: #383a42;
+    --cs-scrollbar-thumb: rgba(0,0,0,0.15);
+    --cs-line-border: rgba(0,0,0,0.1);
+    --cs-line-color: rgba(0,0,0,0.25);
+    --cs-active-accent: #4078f2;
+    --cs-active-accent-bg: rgba(64,120,242,0.12);
+}
+
+/* 2. TOOLBAR */
+.stodum-code-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 6px 12px;
+    min-height: 36px;
+    user-select: none;
+    background: var(--cs-toolbar-bg);
+    border-bottom: 1px solid var(--cs-toolbar-border);
+}
+
+/* 3. BRAND LINK — use wrapper specificity to override theme a{color} rules */
+.stodum-code-wrapper .stodum-code-brand {
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    text-decoration: none;
+    flex-shrink: 0;
+    color: #61afef !important;
+    opacity: 0.85;
+    transition: opacity 0.15s ease, color 0.15s ease;
+}
+
+.stodum-code-wrapper .stodum-code-brand:hover {
+    opacity: 1;
+    color: #0fb8e0 !important;
+}
+
+.stodum-code-wrapper[data-active-theme="light"] .stodum-code-brand {
+    color: #2271b1 !important;
+}
+
+.stodum-code-wrapper[data-active-theme="light"] .stodum-code-brand:hover {
+    color: #135e96 !important;
+}
+
+.stodum-brand-bolt {
+    font-style: normal;
+}
+
+/* 3. TITLE */
+.stodum-code-title {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 50%;
+    color: var(--cs-text-title);
+}
+
+/* 4. ACTIONS */
+.stodum-code-actions {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-left: auto;
+}
+
+.stodum-code-lang-badge {
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 2px 7px;
+    border-radius: 4px;
+    line-height: 1.4;
+    color: #ffffff;
+    background: var(--cs-hover-bg);
+}
+
+.stodum-code-lang-badge:empty {
+    display: none;
+}
+
+/* Buttons */
+.stodum-code-theme-toggle,
+.stodum-code-lines-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    padding: 0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.15s ease, color 0.15s ease;
+    background: transparent;
+    line-height: 1;
+    color: #ffffff;
+}
+
+.stodum-code-theme-toggle:hover,
+.stodum-code-lines-toggle:hover {
+    color: var(--cs-hover-color);
+    background: var(--cs-hover-bg);
+}
+
+/* Copy button — icon + label */
+.stodum-code-copy {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 28px;
+    padding: 0 8px 0 6px;
+    gap: 4px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.15s ease, color 0.15s ease;
+    background: transparent;
+    line-height: 1;
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: 500;
+    font-family: inherit;
+}
+
+.stodum-code-copy:hover {
+    color: var(--cs-hover-color);
+    background: var(--cs-hover-bg);
+}
+
+.stodum-copy-label {
+    display: inline-block;
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 1;
+    white-space: nowrap;
+}
+
+/* Copy success */
+.stodum-code-copy.copied {
+    color: #98c379 !important;
+}
+
+.stodum-code-copy.copied .stodum-copy-label {
+    display: none;
+}
+
+.stodum-code-copy .stodum-icon-check {
+    display: none;
+}
+
+.stodum-code-copy.copied .stodum-icon-copy {
+    display: none;
+}
+
+.stodum-code-copy.copied .stodum-icon-check {
+    display: inline;
+}
+
+/* Theme icon toggles: default to showing sun (dark mode active) */
+.stodum-icon-moon {
+    display: none;
+}
+
+.stodum-icon-sun {
+    display: inline;
+}
+
+.stodum-code-wrapper[data-active-theme="dark"] .stodum-icon-moon {
+    display: none;
+}
+
+.stodum-code-wrapper[data-active-theme="dark"] .stodum-icon-sun {
+    display: inline;
+}
+
+.stodum-code-wrapper[data-active-theme="light"] .stodum-icon-sun {
+    display: none;
+}
+
+.stodum-code-wrapper[data-active-theme="light"] .stodum-icon-moon {
+    display: inline;
+}
+
+/* Active state for line numbers toggle */
+.stodum-code-wrapper.cs-lines-active .stodum-code-lines-toggle {
+    color: var(--cs-active-accent);
+    background: var(--cs-active-accent-bg);
+}
+
+/* 5. CODE BLOCK: full width, no wrapping, horizontal scroll */
+.stodum-code-body {
+    display: flex;
+    position: relative;
+}
+
+.stodum-code-body pre {
+    margin: 0 !important;
+    padding: 0 !important;
+    border: none !important;
+    background: none !important;
+    border-radius: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    flex: 1;
+    min-width: 0;
+}
+
+.stodum-code-body pre code {
+    display: block;
+    padding: 16px 18px !important;
+    margin: 0 !important;
+    overflow-x: auto;
+    white-space: pre !important;
+    word-wrap: normal !important;
+    overflow-wrap: normal !important;
+    tab-size: 4;
+    border: none !important;
+    border-radius: 0 !important;
+    width: 100% !important;
+    background: var(--cs-bg) !important;
+}
+
+/* Scrollbar */
+.stodum-code-body pre code::-webkit-scrollbar {
+    height: 6px;
+}
+
+.stodum-code-body pre code::-webkit-scrollbar-track {
+    background: var(--cs-scrollbar-track);
+}
+
+.stodum-code-body pre code::-webkit-scrollbar-thumb {
+    background: var(--cs-scrollbar-thumb);
+    border-radius: 3px;
+}
+
+/* 7. LINE NUMBERS GUTTER */
+.stodum-code-line-numbers {
+    display: flex;
+    flex-direction: column;
+    padding: 16px 0 16px 14px;
+    text-align: right;
+    user-select: none;
+    flex-shrink: 0;
+    line-height: 1.6;
+    font-size: inherit;
+    font-family: inherit;
+    min-width: 2.5em;
+    box-sizing: border-box;
+    color: var(--cs-line-color);
+    border-right: 1px solid var(--cs-line-border);
+    background: var(--cs-bg);
+}
+
+.stodum-code-line-numbers span {
+    display: block;
+    padding-right: 10px;
+    line-height: 1.6;
+}
