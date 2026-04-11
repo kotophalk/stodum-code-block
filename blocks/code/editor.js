@@ -67,9 +67,14 @@
                     type: 'block',
                     blocks: [ 'core/code' ],
                     transform: function( attributes ) {
+                        var lang = '';
+                        if ( attributes.className ) {
+                            var match = attributes.className.match( /language-([a-zA-Z0-9+#._-]+)/ );
+                            if ( match ) lang = match[1];
+                        }
                         return createBlock( 'stodum/code-block', {
                             content: attributes.content || '',
-                            language: ''
+                            language: lang || attributes.language || ''
                         } );
                     }
                 },
