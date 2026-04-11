@@ -271,15 +271,15 @@ public static function enqueue_admin_assets( $hook ) {
         // Migrate CSS + JS
         wp_enqueue_style(
             'stodum-code-migrate',
-            plugins_url( 'assets/stodum-code-migrate.css', __FILE__ ),
+            plugins_url( 'assets/code-migrate.css', __FILE__ ),
             [],
-            filemtime( plugin_dir_path( __FILE__ ) . 'assets/stodum-code-migrate.css' )
+            filemtime( plugin_dir_path( __FILE__ ) . 'assets/code-migrate.css' )
         );
         wp_enqueue_script(
             'stodum-code-migrate',
-            plugins_url( 'assets/stodum-code-migrate.js', __FILE__ ),
+            plugins_url( 'assets/code-migrate.js', __FILE__ ),
             [],
-            filemtime( plugin_dir_path( __FILE__ ) . 'assets/stodum-code-migrate.js' ),
+            filemtime( plugin_dir_path( __FILE__ ) . 'assets/code-migrate.js' ),
             true
         );
         wp_localize_script( 'stodum-code-migrate', 'csDevtoolsMigrate', [

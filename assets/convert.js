@@ -63,11 +63,32 @@
             content = cleanHtml( content );
         }
 
+        var lang = '';
+        if ( block.attributes.className ) {
+            var m = block.attributes.className.match( /language-([a-zA-Z0-9+#._-]+)/ );
+            if ( m ) lang = m[1];
+        }
+        if ( ! lang && block.attributes.language ) {
+            lang = block.attributes.language;
+        }
+
+        // Sometimes WP markdown parser dumps the language into the content itself like "bash\necho test"
+        if ( ! lang && content.match(/^[a-zA-Z0-9+#._-]+\n/) ) {
+            var lines = content.split('\n');
+            var firstLine = lines[0].trim();
+            // If the first line is a known language identifier without spaces
+            if ( firstLine.length > 0 && firstLine.length < 15 && firstLine.indexOf(' ') === -1 ) {
+                lang = firstLine;
+                lines.shift();
+                content = lines.join('\n');
+            }
+        }
+
         wpData.dispatch( 'core/block-editor' ).replaceBlock(
             clientId,
             wpBlocks.createBlock( 'stodum/code-block', {
                 content: content,
-                language: ''
+                language: lang
             } )
         );
     }
@@ -86,11 +107,31 @@
             if ( b.name === 'core/preformatted' ) {
                 content = cleanHtml( content );
             }
+            
+            var lang = '';
+            if ( b.attributes.className ) {
+                var m = b.attributes.className.match( /language-([a-zA-Z0-9+#._-]+)/ );
+                if ( m ) lang = m[1];
+            }
+            if ( ! lang && b.attributes.language ) {
+                lang = b.attributes.language;
+            }
+
+            if ( ! lang && content.match(/^[a-zA-Z0-9+#._-]+\n/) ) {
+                var lines = content.split('\n');
+                var firstLine = lines[0].trim();
+                if ( firstLine.length > 0 && firstLine.length < 15 && firstLine.indexOf(' ') === -1 ) {
+                    lang = firstLine;
+                    lines.shift();
+                    content = lines.join('\n');
+                }
+            }
+
             wpData.dispatch( 'core/block-editor' ).replaceBlock(
                 b.clientId,
                 wpBlocks.createBlock( 'stodum/code-block', {
                     content: content,
-                    language: ''
+                    language: lang
                 } )
             );
         }

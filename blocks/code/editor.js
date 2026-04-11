@@ -72,9 +72,27 @@
                             var match = attributes.className.match( /language-([a-zA-Z0-9+#._-]+)/ );
                             if ( match ) lang = match[1];
                         }
+                        if ( ! lang && attributes.language ) {
+                            lang = attributes.language;
+                        }
+                        
+                        var content = attributes.content || '';
+                        if ( ! lang && content.match(/^[a-zA-Z0-9+#._-]+
+/) ) {
+                            var lines = content.split('
+');
+                            var firstLine = lines[0].trim();
+                            if ( firstLine.length > 0 && firstLine.length < 15 && firstLine.indexOf(' ') === -1 ) {
+                                lang = firstLine;
+                                lines.shift();
+                                content = lines.join('
+');
+                            }
+                        }
+
                         return createBlock( 'stodum/code-block', {
-                            content: attributes.content || '',
-                            language: lang || attributes.language || ''
+                            content: content,
+                            language: lang
                         } );
                     }
                 },
