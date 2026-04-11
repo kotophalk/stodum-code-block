@@ -24,7 +24,7 @@ class StoDum_Code_Block {
     private static $instance_count  = 0;
     private static $assets_enqueued = false;
 
-    public static function get_theme_registry(): array {
+        public static function get_theme_registry(): array {
         return [
             'atom-one' => [
                 'label'        => 'Atom One',
@@ -34,6 +34,51 @@ class StoDum_Code_Block {
                 'dark_toolbar' => '#21252b',
                 'light_bg'     => '#fafafa',
                 'light_toolbar'=> '#e8eaed',
+            ],
+            'github' => [
+                'label'        => 'GitHub',
+                'dark_css'     => 'github-dark',
+                'light_css'    => 'github',
+                'dark_bg'      => '#24292e',
+                'dark_toolbar' => '#1f2428',
+                'light_bg'     => '#fff',
+                'light_toolbar'=> '#f6f8fa',
+            ],
+            'monokai' => [
+                'label'        => 'Monokai',
+                'dark_css'     => 'monokai',
+                'light_css'    => 'atom-one-light',
+                'dark_bg'      => '#272822',
+                'dark_toolbar' => '#1e1f1c',
+                'light_bg'     => '#fafafa',
+                'light_toolbar'=> '#e8eaed',
+            ],
+            'nord' => [
+                'label'        => 'Nord',
+                'dark_css'     => 'nord',
+                'light_css'    => 'atom-one-light',
+                'dark_bg'      => '#2e3440',
+                'dark_toolbar' => '#272c36',
+                'light_bg'     => '#fafafa',
+                'light_toolbar'=> '#e8eaed',
+            ],
+            'dracula' => [
+                'label'        => 'Dracula',
+                'dark_css'     => 'dracula',
+                'light_css'    => 'atom-one-light',
+                'dark_bg'      => '#282a36',
+                'dark_toolbar' => '#21222c',
+                'light_bg'     => '#fafafa',
+                'light_toolbar'=> '#e8eaed',
+            ],
+            'vs2015' => [
+                'label'        => 'VS 2015 / VS Code',
+                'dark_css'     => 'vs2015',
+                'light_css'    => 'vs',
+                'dark_bg'      => '#1e1e1e',
+                'dark_toolbar' => '#181818',
+                'light_bg'     => '#fff',
+                'light_toolbar'=> '#f3f3f3',
             ]
         ];
     }

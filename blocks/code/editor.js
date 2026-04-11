@@ -99,15 +99,13 @@
                     transform: function( node ) {
                         var code = '';
                         var lang = '';
-                        var codeEl = node.querySelector( 'code' );
+                        var codeEl = node.querySelector( 'code' ) || node;
                         if ( codeEl ) {
                             code = codeEl.textContent || '';
                             var cls = codeEl.getAttribute( 'class' ) || '';
                             var m = cls.match( /language-([a-zA-Z0-9+#._-]+)/ );
                             if ( m ) lang = m[1];
                             if ( ! lang ) lang = codeEl.getAttribute( 'lang' ) || '';
-                        } else {
-                            code = cleanHtml( node.innerHTML || '' );
                         }
                         return createBlock( 'stodum/code-block', {
                             content: code.replace( /\n+$/, '' ),
