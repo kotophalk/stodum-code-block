@@ -762,9 +762,37 @@ public static function register_settings() {
             <hr>
             <h2>Code Block Migrator</h2>
             <p>Scan your database for old core/code and core/preformatted blocks and convert them to StoDum Code Blocks.</p>
-            <div id="stodum-migrate-ui">
-                <button type="button" class="button button-primary" id="stodum-migrate-scan" data-nonce="<?php echo esc_attr( wp_create_nonce( self::MIGRATE_NONCE ) ); ?>">Scan Database</button>
-                <div id="stodum-migrate-results" style="margin-top: 20px;"></div>
+            
+            <div class="cs-migrate-toolbar" style="margin-top: 20px; display: flex; gap: 10px; align-items: center;">
+                <button id="cs-scan-btn" class="button button-primary" style="padding:8px 20px;font-size:13px">
+                    <span class="dashicons dashicons-search" style="margin-top:2px"></span> Scan Posts
+                </button>
+                <button id="cs-migrate-all-btn" class="button" style="padding:8px 20px;font-size:13px" disabled>
+                    <span class="dashicons dashicons-update" style="margin-top:2px"></span> Migrate All Remaining
+                </button>
+                <span id="cs-scan-status" class="cs-status" style="font-weight: 500;"></span>
+            </div>
+
+            <div id="cs-results-area" style="margin-top: 20px; background: #fff; padding: 20px; border: 1px solid #ccd0d4; border-radius: 4px;">
+                <p class="cs-migrate-hint">Click <strong>Scan Posts</strong> to find all posts with legacy code blocks.</p>
+            </div>
+
+            <div id="cs-preview-modal" class="cs-modal" style="display:none; position: fixed; top:0; left:0; width:100%; height:100%; z-index:99999; background: rgba(0,0,0,0.5);">
+                <div class="cs-modal-content" style="background:#fff; margin: 50px auto; width: 80%; max-width: 900px; border-radius: 8px; box-shadow: 0 5px 15px rgba(0,0,0,0.2); display: flex; flex-direction: column; max-height: 80vh;">
+                    <div class="cs-modal-header" style="padding: 15px 20px; border-bottom: 1px solid #ddd; display: flex; justify-content: space-between; align-items: center;">
+                        <h2 id="cs-modal-title" style="margin:0;">Preview</h2>
+                        <button class="cs-modal-close" style="background:none; border:none; font-size:24px; cursor:pointer;">&times;</button>
+                    </div>
+                    <div class="cs-modal-body" id="cs-modal-body" style="padding: 20px; overflow-y: auto; flex-grow: 1;">
+                        Loading...
+                    </div>
+                    <div class="cs-modal-footer" style="padding: 15px 20px; border-top: 1px solid #ddd; display: flex; gap: 10px; justify-content: flex-end;">
+                        <button class="cs-modal-close-btn button">Cancel</button>
+                        <button id="cs-modal-migrate-btn" class="button button-primary" data-post-id="">
+                            <span class="dashicons dashicons-yes-alt"></span> Migrate This Post
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
         <?php
