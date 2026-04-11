@@ -77,16 +77,13 @@
                         }
                         
                         var content = attributes.content || '';
-                        if ( ! lang && content.match(/^[a-zA-Z0-9+#._-]+
-/) ) {
-                            var lines = content.split('
-');
+                        if ( ! lang && content.match(/^[a-zA-Z0-9+#._-]+\\n/) ) {
+                            var lines = content.split('\\n');
                             var firstLine = lines[0].trim();
                             if ( firstLine.length > 0 && firstLine.length < 15 && firstLine.indexOf(' ') === -1 ) {
                                 lang = firstLine;
                                 lines.shift();
-                                content = lines.join('
-');
+                                content = lines.join('\\n');
                             }
                         }
 
