@@ -11,6 +11,8 @@
     var createBlock       = blocks.createBlock;
     var __                = i18n.__;
 
+    console.log('STODUM: v1.0.6 loaded');
+
     var languageOptions = [
         { label: __( 'Auto Detect', 'stodum-code-block' ), value: '' },
         { label: 'Bash / Shell', value: 'bash' },
@@ -70,28 +72,17 @@
         }
         // Special case aliases
         var aliases = {
-            'js': 'javascript',
-            'ts': 'typescript',
-            'py': 'python',
-            'rb': 'ruby',
-            'yml': 'yaml',
-            'sh': 'bash',
-            'shell': 'bash',
-            'docker': 'dockerfile',
-            'html': 'xml',
-            'cpp': 'cpp',
-            'c++': 'cpp',
-            'c#': 'csharp',
-            'cs': 'csharp',
-            'md': 'markdown'
+            'js': 'javascript', 'ts': 'typescript', 'py': 'python', 'rb': 'ruby',
+            'yml': 'yaml', 'sh': 'bash', 'shell': 'bash', 'docker': 'dockerfile',
+            'html': 'xml', 'cs': 'csharp', 'cpp': 'cpp', 'c++': 'cpp', 'md': 'markdown'
         };
         if ( aliases[ searchLang ] ) return aliases[ searchLang ];
         
-        // Final fallback: if it is a commonly known extension, accept it even if not in our curated list
+        // Final fallback: known tags
         var common = /^(bash|sh|php|python|docker|dockerfile|js|javascript|json|html|css|sql|go|rust|c|cpp|csharp|java|ruby|swift|toml|yaml|xml|md|markdown|graphql|kotlin|lua|makefile|perl|r|scss|typescript|less|sass|docker|shell)$/i;
         if ( common.test( searchLang ) ) return searchLang;
 
-        // Final fallback: if it looks like a single word without spaces, assume it's a language tag
+        // Final fallback: single word
         if ( searchLang.length > 0 && searchLang.length < 20 && searchLang.indexOf(' ') === -1 ) {
             return searchLang;
         }
@@ -106,7 +97,7 @@
         if ( ! content ) return '';
         var trimmed = content.trim();
 
-        // 1. PHP detection (variables, common operators, tags, or common functions)
+        // 1. PHP detection
         if ( trimmed.indexOf('<?php') !== -1 || 
              (/\$[a-zA-Z_\x7f-\xff]/.test(trimmed) && (
                 trimmed.indexOf('->') !== -1 || 
@@ -122,7 +113,7 @@
             return 'php';
         }
 
-        // 2. Bash/Shell detection (CLI tools and patterns)
+        // 2. Bash/Shell detection
         if ( /^(docker|sudo|apt-get|apt|curl|wget|npm|yarn|npx|composer|git|chmod|chown|ls|cd|mkdir|cat|echo|sh|bash) /m.test(trimmed) ||
              /^\$ /m.test(trimmed) || /^\# /m.test(trimmed)
         ) {
@@ -146,31 +137,48 @@
     }
 
     blocks.registerBlockType( 'stodum/code-block', {
+        attributes: {
+            content: { type: 'string', default: '' },
+            language: { type: 'string', default: '' },
+            title: { type: 'string', default: '' },
+            theme: { type: 'string', default: '' }
+        },
 
         transforms: {
             from: [
                 {
                     type: 'block',
-                    blocks: [ 'core/code' ],
+                    blocks: [ 'core/code', 'core/preformatted' ],
                     transform: function( attributes ) {
+                        var content = attributes.content || '';
                         var lang = '';
                         if ( attributes.className ) {
-                            var match = attributes.className.match( /language-([a-zA-Z0-9+#._-]+)/ );
-                            if ( match ) lang = match[1];
-                        }
-                        if ( ! lang && attributes.language ) {
-                            lang = attributes.language;
+                            var m = attributes.className.match( /language-([a-zA-Z0-9+#._-]+)/ );
+                            if ( m ) lang = normalizeLanguage( m[1] );
                         }
                         
-                        var content = attributes.content || '';
-                        if ( ! lang && content.match(/^[a-zA-Z0-9+#._-]+\n/) ) {
-                            var lines = content.split('\n');
-                            var firstLine = lines[0].trim();
-                            if ( firstLine.length > 0 && firstLine.length < 15 && firstLine.indexOf(' ') === -1 ) {
-                                lang = firstLine;
-                                lines.shift();
-                                content = lines.join('\n');
+                        // Parse markdown backticks
+                        var fenceRegex = /(?:^|\r\n|\n)```([a-zA-Z0-9+#._-]+)?[ \t]*\r?\n([\s\S]*?)(?:\r\n|\n)```[ \t]*(?:\r?\n|$)/;
+                        var match = content.match( fenceRegex );
+                        if ( match ) {
+                            lang = normalizeLanguage( match[1] || '' );
+                            content = match[2];
+                        } else {
+                            // Check for direct first line language marker
+                            var firstLineMatch = content.match(/^([a-zA-Z0-9+#._-]+)\s*\n/);
+                            if ( firstLineMatch ) {
+                                var firstLine = firstLineMatch[1].toLowerCase();
+                                var normalized = normalizeLanguage( firstLine );
+                                var isKnown = /^(bash|sh|php|python|javascript|js|json|html|css|sql|dockerfile|makefile|docker|shell)$/i.test( firstLine );
+                                if ( isKnown && normalized ) {
+                                    lang = normalized;
+                                    var lines = content.split(/\r?\n/);
+                                    lines.shift();
+                                    content = lines.join('\n');
+                                }
                             }
+                            // Fine-grained fallback
+                            if ( ! lang ) lang = guessLanguage( content );
                         }
 
                         return createBlock( 'stodum/code-block', {
@@ -180,34 +188,20 @@
                     }
                 },
                 {
-                    type: 'block',
-                    blocks: [ 'core/preformatted' ],
-                    transform: function( attributes ) {
-                        return createBlock( 'stodum/code-block', {
-                            content: cleanHtml( attributes.content || '' ),
-                            language: ''
-                        } );
-                    }
-                },
-                {
                     type: 'raw',
                     priority: 1,
                     isMatch: function( node ) {
-                        if ( ! node || node.nodeType !== 1 ) return false;
                         var tag = node.nodeName.toUpperCase();
                         return tag === 'PRE' || tag === 'CODE';
                     },
                     transform: function( node ) {
-                        var code = '';
-                        var lang = '';
                         var codeEl = node.querySelector( 'code' ) || node;
-                        if ( codeEl ) {
-                            code = codeEl.textContent || '';
-                            var cls = codeEl.getAttribute( 'class' ) || '';
-                            var m = cls.match( /language-([a-zA-Z0-9+#._-]+)/ );
-                            if ( m ) lang = m[1];
-                            if ( ! lang ) lang = codeEl.getAttribute( 'lang' ) || '';
-                        }
+                        var code = codeEl.textContent || '';
+                        var cls = codeEl.getAttribute( 'class' ) || '';
+                        var m = cls.match( /language-([a-zA-Z0-9+#._-]+)/ );
+                        var lang = m ? normalizeLanguage( m[1] ) : ( codeEl.getAttribute( 'lang' ) || '' );
+                        if ( ! lang ) lang = guessLanguage( code );
+                        
                         return createBlock( 'stodum/code-block', {
                             content: code.replace( /\n+$/, '' ),
                             language: lang
@@ -219,23 +213,15 @@
 
         edit: function( props ) {
             var attributes = props.attributes;
+            var blockProps = useBlockProps( { className: 'stodum-code-editor-wrapper' } );
 
-            var blockProps = useBlockProps( {
-                className: 'stodum-code-editor-wrapper'
-            } );
-
-            function onChangeCode( event ) {
-                props.setAttributes( { content: event.target.value } );
-            }
+            function onChangeCode( event ) { props.setAttributes( { content: event.target.value } ); }
 
             function onKeyDown( event ) {
                 if ( event.key === 'Tab' ) {
                     event.preventDefault();
-                    var ta    = event.target;
-                    var start = ta.selectionStart;
-                    var end   = ta.selectionEnd;
-                    var value = ta.value;
-                    ta.value  = value.substring( 0, start ) + '    ' + value.substring( end );
+                    var ta = event.target, start = ta.selectionStart, end = ta.selectionEnd, value = ta.value;
+                    ta.value = value.substring( 0, start ) + '    ' + value.substring( end );
                     ta.selectionStart = ta.selectionEnd = start + 4;
                     props.setAttributes( { content: ta.value } );
                 }
@@ -252,47 +238,23 @@
             }
 
             var copyLabelState = element.useState( 'Copy' );
-            var getCopyLabel = copyLabelState[0];
-            var setCopyLabel = copyLabelState[1];
+            var getCopyLabel = copyLabelState[0], setCopyLabel = copyLabelState[1];
 
             function onCopyCode() {
                 var code = attributes.content || '';
                 if ( ! code ) return;
-                if ( navigator.clipboard && navigator.clipboard.writeText ) {
-                    navigator.clipboard.writeText( code ).then( function() {
-                        setCopyLabel( 'Copied!' );
-                        setTimeout( function() { setCopyLabel( 'Copy' ); }, 1500 );
-                    } );
-                } else {
-                    var ta = document.createElement( 'textarea' );
-                    ta.value = code;
-                    ta.style.position = 'fixed';
-                    ta.style.opacity = '0';
-                    document.body.appendChild( ta );
-                    ta.select();
-                    document.execCommand( 'copy' );
-                    document.body.removeChild( ta );
+                navigator.clipboard.writeText( code ).then( function() {
                     setCopyLabel( 'Copied!' );
                     setTimeout( function() { setCopyLabel( 'Copy' ); }, 1500 );
-                }
-            }
-
-            function onClearCode() {
-                props.setAttributes( { content: '' } );
+                } );
             }
 
             function decodeClipboardText( text ) {
-                // Gutenberg sometimes JSON-encodes clipboard text internally,
-                // producing escape sequences like \n, \u0022, or bare u003c.
                 if ( typeof text !== 'string' ) return text;
                 var trimmed = text.trim();
-                // Case 1: Already a full JSON string value (wrapped in quotes) — parse directly.
                 if ( trimmed.charAt(0) === '"' && trimmed.charAt( trimmed.length - 1 ) === '"' ) {
                     try { return JSON.parse( trimmed ); } catch(e) {}
                 }
-                // Case 2: Contains backslash escape sequences (\n, \t, \r, \\, \uXXXX).
-                // Decode directly instead of via JSON.parse, which fails when \u0022
-                // decodes to " and creates an unterminated string literal.
                 if ( /\\[ntr\\]|\\u[0-9a-fA-F]{4}/.test( trimmed ) ) {
                     return trimmed.replace( /\\([ntr\\]|u[0-9a-fA-F]{4})/g, function( _, seq ) {
                         if ( seq === 'n' ) return '\n';
@@ -302,60 +264,26 @@
                         return String.fromCharCode( parseInt( seq.slice(1), 16 ) );
                     } );
                 }
-                // Case 3: Bare unicode escapes without backslash (u003c style).
-                // Decode directly for the same reason as Case 2.
-                if ( /(?:^|[^\\])u[0-9a-fA-F]{4}/.test( trimmed ) ) {
-                    return trimmed.replace( /u([0-9a-fA-F]{4})/g, function( _, hex ) {
-                        return String.fromCharCode( parseInt( hex, 16 ) );
-                    } );
-                }
                 return text;
             }
 
             function onPasteCode( event ) {
                 var processPaste = function( text ) {
                     var decoded = decodeClipboardText( text );
-                    
-                    // Regex that safely handles Markdown fences with any line endings
                     var fenceRegex = /(?:^|\r\n|\n)```([a-zA-Z0-9+#._-]+)?[ \t]*\r?\n([\s\S]*?)(?:\r\n|\n)```[ \t]*(?:\r?\n|$)/;
                     var match = decoded.match( fenceRegex );
-                    
                     if ( match ) {
-                        var detectedLang = normalizeLanguage( match[1] || '' );
-                        var content = match[2];
-                        props.setAttributes( { content: content, language: detectedLang } );
+                        props.setAttributes( { content: match[2], language: normalizeLanguage( match[1] || '' ) } );
                         return;
                     }
-
-                    // Fallback: Check if first line might be a language name without backticks
-                    var firstLineMatch = decoded.match(/^([a-zA-Z0-9+#._-]+)\s*\n/);
-                    if ( firstLineMatch ) {
-                        var firstLine = firstLineMatch[1].toLowerCase();
-                        var normalized = normalizeLanguage( firstLine );
-                        // Restricted list for first-line-only detection to avoid collisions with "if", "for", etc.
-                        var strictlyKnown = /^(bash|sh|php|python|javascript|js|json|html|css|sql|dockerfile|makefile|docker|shell)$/i.test( firstLine );
-                        
-                        if ( strictlyKnown && normalized ) {
-                            var lines = decoded.split(/\r?\n/);
-                            lines.shift();
-                            props.setAttributes( { content: lines.join('\n'), language: normalized } );
-                            return;
-                        }
-                    }
-
-                    // Ultimate Fallback: Smart Guess
                     var guessed = guessLanguage( decoded );
                     props.setAttributes( { content: decoded, language: guessed } );
                 };
-
                 if ( event && event.clipboardData ) {
                     event.preventDefault();
-                    var text = event.clipboardData.getData( 'text' );
-                    processPaste( text );
+                    processPaste( event.clipboardData.getData( 'text' ) );
                 } else if ( navigator.clipboard && navigator.clipboard.readText ) {
-                    navigator.clipboard.readText().then( function( text ) {
-                        processPaste( text );
-                    } ).catch( function() {} );
+                    navigator.clipboard.readText().then( processPaste ).catch( function() {} );
                 }
             }
 
@@ -364,60 +292,25 @@
                     el( PanelBody, { title: __( 'Code Settings', 'stodum-code-block' ), initialOpen: true },
                         el( SelectControl, {
                             label: __( 'Language', 'stodum-code-block' ),
-                            help: __( 'Leave on Auto Detect to let highlight.js guess the language.', 'stodum-code-block' ),
                             value: attributes.language,
                             options: languageOptions,
                             onChange: function( val ) { props.setAttributes( { language: val } ); }
                         } ),
                         el( TextControl, {
                             label: __( 'Title', 'stodum-code-block' ),
-                            help: __( 'Optional label shown above the code (e.g. filename).', 'stodum-code-block' ),
                             value: attributes.title,
                             onChange: function( val ) { props.setAttributes( { title: val } ); }
-                        } ),
-                        el( SelectControl, {
-                            label: __( 'Dark / Light Mode', 'stodum-code-block' ),
-                            help: __( 'Override for this block. The color theme is set site wide in Tools > StoDum Code and SQL.', 'stodum-code-block' ),
-                            value: attributes.theme,
-                            options: themeOptions,
-                            onChange: function( val ) { props.setAttributes( { theme: val } ); }
                         } )
                     )
                 ),
                 el( 'div', blockProps,
                     el( 'div', { className: 'stodum-code-editor-toolbar' },
-                        el( 'span', { className: 'stodum-code-editor-icon' },
-                            el( 'svg', { xmlns: 'http://www.w3.org/2000/svg', width: '16', height: '16', viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: '2', strokeLinecap: 'round', strokeLinejoin: 'round' },
-                                el( 'polyline', { points: '16 18 22 12 16 6' } ),
-                                el( 'polyline', { points: '8 6 2 12 8 18' } )
-                            )
-                        ),
                         el( 'span', { className: 'stodum-code-editor-label' }, 'StoDum Code' ),
-                        attributes.language
-                            ? el( 'span', { className: 'stodum-code-editor-lang' }, langLabel )
-                            : el( 'span', { className: 'stodum-code-editor-lang stodum-code-editor-lang-auto' }, 'Auto Detect' ),
-                        attributes.title
-                            ? el( 'span', { className: 'stodum-code-editor-title' }, attributes.title )
-                            : null,
+                        el( 'span', { className: 'stodum-code-editor-lang' + ( attributes.language ? '' : ' stodum-code-editor-lang-auto' ) }, langLabel ),
                         el( 'div', { className: 'stodum-code-editor-toolbar-actions' },
-                            el( 'button', {
-                                className: 'stodum-code-editor-btn stodum-code-editor-btn-copy',
-                                type: 'button',
-                                title: __( 'Copy code to clipboard', 'stodum-code-block' ),
-                                onClick: onCopyCode
-                            }, getCopyLabel ),
-                            el( 'button', {
-                                className: 'stodum-code-editor-btn stodum-code-editor-btn-paste',
-                                type: 'button',
-                                title: __( 'Paste clipboard content', 'stodum-code-block' ),
-                                onClick: onPasteCode
-                            }, 'Paste' ),
-                            el( 'button', {
-                                className: 'stodum-code-editor-btn stodum-code-editor-btn-clear',
-                                type: 'button',
-                                title: __( 'Clear all code', 'stodum-code-block' ),
-                                onClick: onClearCode
-                            }, 'Clear' )
+                            el( 'button', { className: 'stodum-code-editor-btn', onClick: onCopyCode }, getCopyLabel ),
+                            el( 'button', { className: 'stodum-code-editor-btn', onClick: onPasteCode }, 'Paste' ),
+                            el( 'button', { className: 'stodum-code-editor-btn', onClick: function() { props.setAttributes({content:''}); } }, 'Clear' )
                         )
                     ),
                     el( 'textarea', {
@@ -426,187 +319,48 @@
                         onChange: onChangeCode,
                         onKeyDown: onKeyDown,
                         onPaste: onPasteCode,
-                        placeholder: __( 'Paste or type your code here...', 'stodum-code-block' ),
                         rows: Math.max( 8, ( ( attributes.content || '' ).split( '\n' ).length || 1 ) + 2 ),
-                        spellCheck: false,
-                        autoComplete: 'off',
-                        autoCorrect: 'off',
-                        autoCapitalize: 'off'
+                        spellCheck: false
                     } )
                 )
             );
         },
-        save: function() {
-            return null;
-        },
-        transforms: {
-            from: [
-                {
-                    type: 'block',
-                    blocks: [ 'core/code', 'core/preformatted' ],
-                    transform: function( attributes, innerBlocks ) {
-                        var content = attributes.content || '';
-                        var lang = '';
-                        if ( attributes.className ) {
-                            var m = attributes.className.match( /language-([a-zA-Z0-9+#._-]+)/ );
-                            if ( m ) lang = normalizeLanguage( m[1] );
-                        }
-                        
-                        // Parse markdown backticks if inside content
-                        var fenceRegex = /(?:^|\r\n|\n)```([a-zA-Z0-9+#._-]+)?[ \t]*\r?\n([\s\S]*?)(?:\r\n|\n)```[ \t]*(?:\r?\n|$)/;
-                        var match = content.match( fenceRegex );
-                        if ( match ) {
-                            lang = normalizeLanguage( match[1] || '' );
-                            content = match[2];
-                        } else {
-                            // Check for direct first line language marker
-                            var firstLineMatch = content.match(/^([a-zA-Z0-9+#._-]+)\s*\n/);
-                            if ( firstLineMatch ) {
-                                var firstLine = firstLineMatch[1].toLowerCase();
-                                var normalized = normalizeLanguage( firstLine );
-                                var strictlyKnown = /^(bash|sh|php|python|javascript|js|json|html|css|sql|dockerfile|makefile|docker|shell)$/i.test( firstLine );
-                                if ( strictlyKnown && normalized ) {
-                                    lang = normalized;
-                                    var lines = content.split(/\r?\n/);
-                                    lines.shift();
-                                    content = lines.join('\n');
-                                }
-                            }
-                            
-                            // Fine-grained fallback: Guess if still unknown
-                            if ( ! lang ) {
-                                lang = guessLanguage( content );
-                            }
-                        }
-
-                        return createBlock( 'stodum/code-block', {
-                            content: content,
-                            language: lang
-                        } );
-                    }
-                },
-                {
-                    type: 'raw',
-                    priority: 5,
-                    isMatch: function( node ) {
-                        return node.nodeName === 'PRE' && node.children.length === 1 && node.children[0].nodeName === 'CODE';
-                    },
-                    schema: {
-                        pre: {
-                            children: {
-                                code: {
-                                    children: {
-                                        '#text': {}
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    transform: function( node ) {
-                        var codeNode = node.children[0];
-                        var content = codeNode.innerHTML || codeNode.textContent || '';
-                        
-                        // Clean up escaping
-                        content = content.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&');
-                        
-                        var lang = '';
-                        var codeClass = codeNode.className || '';
-                        var preClass = node.className || '';
-                        
-                        // Showdown markdown usually generates <code class="php language-php">
-                        var m = codeClass.match( /(?:^|\s)language-([a-zA-Z0-9+#._-]+)/i );
-                        if ( !m ) m = codeClass.match( /(?:^|\s)([a-zA-Z0-9+#._-]+)$/i );
-                        if ( !m ) m = preClass.match( /(?:^|\s)language-([a-zA-Z0-9+#._-]+)/i );
-                        
-                        if ( m ) lang = normalizeLanguage( m[1] );
-                        var finalLang = lang;
-
-                        return createBlock( 'stodum/code-block', {
-                            content: content,
-                            language: finalLang
-                        } );
-                    }
-                }
-            ]
-        }
+        save: function() { return null; }
     } );
 
-    // Global Paste Interceptor for Bulk Markdown
-    // This catches raw markdown pasted anywhere in the editor and forces Gutenberg
-    // to recognize the markdown fences as StoDum Code Blocks BEFORE WP core strips them!
+    // Global Paste Interceptor
     document.addEventListener( 'paste', function( event ) {
         if ( ! event.clipboardData ) return;
-        
         var activeEl = document.activeElement;
-        var isEditor = activeEl && ( 
-            activeEl.closest('.block-editor-block-list__layout') || 
-            activeEl.closest('.editor-styles-wrapper') || 
-            activeEl.classList.contains('wp-block') 
-        );
-        
-        if ( ! isEditor ) return;
+        if ( !activeEl || !activeEl.closest('.editor-styles-wrapper') ) return;
 
-        // More robust regex for bulk markdown paste
         var text = event.clipboardData.getData('text/plain');
-        if ( ! text ) return;
-
-        // Check if there are any code fences at all
-        if ( ! text.match(/^```/m) ) return;
+        if ( ! text || ! text.match(/^```/m) ) return;
 
         event.preventDefault();
-        
-        var blocksToInsert = [];
-        var lastIndex = 0;
-        // Robust regex for bulk markdown paste (handles line endings and spaces)
+        var blocksToInsert = [], lastIndex = 0;
         var fenceRegex = /(?:^|\r\n|\n)```([a-zA-Z0-9+#._-]+)?[ \t]*\r?\n([\s\S]*?)(?:\r\n|\n)```[ \t]*(?:\r?\n|$)/g;
         var match;
 
         while ( ( match = fenceRegex.exec( text ) ) !== null ) {
-            // 1. Process text before the match
             var before = text.substring( lastIndex, match.index ).trim();
             if ( before ) {
-                // Let Gutenberg handle the text paragraphs normally
                 var textBlocks = window.wp.blocks.pasteHandler({ plainText: before, mode: 'BLOCKS' });
                 if ( textBlocks ) blocksToInsert = blocksToInsert.concat( textBlocks );
             }
-
-            // 2. Process the code block match
             var rawLang = match[1] || '';
-            var code = match[2];
-            var finalLang = normalizeLanguage( rawLang );
-            // If not in standard list, still keep the raw string if it looks like a tag
-            if ( ! finalLang && rawLang ) finalLang = rawLang.trim().toLowerCase();
-
-            blocksToInsert.push( createBlock( 'stodum/code-block', {
-                language: finalLang || guessLanguage( code ),
-                content: code
-            } ) );
-
+            var finalLang = normalizeLanguage( rawLang ) || guessLanguage( match[2] );
+            blocksToInsert.push( createBlock( 'stodum/code-block', { language: finalLang, content: match[2] } ) );
             lastIndex = fenceRegex.lastIndex;
         }
-
-        // 3. Process remaining text
         var remaining = text.substring( lastIndex ).trim();
         if ( remaining ) {
             var textBlocks = window.wp.blocks.pasteHandler({ plainText: remaining, mode: 'BLOCKS' });
             if ( textBlocks ) blocksToInsert = blocksToInsert.concat( textBlocks );
         }
-
         if ( blocksToInsert.length > 0 ) {
-            var editor = window.wp.data.dispatch('core/block-editor');
-            var selectedIds = window.wp.data.select('core/block-editor').getSelectedBlockClientIds();
-            if ( selectedIds && selectedIds.length > 0 ) {
-                editor.replaceBlocks( selectedIds, blocksToInsert );
-            } else {
-                editor.insertBlocks( blocksToInsert );
-            }
+            window.wp.data.dispatch('core/block-editor').insertBlocks( blocksToInsert );
         }
-    }, true ); // Use capture to intercept before Gutenberg's vanilla plainText handler!
+    }, true );
 
-} )(
-    window.wp.blocks,
-    window.wp.element,
-    window.wp.blockEditor,
-    window.wp.components,
-    window.wp.i18n
-);
+} )( window.wp.blocks, window.wp.element, window.wp.blockEditor, window.wp.components, window.wp.i18n );
