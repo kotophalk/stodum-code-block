@@ -82,7 +82,8 @@
             'cpp': 'cpp',
             'c++': 'cpp',
             'c#': 'csharp',
-            'cs': 'csharp'
+            'cs': 'csharp',
+            'md': 'markdown'
         };
         if ( aliases[ searchLang ] ) return aliases[ searchLang ];
         
@@ -94,6 +95,52 @@
         if ( searchLang.length > 0 && searchLang.length < 20 && searchLang.indexOf(' ') === -1 ) {
             return searchLang;
         }
+
+        return '';
+    }
+
+    /**
+     * Smart heuristic to guess the language even without backticks
+     */
+    function guessLanguage( content ) {
+        if ( ! content ) return '';
+        var trimmed = content.trim();
+
+        // 1. PHP detection (variables, common operators, tags, or common functions)
+        if ( trimmed.indexOf('<?php') !== -1 || 
+             (/\$[a-zA-Z_\x7f-\xff]/.test(trimmed) && (
+                trimmed.indexOf('->') !== -1 || 
+                trimmed.indexOf('::') !== -1 || 
+                trimmed.indexOf('array(') !== -1 || 
+                trimmed.indexOf('foreach') !== -1 ||
+                trimmed.indexOf('empty(') !== -1 ||
+                trimmed.indexOf('preg_match(') !== -1 ||
+                trimmed.indexOf('explode(') !== -1 ||
+                trimmed.indexOf('substr(') !== -1
+             ))
+        ) {
+            return 'php';
+        }
+
+        // 2. Bash/Shell detection (CLI tools and patterns)
+        if ( /^(docker|sudo|apt-get|apt|curl|wget|npm|yarn|npx|composer|git|chmod|chown|ls|cd|mkdir|cat|echo|sh|bash) /m.test(trimmed) ||
+             /^\$ /m.test(trimmed) || /^\# /m.test(trimmed)
+        ) {
+            return 'bash';
+        }
+
+        // 3. JavaScript/TypeScript detection
+        if ( /^(import|export|const|let|async|await) /m.test(trimmed) || 
+             (trimmed.indexOf('console.log') !== -1 && trimmed.indexOf('function') !== -1)
+        ) {
+            return 'javascript';
+        }
+
+        // 4. JSON / XML / HTML
+        if ( trimmed.startsWith('{') && trimmed.endsWith('}') ) return 'json';
+        if ( trimmed.startsWith('[') && trimmed.endsWith(']') ) return 'json';
+        if ( trimmed.indexOf('<html') !== -1 || trimmed.indexOf('<!DOCTYPE') !== -1 ) return 'html';
+        if ( trimmed.startsWith('<') && (trimmed.indexOf('</') !== -1 || trimmed.indexOf('/>') !== -1) ) return 'xml';
 
         return '';
     }
@@ -296,7 +343,9 @@
                         }
                     }
 
-                    props.setAttributes( { content: decoded } );
+                    // Ultimate Fallback: Smart Guess
+                    var guessed = guessLanguage( decoded );
+                    props.setAttributes( { content: decoded, language: guessed } );
                 };
 
                 if ( event && event.clipboardData ) {
@@ -404,24 +453,29 @@
                         }
                         
                         // Parse markdown backticks if inside content
-                        var fenceRegex = /(?:^|\r\n|\n)```([a-zA-Z0-9+#._-]+)[ \t]*\r?\n([\s\S]*?)(?:\r\n|\n)```[ \t]*(?:\r?\n|$)/;
+                        var fenceRegex = /(?:^|\r\n|\n)```([a-zA-Z0-9+#._-]+)?[ \t]*\r?\n([\s\S]*?)(?:\r\n|\n)```[ \t]*(?:\r?\n|$)/;
                         var match = content.match( fenceRegex );
                         if ( match ) {
-                            lang = normalizeLanguage( match[1] );
+                            lang = normalizeLanguage( match[1] || '' );
                             content = match[2];
                         } else {
-                            // First line detection without backticks
+                            // Check for direct first line language marker
                             var firstLineMatch = content.match(/^([a-zA-Z0-9+#._-]+)\s*\n/);
                             if ( firstLineMatch ) {
                                 var firstLine = firstLineMatch[1].toLowerCase();
                                 var normalized = normalizeLanguage( firstLine );
-                                var strictlyKnown = /^(bash|sh|php|python|javascript|js|json|html|css|sql|dockerfile|makefile)$/i.test( firstLine );
+                                var strictlyKnown = /^(bash|sh|php|python|javascript|js|json|html|css|sql|dockerfile|makefile|docker|shell)$/i.test( firstLine );
                                 if ( strictlyKnown && normalized ) {
                                     lang = normalized;
                                     var lines = content.split(/\r?\n/);
                                     lines.shift();
                                     content = lines.join('\n');
                                 }
+                            }
+                            
+                            // Fine-grained fallback: Guess if still unknown
+                            if ( ! lang ) {
+                                lang = guessLanguage( content );
                             }
                         }
 
@@ -524,7 +578,7 @@
             if ( ! finalLang && rawLang ) finalLang = rawLang.trim().toLowerCase();
 
             blocksToInsert.push( createBlock( 'stodum/code-block', {
-                language: finalLang,
+                language: finalLang || guessLanguage( code ),
                 content: code
             } ) );
 
