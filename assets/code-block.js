@@ -211,18 +211,15 @@
             toggleBtn.addEventListener( 'click', function() {
                 var current = wrapper.getAttribute( 'data-active-theme' );
                 var next = ( current === 'dark' ) ? 'light' : 'dark';
-                wrapper.setAttribute( 'data-active-theme', next );
-                applyThemeVars( wrapper, next );
+                
+                var allWrappers = document.querySelectorAll( '.stodum-code-wrapper' );
+                for ( var i = 0; i < allWrappers.length; i++ ) {
+                    allWrappers[i].setAttribute( 'data-active-theme', next );
+                    applyThemeVars( allWrappers[i], next );
+                }
 
                 // Switch the global hljs stylesheet so syntax colors update
                 applyGlobalTheme( next );
-
-                // Re-highlight
-                var raw = codeEl.textContent;
-                codeEl.removeAttribute( 'data-highlighted' );
-                codeEl.classList.remove( 'hljs' );
-                codeEl.textContent = raw;
-                hljs.highlightElement( codeEl );
             } );
         }
 

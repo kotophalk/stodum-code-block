@@ -7,6 +7,7 @@
     var scanBtn      = document.getElementById('cs-scan-btn');
     var migrateAllBtn = document.getElementById('cs-migrate-all-btn');
     var statusEl     = document.getElementById('cs-scan-status');
+    var resultsContainer = document.getElementById('cs-scan-results');
     var resultsArea  = document.getElementById('cs-results-area');
     var modal        = document.getElementById('cs-preview-modal');
     var modalTitle   = document.getElementById('cs-modal-title');
@@ -67,6 +68,7 @@
     function doScan() {
         scanBtn.disabled = true;
         setStatus('Scanning...', '');
+        resultsContainer.style.display = 'block';
         resultsArea.innerHTML = '<p class="cs-loading"><span class="cs-spinner"></span> Scanning all posts for legacy code blocks...</p>';
 
         ajax('stodum_migrate_scan', {}, function (err, data) {
@@ -175,11 +177,11 @@
                 html += '<div class="cs-preview-diff">';
                 html += '<div class="cs-preview-side cs-before">';
                 html += '<div class="cs-preview-side-label">Before (wp:code)</div>';
-                html += '<pre>' + block.original + '</pre>';
+                html += '<pre>' + escHtml(block.original) + '</pre>';
                 html += '</div>';
                 html += '<div class="cs-preview-side cs-after">';
                 html += '<div class="cs-preview-side-label">After (stodum/code-block)</div>';
-                html += '<pre>' + block.converted + '</pre>';
+                html += '<pre>' + escHtml(block.converted) + '</pre>';
                 html += '</div>';
                 html += '</div>';
                 html += '</div>';
@@ -271,7 +273,7 @@
 
     function getViewUrl(postId) {
         for (var i = 0; i < scannedPosts.length; i++) {
-            if (scannedPosts[i].id === postId) return scannedPosts[i].view_url;
+            if (parseInt(scannedPosts[i].id, 10) === parseInt(postId, 10)) return scannedPosts[i].view_url;
         }
         return '#';
     }
