@@ -229,13 +229,49 @@
             function onPasteCode( event ) {
                 // Called both from the toolbar Paste button (no event) and the
                 // textarea's onPaste handler (event.clipboardData available).
+                var processPaste = function( text ) {
+                    var decoded = decodeClipboardText( text );
+                    
+                    // Check if the pasted text is a markdown fenced code block
+                    var langMatch = decoded.match(/^(`{3})?\s*([a-zA-Z0-9+#._-]+)\s*\n/);
+                    if ( langMatch ) {
+                        var parsedLang = langMatch[2] ? langMatch[2].toLowerCase() : '';
+                        
+                        var lines = decoded.split('\n');
+                        var firstLine = lines[0].trim().replace(/^`{3}/, '').trim();
+                        var isBacktick = lines[0].trim().indexOf('```') !== -1;
+                        var knownLang = /^(bash|sh|php|python|docker|dockerfile|js|javascript|json|html|css|sql|go|rust|c|cpp|csharp|java|ruby|swift|toml|yaml)$/i.test(firstLine);
+
+                        if ( isBacktick || knownLang ) {
+                            var extractLang = firstLine;
+                            lines.shift();
+                            if (lines.length > 0 && lines[lines.length - 1].trim() === '```') {
+                                lines.pop();
+                            }
+                            decoded = lines.join('\n');
+                            // Look up language in options to normalize it
+                            var finalLang = extractLang;
+                            for ( var i = 0; i < languageOptions.length; i++ ) {
+                                if ( languageOptions[i].value === extractLang.toLowerCase() || 
+                                     languageOptions[i].label.toLowerCase().indexOf(extractLang.toLowerCase()) !== -1 ) {
+                                    finalLang = languageOptions[i].value;
+                                    break;
+                                }
+                            }
+                            props.setAttributes( { content: decoded, language: finalLang } );
+                            return;
+                        }
+                    }
+                    props.setAttributes( { content: decoded } );
+                };
+
                 if ( event && event.clipboardData ) {
                     event.preventDefault();
                     var text = event.clipboardData.getData( 'text' );
-                    props.setAttributes( { content: decodeClipboardText( text ) } );
+                    processPaste( text );
                 } else if ( navigator.clipboard && navigator.clipboard.readText ) {
                     navigator.clipboard.readText().then( function( text ) {
-                        props.setAttributes( { content: decodeClipboardText( text ) } );
+                        processPaste( text );
                     } ).catch( function() {} );
                 }
             }
@@ -319,6 +355,75 @@
         },
         save: function() {
             return null;
+        },
+        transforms: {
+            from: [
+                {
+                    type: 'block',
+                    blocks: [ 'core/code', 'core/preformatted' ],
+                    transform: function( attributes, innerBlocks ) {
+                        var content = attributes.content || '';
+                        var lang = '';
+                        // Try to guess from class names first if WP left any
+                        if ( attributes.className ) {
+                            var m = attributes.className.match( /language-([a-zA-Z0-9+#._-]+)/ );
+                            if ( m ) lang = m[1];
+                        }
+                        
+                        // Parse markdown backticks if inside content
+                        var langMatch = content.match(/^(`{3})?\s*([a-zA-Z0-9+#._-]+)\s*\n/);
+                        if ( !lang && langMatch ) {
+                            var extractLang = langMatch[2] ? langMatch[2].toLowerCase() : '';
+                            var lines = content.split('\n');
+                            var firstLine = lines[0].trim().replace(/^`{3}/, '').trim();
+                            var isBacktick = lines[0].trim().indexOf('```') !== -1;
+                            var knownLang = /^(bash|sh|php|python|docker|dockerfile|js|javascript|json|html|css|sql|go|rust|c|cpp|csharp|java|ruby|swift|toml|yaml)$/i.test(firstLine);
+                            if ( isBacktick || knownLang ) {
+                                lang = firstLine;
+                                lines.shift();
+                                if (lines.length > 0 && lines[lines.length - 1].trim() === '```') {
+                                    lines.pop();
+                                }
+                                content = lines.join('\n');
+                            }
+                        }
+                        return createBlock( 'stodum/code-block', {
+                            content: content,
+                            language: lang
+                        } );
+                    }
+                },
+                {
+                    type: 'raw',
+                    isMatch: function( node ) {
+                        return node.nodeName === 'PRE' && node.children.length === 1 && node.children[0].nodeName === 'CODE';
+                    },
+                    schema: {
+                        pre: {
+                            children: {
+                                code: {
+                                    children: {
+                                        '#text': {}
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    transform: function( node ) {
+                        var codeNode = node.children[0];
+                        var content = codeNode.textContent || '';
+                        var lang = '';
+                        if ( codeNode.className ) {
+                            var m = codeNode.className.match( /language-([a-zA-Z0-9+#._-]+)/ );
+                            if ( m ) lang = m[1];
+                        }
+                        return createBlock( 'stodum/code-block', {
+                            content: content,
+                            language: lang
+                        } );
+                    }
+                }
+            ]
         }
     } );
 
