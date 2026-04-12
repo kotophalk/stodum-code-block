@@ -117,13 +117,24 @@
                 lang = b.attributes.language;
             }
 
-            if ( ! lang && content.match(/^[a-zA-Z0-9+#._-]+\n/) ) {
+            var firstLineMatch = content.match(/^(`{3})?\s*([a-zA-Z0-9+#._-]+)\s*\n/);
+            if ( ! lang && firstLineMatch ) {
                 var lines = content.split('\n');
-                var firstLine = lines[0].trim();
+                var firstLine = lines[0].trim().replace(/^`{3}/, '').trim();
                 if ( firstLine.length > 0 && firstLine.length < 15 && firstLine.indexOf(' ') === -1 ) {
-                    lang = firstLine;
-                    lines.shift();
-                    content = lines.join('\n');
+                    // Check if it's not a generic word that happened to be on the first line alone without backticks
+                    // Only apply generic single words if they are known languages or if backticks were explicitly present
+                    var isBacktick = lines[0].trim().indexOf('```') !== -1;
+                    var knownLang = /^(bash|sh|php|python|docker|dockerfile|js|javascript|json|html|css|sql|go|rust|c|cpp|csharp|java|ruby|swift|toml|yaml)$/i.test(firstLine);
+                    if ( isBacktick || knownLang ) {
+                        lang = firstLine;
+                        lines.shift();
+                        // Strip closing ``` if exists
+                        if (lines.length > 0 && lines[lines.length - 1].trim() === '```') {
+                            lines.pop();
+                        }
+                        content = lines.join('\n');
+                    }
                 }
             }
 
@@ -163,10 +174,10 @@
                 toast.id = TOAST_ID;
                 document.body.appendChild( toast );
             }
-            var s = coreBlocks.length > 1 ? 's' : '';
+            var verb = coreBlocks.length > 1 ? stodumConvertI18n.found_n : stodumConvertI18n.found_1;
             toast.innerHTML = '' +
-                '<span>\u26A0\uFE0F ' + coreBlocks.length + ' core code block' + s + ' found</span>' +
-                '<button>\u26A1 Convert All to StoDum</button>';
+                '<span>\u26A0\uFE0F ' + coreBlocks.length + ' ' + verb + '</span>' +
+                '<button>\u26A1 ' + stodumConvertI18n.convert + '</button>';
             toast.querySelector( 'button' ).addEventListener( 'click', convertAll );
         } else {
             if ( toast ) {

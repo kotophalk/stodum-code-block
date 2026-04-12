@@ -228,15 +228,38 @@ class StoDum_Migrator {
         }
 
         if ( empty( $lang ) ) {
-            $trimmed     = ltrim( $content );
-            $first_lines = array_filter( array_map( 'trim', explode( "\n", $trimmed ) ) );
-            $first_line  = ! empty( $first_lines ) ? reset( $first_lines ) : '';
-            if ( preg_match( '/^(docker|curl|wget|apt|apt-get|npm|yarn|npx|composer|php|python|git|echo|ls|cat|sh|bash|sudo) /i', $first_line ) ) {
-                $lang = 'bash';
-            } elseif ( preg_match( '/^\# /', $first_line ) ) {
-                $lang = 'bash';
-            } elseif ( preg_match( '/^\/\//', $first_line ) ) {
-                $lang = 'javascript';
+            $trimmed = ltrim( $content );
+            if ( preg_match( '/^(`{3})?\s*([a-zA-Z0-9+#._-]+)\s*[\r\n]/', $trimmed, $m ) ) {
+                $lines = explode( "\n", $trimmed );
+                $first_line = trim( $lines[0] );
+                $clean_first = trim( preg_replace( '/^`{3}/', '', $first_line ) );
+                
+                if ( strlen( $clean_first ) > 0 && strlen( $clean_first ) < 15 && strpos( $clean_first, ' ' ) === false ) {
+                    $is_backtick = strpos( $first_line, '```' ) !== false;
+                    $known_lang = preg_match( '/^(bash|sh|php|python|docker|dockerfile|js|javascript|json|html|css|sql|go|rust|c|cpp|csharp|java|ruby|swift|toml|yaml)$/i', $clean_first );
+                    
+                    if ( $is_backtick || $known_lang ) {
+                        $lang = strtolower( $clean_first );
+                        array_shift( $lines );
+                        
+                        $last_idx = count( $lines ) - 1;
+                        if ( $last_idx >= 0 && trim( $lines[$last_idx] ) === '```' ) {
+                            array_pop( $lines );
+                        }
+                        $content = implode( "\n", $lines );
+                    }
+                }
+            } else {
+                // Fallback for CLI prompt or comments
+                $first_lines = array_filter( array_map( 'trim', explode( "\n", $trimmed ) ) );
+                $first_line  = ! empty( $first_lines ) ? reset( $first_lines ) : '';
+                if ( preg_match( '/^(docker|curl|wget|apt|apt-get|npm|yarn|npx|composer|php|python|git|echo|ls|cat|sh|bash|sudo) /i', $first_line ) ) {
+                    $lang = 'bash';
+                } elseif ( preg_match( '/^\# /', $first_line ) ) {
+                    $lang = 'bash';
+                } elseif ( preg_match( '/^\/\//', $first_line ) ) {
+                    $lang = 'javascript';
+                }
             }
         }
 
