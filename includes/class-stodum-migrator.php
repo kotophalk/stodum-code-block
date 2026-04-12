@@ -229,28 +229,42 @@ class StoDum_Migrator {
 
         if ( empty( $lang ) ) {
             $trimmed = ltrim( $content );
-            // Require backticks for markdown detection OR a very specific set of known languages
-            if ( preg_match( '/^(`{2,3})\s*([a-zA-Z0-9+#._-]+)\s*[\r\n]/', $trimmed, $m ) ) {
-                $lines = explode( "\n", $trimmed );
-                $first_line = trim( $m[0] );
-                $clean_first = trim( $m[2] );
+            // Robust regex handling Markdown fences with any line endings
+            if ( preg_match( '/(?:^|\r\n|\n)```([a-zA-Z0-9+#._-]+)[ \t]*\r?\n([\s\S]*?)(?:\r\n|\n)```[ \t]*(?:\r?\n|$)/', $trimmed, $m ) ) {
+                $lang = strtolower( trim( $m[1] ) );
+                $content = $m[2];
                 
-                if ( strlen( $clean_first ) > 0 && strlen( $clean_first ) < 15 && strpos( $clean_first, ' ' ) === false ) {
-                    $is_backtick = strpos( $first_line, '``' ) !== false;
-                    $known_lang = preg_match( '/^(bash|sh|php|python|docker|dockerfile|js|javascript|json|html|css|sql|go|rust|c|cpp|csharp|java|ruby|swift|toml|yaml|xml|markdown)$/i', $clean_first );
-                    
-                    if ( $is_backtick || $known_lang ) {
-                        $lang = strtolower( $clean_first );
-                        array_shift( $lines );
-                        
-                        $last_idx = count( $lines ) - 1;
-                        if ( $last_idx >= 0 && preg_match( '/^`{2,3}$/', trim( $lines[$last_idx] ) ) ) {
-                            array_pop( $lines );
-                        }
-                        $content = implode( "\n", $lines );
+                // Final normalization validation
+                $known_langs = [
+                    'bash', 'sh', 'php', 'python', 'py', 'docker', 'dockerfile', 'js', 'javascript', 
+                    'json', 'html', 'css', 'sql', 'go', 'rust', 'c', 'cpp', 'c++', 'csharp', 'cs', 
+                    'java', 'ruby', 'rb', 'swift', 'toml', 'yaml', 'yml', 'xml', 'md', 'markdown'
+                ];
+                if ( ! in_array( $lang, $known_langs ) ) {
+                    // Check if it's an alias we should resolve
+                    $aliases = [
+                        'js' => 'javascript', 'ts' => 'typescript', 'py' => 'python', 'rb' => 'ruby',
+                        'yml' => 'yaml', 'sh' => 'bash', 'shell' => 'bash', 'docker' => 'dockerfile',
+                        'html' => 'xml', 'cs' => 'csharp', 'cpp' => 'cpp', 'c++' => 'cpp'
+                    ];
+                    if ( isset( $aliases[ $lang ] ) ) {
+                        $lang = $aliases[ $lang ];
                     }
                 }
             } else {
+                // First line detection without backticks
+                if ( preg_match( '/^([a-zA-Z0-9+#._-]+)\s*\n/', $trimmed, $m ) ) {
+                    $first_line = strtolower( trim( $m[1] ) );
+                    $strictly_known = [ 'bash', 'sh', 'php', 'python', 'javascript', 'js', 'json', 'html', 'css', 'sql', 'dockerfile', 'makefile' ];
+                    if ( in_array( $first_line, $strictly_known ) ) {
+                        $lang = $first_line;
+                        $lines = explode( "\n", $trimmed );
+                        array_shift( $lines );
+                        $content = implode( "\n", $lines );
+                    }
+                }
+            }
+        }
                 // Fallback for CLI prompt or comments
                 $first_lines = array_filter( array_map( 'trim', explode( "\n", $trimmed ) ) );
                 $first_line  = ! empty( $first_lines ) ? reset( $first_lines ) : '';

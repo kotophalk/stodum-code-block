@@ -3,7 +3,7 @@
  * Plugin Name: StoDum Code Block
  * Plugin URI: https://github.com/kotophalk/stodum-code-block
  * Description: Lightweight Gutenberg code block with Highlight.js syntax highlighting and legacy block migrator.
- * Version: 1.0.1
+ * Version: 1.0.2
  * Author: kotophalk
  * License: GPL-2.0-or-later
  * Requires at least: 6.0
@@ -22,7 +22,7 @@ require_once plugin_dir_path( __FILE__ ) . 'includes/class-stodum-migrator.php';
 
 class StoDum_Code_Block {
 
-    const VERSION      = '1.0.1';
+    const VERSION      = '1.0.2';
     const HLJS_VERSION = '11.11.1';
     const HLJS_CDN     = 'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/';
 
@@ -244,7 +244,10 @@ class StoDum_Code_Block {
 
         ob_start();
         ?>
-        <div class="stodum-code-wrapper" id="<?php echo esc_attr( $id ); ?>"<?php if ( $theme ) echo ' data-theme="' . esc_attr( $theme ) . '"'; ?>>
+        <div class="stodum-code-wrapper" 
+             id="<?php echo esc_attr( $id ); ?>"
+             <?php if ( $theme ) echo ' data-theme="' . esc_attr( $theme ) . '"'; ?>
+             <?php if ( $lang )  echo ' data-stodum-lang="' . esc_attr( $lang ) . '"'; ?>>
             <div class="stodum-code-toolbar">
                 <span class="stodum-code-brand"><span class="stodum-brand-bolt">&#9889;</span> StoDum</span>
                 <?php echo wp_kses_post( $title_html ); ?>

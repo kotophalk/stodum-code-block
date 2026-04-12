@@ -31,6 +31,72 @@
         return tmp.value.replace( /\n+$/, '' );
     }
 
+    function normalizeLanguage( lang ) {
+        if ( ! lang ) return '';
+        var searchLang = lang.trim().toLowerCase();
+        
+        // Exact match or label match
+        var options = [
+            { label: 'Bash / Shell', value: 'bash' },
+            { label: 'C', value: 'c' },
+            { label: 'C++', value: 'cpp' },
+            { label: 'C#', value: 'csharp' },
+            { label: 'CSS', value: 'css' },
+            { label: 'Dockerfile', value: 'dockerfile' },
+            { label: 'Go', value: 'go' },
+            { label: 'GraphQL', value: 'graphql' },
+            { label: 'HCL / Terraform', value: 'hcl' },
+            { label: 'HTML / XML', value: 'xml' },
+            { label: 'Java', value: 'java' },
+            { label: 'JavaScript', value: 'javascript' },
+            { label: 'JSON', value: 'json' },
+            { label: 'Kotlin', value: 'kotlin' },
+            { label: 'Lua', value: 'lua' },
+            { label: 'Makefile', value: 'makefile' },
+            { label: 'Markdown', value: 'markdown' },
+            { label: 'Perl', value: 'perl' },
+            { label: 'PHP', value: 'php' },
+            { label: 'Python', value: 'python' },
+            { label: 'R', value: 'r' },
+            { label: 'Ruby', value: 'ruby' },
+            { label: 'Rust', value: 'rust' },
+            { label: 'SCSS', value: 'scss' },
+            { label: 'SQL', value: 'sql' },
+            { label: 'Swift', value: 'swift' },
+            { label: 'TOML', value: 'toml' },
+            { label: 'TypeScript', value: 'typescript' },
+            { label: 'YAML', value: 'yaml' }
+        ];
+
+        for ( var i = 0; i < options.length; i++ ) {
+            if ( options[i].value === searchLang || 
+                 options[i].label.toLowerCase() === searchLang ) {
+                return options[i].value;
+            }
+        }
+
+        var aliases = {
+            'js': 'javascript',
+            'ts': 'typescript',
+            'py': 'python',
+            'rb': 'ruby',
+            'yml': 'yaml',
+            'sh': 'bash',
+            'shell': 'bash',
+            'docker': 'dockerfile',
+            'html': 'xml',
+            'cs': 'csharp',
+            'cpp': 'cpp',
+            'c++': 'cpp'
+        };
+        if ( aliases[ searchLang ] ) return aliases[ searchLang ];
+        
+        var common = /^(bash|sh|php|python|docker|dockerfile|js|javascript|json|html|css|sql|go|rust|c|cpp|csharp|java|ruby|swift|toml|yaml|xml|md|markdown|graphql|kotlin|lua|makefile|perl|r|scss|typescript|less|sass)$/i;
+        if ( common.test( searchLang ) ) return searchLang;
+
+        return '';
+    }
+
     // =========================================================================
     //  Helper: find core code blocks recursively
     // =========================================================================
@@ -65,22 +131,29 @@
 
         var lang = '';
         if ( block.attributes.className ) {
-            var m = block.attributes.className.match( /language-([a-zA-Z0-9+#._-]+)/ );
-            if ( m ) lang = m[1];
-        }
-        if ( ! lang && block.attributes.language ) {
-            lang = block.attributes.language;
+            var match = block.attributes.className.match( /language-([a-zA-Z0-9+#._-]+)/ );
+            if ( match ) lang = normalizeLanguage( match[1] );
         }
 
-        // Sometimes WP markdown parser dumps the language into the content itself like "bash\necho test"
-        if ( ! lang && content.match(/^[a-zA-Z0-9+#._-]+\n/) ) {
-            var lines = content.split('\n');
-            var firstLine = lines[0].trim();
-            // If the first line is a known language identifier without spaces
-            if ( firstLine.length > 0 && firstLine.length < 15 && firstLine.indexOf(' ') === -1 ) {
-                lang = firstLine;
-                lines.shift();
-                content = lines.join('\n');
+        // Parse markdown backticks if inside content
+        var fenceRegex = /(?:^|\r\n|\n)```([a-zA-Z0-9+#._-]+)[ \t]*\r?\n([\s\S]*?)(?:\r\n|\n)```[ \t]*(?:\r?\n|$)/;
+        var match = content.match( fenceRegex );
+        if ( match ) {
+            lang = normalizeLanguage( match[1] );
+            content = match[2];
+        } else {
+            // First line detection without backticks
+            var firstLineMatch = content.match(/^([a-zA-Z0-9+#._-]+)\s*\n/);
+            if ( firstLineMatch ) {
+                var firstLine = firstLineMatch[1].toLowerCase();
+                var normalized = normalizeLanguage( firstLine );
+                var strictlyKnown = /^(bash|sh|php|python|javascript|js|json|html|css|sql|dockerfile|makefile)$/i.test( firstLine );
+                if ( strictlyKnown && normalized ) {
+                    lang = normalized;
+                    var lines = content.split(/\r?\n/);
+                    lines.shift();
+                    content = lines.join('\n');
+                }
             }
         }
 
@@ -111,26 +184,24 @@
             var lang = '';
             if ( b.attributes.className ) {
                 var m = b.attributes.className.match( /language-([a-zA-Z0-9+#._-]+)/ );
-                if ( m ) lang = m[1];
-            }
-            if ( ! lang && b.attributes.language ) {
-                lang = b.attributes.language;
+                if ( m ) lang = normalizeLanguage( m[1] );
             }
 
-            var firstLineMatch = content.match(/^(`{2,3})\s*([a-zA-Z0-9+#._-]+)\s*\n/);
-            if ( ! lang && firstLineMatch ) {
-                var lines = content.split('\n');
-                var firstLine = lines[0].trim().replace(/^`{2,3}/, '').trim();
-                if ( firstLine.length > 0 && firstLine.length < 15 && firstLine.indexOf(' ') === -1 ) {
-                    var isBacktick = lines[0].indexOf('``') !== -1;
-                    var knownLang = /^(bash|sh|php|python|docker|dockerfile|js|javascript|json|html|css|sql|go|rust|c|cpp|csharp|java|ruby|swift|toml|yaml|xml|markdown)$/i.test(firstLine);
-                    
-                    if ( isBacktick || knownLang ) {
-                        lang = firstLine.toLowerCase();
+            var fenceRegex = /(?:^|\r\n|\n)```([a-zA-Z0-9+#._-]+)[ \t]*\r?\n([\s\S]*?)(?:\r\n|\n)```[ \t]*(?:\r?\n|$)/;
+            var match = content.match( fenceRegex );
+            if ( match ) {
+                lang = normalizeLanguage( match[1] );
+                content = match[2];
+            } else {
+                var firstLineMatch = content.match(/^([a-zA-Z0-9+#._-]+)\s*\n/);
+                if ( firstLineMatch ) {
+                    var firstLine = firstLineMatch[1].toLowerCase();
+                    var normalized = normalizeLanguage( firstLine );
+                    var strictlyKnown = /^(bash|sh|php|python|javascript|js|json|html|css|sql|dockerfile|makefile)$/i.test( firstLine );
+                    if ( strictlyKnown && normalized ) {
+                        lang = normalized;
+                        var lines = content.split(/\r?\n/);
                         lines.shift();
-                        if (lines.length > 0 && lines[lines.length - 1].trim().match(/^`{2,3}$/)) {
-                            lines.pop();
-                        }
                         content = lines.join('\n');
                     }
                 }

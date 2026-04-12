@@ -176,12 +176,20 @@
         applyThemeVars( wrapper, blockTheme );
 
         // Run highlight.js
+        var explicitLang = wrapper.getAttribute( 'data-stodum-lang' );
+        if ( explicitLang ) {
+            // Force the language class to match our explicit choice
+            codeEl.className = 'language-' + explicitLang;
+        }
+
         hljs.highlightElement( codeEl );
 
         // Language badge
-        var detectedLang = '';
-        var match = ( codeEl.className || '' ).match( /language-(\S+)/ );
-        if ( match ) detectedLang = match[1];
+        var detectedLang = explicitLang || '';
+        if ( ! detectedLang ) {
+            var match = ( codeEl.className || '' ).match( /language-(\S+)/ );
+            if ( match ) detectedLang = match[1];
+        }
 
         var badge = wrapper.querySelector( '.stodum-code-lang-badge' );
         var skipBadge = [ 'undefined', 'plaintext', 'text' ];
