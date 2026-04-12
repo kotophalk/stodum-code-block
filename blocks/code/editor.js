@@ -12,7 +12,7 @@
     var __                = i18n.__;
 
     var languageOptions = [
-        { label: 'Auto Detect', value: '' },
+        { label: __( 'Auto Detect', 'stodum-code-block' ), value: '' },
         { label: 'Bash / Shell', value: 'bash' },
         { label: 'C', value: 'c' },
         { label: 'C++', value: 'cpp' },
@@ -45,9 +45,9 @@
     ];
 
     var themeOptions = [
-        { label: 'Default (from settings)', value: '' },
-        { label: 'Dark', value: 'dark' },
-        { label: 'Light', value: 'light' }
+        { label: __( 'Default (from settings)', 'stodum-code-block' ), value: '' },
+        { label: __( 'Dark', 'stodum-code-block' ), value: 'dark' },
+        { label: __( 'Light', 'stodum-code-block' ), value: 'light' }
     ];
 
     function cleanHtml( text ) {

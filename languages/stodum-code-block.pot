@@ -1,0 +1,245 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: StoDum Code Block 1.0.0\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/stodum-code-block\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2026-04-12T01:00:00+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: WP-CLI 2.x\n"
+"X-Domain: stodum-code-block\n"
+
+#: includes/class-stodum-settings.php:66
+msgid "StoDum Code Block"
+msgstr ""
+
+#: includes/class-stodum-settings.php:87
+msgid "Frontend Settings"
+msgstr ""
+
+#: includes/class-stodum-settings.php:94
+msgid "Default Theme"
+msgstr ""
+
+#: includes/class-stodum-settings.php:97
+#: blocks/code/editor.js:52
+msgid "Dark"
+msgstr ""
+
+#: includes/class-stodum-settings.php:98
+#: blocks/code/editor.js:53
+msgid "Light"
+msgstr ""
+
+#: includes/class-stodum-settings.php:101
+msgid "Select the default colour mode for your code blocks."
+msgstr ""
+
+#: includes/class-stodum-settings.php:106
+msgid "Syntax Color Theme"
+msgstr ""
+
+#: includes/class-stodum-settings.php:112
+msgid "Select the syntax highlighting color palette."
+msgstr ""
+
+#: includes/class-stodum-settings.php:116
+msgid "Save Settings"
+msgstr ""
+
+#: includes/class-stodum-settings.php:123
+msgid "Code Block Migrator"
+msgstr ""
+
+#: includes/class-stodum-settings.php:124
+msgid "Use this tool to automatically migrate old <code>core/code</code> or <code>core/preformatted</code> blocks into modern <code>stodum/code-block</code> structures."
+msgstr ""
+
+#: includes/class-stodum-settings.php:127
+msgid "Scan Posts"
+msgstr ""
+
+#: includes/class-stodum-settings.php:131
+msgid "Scan Results"
+msgstr ""
+
+#: includes/class-stodum-settings.php:134
+msgid "Migrate All Found Posts"
+msgstr ""
+
+#: includes/class-stodum-settings.php:143
+#: includes/class-stodum-settings.php:73
+msgid "Preview"
+msgstr ""
+
+#: includes/class-stodum-settings.php:146
+msgid "Loading..."
+msgstr ""
+
+#: includes/class-stodum-settings.php:149
+msgid "Cancel"
+msgstr ""
+
+#: includes/class-stodum-settings.php:151
+#: includes/class-stodum-settings.php:78
+msgid "Migrate This Post"
+msgstr ""
+
+#: includes/class-stodum-settings.php:62
+msgid "Scanning..."
+msgstr ""
+
+#: includes/class-stodum-settings.php:63
+msgid "Scan failed:"
+msgstr ""
+
+#: includes/class-stodum-settings.php:64
+msgid "No legacy code blocks found."
+msgstr ""
+
+#: includes/class-stodum-settings.php:65
+msgid "No posts with legacy code blocks were found. Everything is already migrated."
+msgstr ""
+
+#: includes/class-stodum-settings.php:66
+msgid "Found %1$s block(s) across %2$s post(s)."
+msgstr ""
+
+#: includes/class-stodum-settings.php:67
+msgid "Posts with legacy blocks"
+msgstr ""
+
+#: includes/class-stodum-settings.php:68
+msgid "Total code blocks to migrate"
+msgstr ""
+
+#: includes/class-stodum-settings.php:69
+msgid "Post"
+msgstr ""
+
+#: includes/class-stodum-settings.php:70
+msgid "Blocks"
+msgstr ""
+
+#: includes/class-stodum-settings.php:71
+msgid "Status"
+msgstr ""
+
+#: includes/class-stodum-settings.php:72
+msgid "Actions"
+msgstr ""
+
+#: includes/class-stodum-settings.php:73
+msgid "Pending"
+msgstr ""
+
+#: includes/class-stodum-settings.php:75
+msgid "Migrate"
+msgstr ""
+
+#: includes/class-stodum-settings.php:76
+msgid "Loading preview..."
+msgstr ""
+
+#: includes/class-stodum-settings.php:77
+msgid "Loading block preview..."
+msgstr ""
+
+#: includes/class-stodum-settings.php:78
+msgid "Error:"
+msgstr ""
+
+#: includes/class-stodum-settings.php:79
+msgid "Migrating..."
+msgstr ""
+
+#: includes/class-stodum-settings.php:81
+msgid "Migration failed:"
+msgstr ""
+
+#: includes/class-stodum-settings.php:82
+msgid "Migrate all code blocks in this post to StoDum format?"
+msgstr ""
+
+#: includes/class-stodum-settings.php:83
+msgid "Done"
+msgstr ""
+
+#: includes/class-stodum-settings.php:84
+msgid "View Post"
+msgstr ""
+
+#: includes/class-stodum-settings.php:85
+msgid "All posts migrated successfully!"
+msgstr ""
+
+#: includes/class-stodum-settings.php:86
+msgid "Are you sure you want to migrate ALL found posts? This action cannot be undone."
+msgstr ""
+
+#: stodum-code-block.php:35
+msgid "Atom One"
+msgstr ""
+
+#: stodum-code-block.php:43
+msgid "GitHub"
+msgstr ""
+
+#: stodum-code-block.php:51
+msgid "Monokai"
+msgstr ""
+
+#: stodum-code-block.php:59
+msgid "Nord"
+msgstr ""
+
+#: stodum-code-block.php:67
+msgid "Dracula"
+msgstr ""
+
+#: stodum-code-block.php:75
+msgid "Tokyo Night"
+msgstr ""
+
+#: stodum-code-block.php:83
+msgid "VS 2015 / VS Code"
+msgstr ""
+
+#: stodum-code-block.php:91
+msgid "Stack Overflow"
+msgstr ""
+
+#: stodum-code-block.php:99
+msgid "Night Owl"
+msgstr ""
+
+#: stodum-code-block.php:107
+msgid "Gruvbox"
+msgstr ""
+
+#: stodum-code-block.php:115
+msgid "Solarized"
+msgstr ""
+
+#: stodum-code-block.php:123
+msgid "Panda"
+msgstr ""
+
+#: stodum-code-block.php:131
+msgid "Tomorrow Night"
+msgstr ""
+
+#: stodum-code-block.php:139
+msgid "Shades of Purple"
+msgstr ""
+
+#: blocks/code/editor.js:15
+msgid "Auto Detect"
+msgstr ""
+
+#: blocks/code/editor.js:51
+msgid "Default (from settings)"
+msgstr ""

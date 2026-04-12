@@ -32,7 +32,7 @@ class StoDum_Code_Block {
     public static function get_theme_registry(): array {
         return [
             'atom-one' => [
-                'label'        => 'Atom One',
+                'label'        => __( 'Atom One', 'stodum-code-block' ),
                 'dark_css'     => 'atom-one-dark',
                 'light_css'    => 'atom-one-light',
                 'dark_bg'      => '#282c34',
@@ -41,7 +41,7 @@ class StoDum_Code_Block {
                 'light_toolbar'=> '#e8eaed',
             ],
             'github' => [
-                'label'        => 'GitHub',
+                'label'        => __( 'GitHub', 'stodum-code-block' ),
                 'dark_css'     => 'github-dark',
                 'light_css'    => 'github',
                 'dark_bg'      => '#24292e',
@@ -50,7 +50,7 @@ class StoDum_Code_Block {
                 'light_toolbar'=> '#f6f8fa',
             ],
             'monokai' => [
-                'label'        => 'Monokai',
+                'label'        => __( 'Monokai', 'stodum-code-block' ),
                 'dark_css'     => 'monokai',
                 'light_css'    => 'atom-one-light',
                 'dark_bg'      => '#272822',
@@ -59,7 +59,7 @@ class StoDum_Code_Block {
                 'light_toolbar'=> '#e8eaed',
             ],
             'nord' => [
-                'label'        => 'Nord',
+                'label'        => __( 'Nord', 'stodum-code-block' ),
                 'dark_css'     => 'nord',
                 'light_css'    => 'atom-one-light',
                 'dark_bg'      => '#2e3440',
@@ -68,7 +68,7 @@ class StoDum_Code_Block {
                 'light_toolbar'=> '#e8eaed',
             ],
             'dracula' => [
-                'label'        => 'Dracula',
+                'label'        => __( 'Dracula', 'stodum-code-block' ),
                 'dark_css'     => 'dracula',
                 'light_css'    => 'atom-one-light',
                 'dark_bg'      => '#282a36',
@@ -77,7 +77,7 @@ class StoDum_Code_Block {
                 'light_toolbar'=> '#e8eaed',
             ],
             'tokyo-night' => [
-                'label'        => 'Tokyo Night',
+                'label'        => __( 'Tokyo Night', 'stodum-code-block' ),
                 'dark_css'     => 'tokyo-night-dark',
                 'light_css'    => 'tokyo-night-light',
                 'dark_bg'      => '#1a1b26',
@@ -86,7 +86,7 @@ class StoDum_Code_Block {
                 'light_toolbar'=> '#c8c9ce',
             ],
             'vs2015' => [
-                'label'        => 'VS 2015 / VS Code',
+                'label'        => __( 'VS 2015 / VS Code', 'stodum-code-block' ),
                 'dark_css'     => 'vs2015',
                 'light_css'    => 'vs',
                 'dark_bg'      => '#1e1e1e',
@@ -95,7 +95,7 @@ class StoDum_Code_Block {
                 'light_toolbar'=> '#f3f3f3',
             ],
             'stackoverflow' => [
-                'label'        => 'Stack Overflow',
+                'label'        => __( 'Stack Overflow', 'stodum-code-block' ),
                 'dark_css'     => 'stackoverflow-dark',
                 'light_css'    => 'stackoverflow-light',
                 'dark_bg'      => '#1c1b1b',
@@ -104,7 +104,7 @@ class StoDum_Code_Block {
                 'light_toolbar'=> '#e8e8e8',
             ],
             'night-owl' => [
-                'label'        => 'Night Owl',
+                'label'        => __( 'Night Owl', 'stodum-code-block' ),
                 'dark_css'     => 'night-owl',
                 'light_css'    => 'atom-one-light',
                 'dark_bg'      => '#011627',
@@ -113,7 +113,7 @@ class StoDum_Code_Block {
                 'light_toolbar'=> '#e8eaed',
             ],
             'gruvbox' => [
-                'label'        => 'Gruvbox',
+                'label'        => __( 'Gruvbox', 'stodum-code-block' ),
                 'dark_css'     => 'base16/gruvbox-dark-hard',
                 'light_css'    => 'base16/gruvbox-light-hard',
                 'dark_bg'      => '#1d2021',
@@ -122,7 +122,7 @@ class StoDum_Code_Block {
                 'light_toolbar'=> '#ece8c8',
             ],
             'solarized' => [
-                'label'        => 'Solarized',
+                'label'        => __( 'Solarized', 'stodum-code-block' ),
                 'dark_css'     => 'base16/solarized-dark',
                 'light_css'    => 'base16/solarized-light',
                 'dark_bg'      => '#002b36',
@@ -131,7 +131,7 @@ class StoDum_Code_Block {
                 'light_toolbar'=> '#eee8d5',
             ],
             'panda' => [
-                'label'        => 'Panda',
+                'label'        => __( 'Panda', 'stodum-code-block' ),
                 'dark_css'     => 'panda-syntax-dark',
                 'light_css'    => 'panda-syntax-light',
                 'dark_bg'      => '#292a2b',
@@ -140,7 +140,7 @@ class StoDum_Code_Block {
                 'light_toolbar'=> '#d9d9d9',
             ],
             'tomorrow' => [
-                'label'        => 'Tomorrow Night',
+                'label'        => __( 'Tomorrow Night', 'stodum-code-block' ),
                 'dark_css'     => 'tomorrow-night-bright',
                 'light_css'    => 'atom-one-light',
                 'dark_bg'      => '#000',
@@ -149,7 +149,7 @@ class StoDum_Code_Block {
                 'light_toolbar'=> '#e8eaed',
             ],
             'shades-of-purple' => [
-                'label'        => 'Shades of Purple',
+                'label'        => __( 'Shades of Purple', 'stodum-code-block' ),
                 'dark_css'     => 'shades-of-purple',
                 'light_css'    => 'atom-one-light',
                 'dark_bg'      => '#2d2b55',
@@ -160,7 +160,12 @@ class StoDum_Code_Block {
         ];
     }
 
+    public static function load_textdomain() {
+        load_plugin_textdomain( 'stodum-code-block', false, dirname( plugin_basename( __FILE__ ) ) . '/languages' );
+    }
+
     public static function init() {
+        add_action( 'init', [ __CLASS__, 'load_textdomain' ], 1 );
         add_action( 'init', [ __CLASS__, 'register_block' ] );
         add_action( 'enqueue_block_editor_assets', [ __CLASS__, 'enqueue_convert_script' ] );
 

@@ -67,28 +67,28 @@
 
     function doScan() {
         scanBtn.disabled = true;
-        setStatus('Scanning...', '');
+        setStatus(csDevtoolsMigrate.i18n.scanning, '');
         resultsContainer.style.display = 'block';
-        resultsArea.innerHTML = '<p class="cs-loading"><span class="cs-spinner"></span> Scanning all posts for legacy code blocks...</p>';
+        resultsArea.innerHTML = '<p class="cs-loading"><span class="cs-spinner"></span> ' + csDevtoolsMigrate.i18n.scanning + '</p>';
 
         ajax('stodum_migrate_scan', {}, function (err, data) {
             scanBtn.disabled = false;
 
             if (err) {
-                setStatus('Scan failed: ' + err, 'error');
+                setStatus(csDevtoolsMigrate.i18n.scan_failed + ' ' + err, 'error');
                 return;
             }
 
             scannedPosts = data.posts;
 
             if (data.total_posts === 0) {
-                setStatus('No legacy code blocks found.', 'success');
-                resultsArea.innerHTML = '<p class="cs-migrate-hint">No posts with legacy code blocks were found. Everything is already migrated.</p>';
+                setStatus(csDevtoolsMigrate.i18n.no_blocks, 'success');
+                resultsArea.innerHTML = '<p class="cs-migrate-hint">' + csDevtoolsMigrate.i18n.no_blocks_hint + '</p>';
                 migrateAllBtn.disabled = true;
                 return;
             }
 
-            setStatus('Found ' + data.total_blocks + ' block(s) across ' + data.total_posts + ' post(s).', 'success');
+            setStatus(csDevtoolsMigrate.i18n.found_blocks.replace('%1$s', data.total_blocks).replace('%2$s', data.total_posts), 'success');
             migrateAllBtn.disabled = false;
             renderResults(data);
         });
@@ -99,17 +99,17 @@
 
         // Summary
         html += '<div class="cs-migrate-summary">';
-        html += '<div class="cs-stat"><strong>' + data.total_posts + '</strong>Posts with legacy blocks</div>';
-        html += '<div class="cs-stat"><strong>' + data.total_blocks + '</strong>Total code blocks to migrate</div>';
+        html += '<div class="cs-stat"><strong>' + data.total_posts + '</strong>' + csDevtoolsMigrate.i18n.posts_with_legacy + '</div>';
+        html += '<div class="cs-stat"><strong>' + data.total_blocks + '</strong>' + csDevtoolsMigrate.i18n.total_blocks_mig + '</div>';
         html += '</div>';
 
         // Table
         html += '<table class="cs-migrate-table">';
         html += '<thead><tr>';
-        html += '<th>Post</th>';
-        html += '<th style="width:90px;text-align:center;">Blocks</th>';
-        html += '<th style="width:80px;">Status</th>';
-        html += '<th style="width:200px;">Actions</th>';
+        html += '<th>' + csDevtoolsMigrate.i18n.post + '</th>';
+        html += '<th style="width:90px;text-align:center;">' + csDevtoolsMigrate.i18n.blocks + '</th>';
+        html += '<th style="width:80px;">' + csDevtoolsMigrate.i18n.status + '</th>';
+        html += '<th style="width:200px;">' + csDevtoolsMigrate.i18n.actions + '</th>';
         html += '</tr></thead>';
         html += '<tbody>';
 
@@ -120,10 +120,10 @@
             html += '<div class="cs-post-meta">' + escHtml(post.date) + ' &middot; ' + escHtml(post.status) + ' &middot; ID: ' + post.id + '</div>';
             html += '</td>';
             html += '<td style="text-align:center;"><span class="cs-block-count">' + post.block_count + '</span></td>';
-            html += '<td class="cs-status-cell">Pending</td>';
+            html += '<td class="cs-status-cell">' + csDevtoolsMigrate.i18n.pending + '</td>';
             html += '<td class="cs-actions">';
-            html += '<button class="button button-small cs-preview-btn" data-post-id="' + post.id + '">Preview</button> ';
-            html += '<button class="button button-primary button-small cs-single-migrate-btn" data-post-id="' + post.id + '">Migrate</button>';
+            html += '<button class="button button-small cs-preview-btn" data-post-id="' + post.id + '">' + csDevtoolsMigrate.i18n.preview + '</button> ';
+            html += '<button class="button button-primary button-small cs-single-migrate-btn" data-post-id="' + post.id + '">' + csDevtoolsMigrate.i18n.migrate + '</button>';
             html += '</td>';
             html += '</tr>';
         });
@@ -153,13 +153,13 @@
 
     function openPreview(postId) {
         modal.style.display = 'flex';
-        modalTitle.textContent = 'Loading preview...';
-        modalBody.innerHTML = '<p class="cs-loading"><span class="cs-spinner"></span> Loading block preview...</p>';
+        modalTitle.textContent = csDevtoolsMigrate.i18n.loading_preview;
+        modalBody.innerHTML = '<p class="cs-loading"><span class="cs-spinner"></span> ' + csDevtoolsMigrate.i18n.loading_block_prev + '</p>';
         modalMigrateBtn.setAttribute('data-post-id', postId);
 
         ajax('stodum_migrate_preview', { post_id: postId }, function (err, data) {
             if (err) {
-                modalBody.innerHTML = '<p style="color:#d63638;">Error: ' + escHtml(err) + '</p>';
+                modalBody.innerHTML = '<p style="color:#d63638;">' + csDevtoolsMigrate.i18n.error + ' ' + escHtml(err) + '</p>';
                 return;
             }
 
@@ -207,14 +207,14 @@
         if (!postId) return;
 
         this.disabled = true;
-        this.textContent = 'Migrating...';
+        this.textContent = csDevtoolsMigrate.i18n.migrating;
 
         ajax('stodum_migrate_single', { post_id: postId }, function (err, data) {
             modalMigrateBtn.disabled = false;
-            modalMigrateBtn.innerHTML = '<span class="dashicons dashicons-yes-alt"></span> Migrate This Post';
+            modalMigrateBtn.innerHTML = '<span class="dashicons dashicons-yes-alt"></span> ' + csDevtoolsMigrate.i18n.migrate_this_post;
 
             if (err) {
-                alert('Migration failed: ' + err);
+                alert(csDevtoolsMigrate.i18n.migration_failed + ' ' + err);
                 return;
             }
 
@@ -229,16 +229,16 @@
     // =========================================================================
 
     function migrateSingle(postId, btn) {
-        if (!confirm('Migrate all code blocks in this post to StoDum format?')) return;
+        if (!confirm(csDevtoolsMigrate.i18n.confirm_migrate)) return;
 
         btn.disabled = true;
-        btn.textContent = 'Migrating...';
+        btn.textContent = csDevtoolsMigrate.i18n.migrating;
 
         ajax('stodum_migrate_single', { post_id: postId }, function (err, data) {
             if (err) {
                 btn.disabled = false;
-                btn.textContent = 'Migrate';
-                alert('Migration failed: ' + err);
+                btn.textContent = csDevtoolsMigrate.i18n.migrate;
+                alert(csDevtoolsMigrate.i18n.migration_failed + ' ' + err);
                 return;
             }
 
@@ -255,19 +255,19 @@
 
         var statusCell = row.querySelector('.cs-status-cell');
         if (statusCell) {
-            statusCell.innerHTML = '<span class="cs-migrated-badge"><span class="dashicons dashicons-yes"></span> Done</span>';
+            statusCell.innerHTML = '<span class="cs-migrated-badge"><span class="dashicons dashicons-yes"></span> ' + csDevtoolsMigrate.i18n.done + '</span>';
         }
 
         var actionsCell = row.querySelector('.cs-actions');
         if (actionsCell) {
-            actionsCell.innerHTML = '<a href="' + getViewUrl(postId) + '" target="_blank" class="button button-small">View Post</a>';
+            actionsCell.innerHTML = '<a href="' + getViewUrl(postId) + '" target="_blank" class="button button-small">' + csDevtoolsMigrate.i18n.view_post + '</a>';
         }
 
         // Check if all rows are migrated
         var pending = document.querySelectorAll('.cs-single-migrate-btn');
         if (pending.length === 0) {
             migrateAllBtn.disabled = true;
-            setStatus('All posts migrated successfully!', 'success');
+            setStatus(csDevtoolsMigrate.i18n.all_migrated, 'success');
         }
     }
 
@@ -291,27 +291,29 @@
             return;
         }
 
-        if (!confirm('This will migrate ' + count + ' remaining post(s) to StoDum Code Blocks. Continue?')) {
+        if (!confirm(csDevtoolsMigrate.i18n.confirm_all)) {
             return;
         }
 
         migrateAllBtn.disabled = true;
-        migrateAllBtn.textContent = 'Migrating all...';
-        setStatus('Migrating all remaining posts...', '');
+        migrateAllBtn.textContent = csDevtoolsMigrate.i18n.migrating;
+        setStatus(csDevtoolsMigrate.i18n.migrating, '');
 
-        ajax('stodum_migrate_all', {}, function (err, data) {
-            migrateAllBtn.innerHTML = '<span class="dashicons dashicons-update"></span> Migrate All Remaining';
+        var postIds = [];
+        pending.forEach(function (el) {
+            postIds.push(parseInt(el.getAttribute('data-post-id')));
+        });
+
+        ajax('stodum_migrate_all', { post_ids: postIds }, function (err, data) {
+            migrateAllBtn.innerHTML = '<span class="dashicons dashicons-update"></span> ' + csDevtoolsMigrate.i18n.done;
 
             if (err) {
                 migrateAllBtn.disabled = false;
-                setStatus('Batch migration failed: ' + err, 'error');
+                setStatus(csDevtoolsMigrate.i18n.migration_failed + ' ' + err, 'error');
                 return;
             }
 
-            setStatus(
-                'Migrated ' + data.migrated_blocks + ' block(s) across ' + data.migrated_posts + ' post(s).',
-                'success'
-            );
+            setStatus(csDevtoolsMigrate.i18n.all_migrated, 'success');
 
             // Mark all rows as done
             data.details.forEach(function (detail) {
