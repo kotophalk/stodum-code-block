@@ -395,6 +395,7 @@
                 },
                 {
                     type: 'raw',
+                    priority: 5,
                     isMatch: function( node ) {
                         return node.nodeName === 'PRE' && node.children.length === 1 && node.children[0].nodeName === 'CODE';
                     },
@@ -411,15 +412,37 @@
                     },
                     transform: function( node ) {
                         var codeNode = node.children[0];
-                        var content = codeNode.textContent || '';
+                        var content = codeNode.innerHTML || codeNode.textContent || '';
+                        
+                        // Clean up escaping
+                        content = content.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&');
+                        
                         var lang = '';
-                        if ( codeNode.className ) {
-                            var m = codeNode.className.match( /language-([a-zA-Z0-9+#._-]+)/ );
-                            if ( m ) lang = m[1];
+                        var codeClass = codeNode.className || '';
+                        var preClass = node.className || '';
+                        
+                        // Showdown markdown usually generates <code class="php language-php">
+                        var m = codeClass.match( /(?:^|\s)language-([a-zA-Z0-9+#._-]+)/i );
+                        if ( !m ) m = codeClass.match( /(?:^|\s)([a-zA-Z0-9+#._-]+)$/i );
+                        if ( !m ) m = preClass.match( /(?:^|\s)language-([a-zA-Z0-9+#._-]+)/i );
+                        
+                        if ( m ) lang = m[1].toLowerCase();
+                        
+                        // Look up language in options to normalize it
+                        var finalLang = lang;
+                        if ( lang ) {
+                            for ( var i = 0; i < languageOptions.length; i++ ) {
+                                if ( languageOptions[i].value === lang || 
+                                     languageOptions[i].label.toLowerCase().indexOf(lang) !== -1 ) {
+                                    finalLang = languageOptions[i].value;
+                                    break;
+                                }
+                            }
                         }
+
                         return createBlock( 'stodum/code-block', {
                             content: content,
-                            language: lang
+                            language: finalLang
                         } );
                     }
                 }
