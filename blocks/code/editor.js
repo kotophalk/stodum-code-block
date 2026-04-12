@@ -87,8 +87,13 @@
         if ( aliases[ searchLang ] ) return aliases[ searchLang ];
         
         // Final fallback: if it is a commonly known extension, accept it even if not in our curated list
-        var common = /^(bash|sh|php|python|docker|dockerfile|js|javascript|json|html|css|sql|go|rust|c|cpp|csharp|java|ruby|swift|toml|yaml|xml|md|markdown|graphql|kotlin|lua|makefile|perl|r|scss|typescript|less|sass)$/i;
+        var common = /^(bash|sh|php|python|docker|dockerfile|js|javascript|json|html|css|sql|go|rust|c|cpp|csharp|java|ruby|swift|toml|yaml|xml|md|markdown|graphql|kotlin|lua|makefile|perl|r|scss|typescript|less|sass|docker|shell)$/i;
         if ( common.test( searchLang ) ) return searchLang;
+
+        // Final fallback: if it looks like a single word without spaces, assume it's a language tag
+        if ( searchLang.length > 0 && searchLang.length < 20 && searchLang.indexOf(' ') === -1 ) {
+            return searchLang;
+        }
 
         return '';
     }
@@ -487,12 +492,12 @@
         
         if ( ! isEditor ) return;
 
-        var text = event.clipboardData.getData('text/plain');
-        if ( ! text ) return;
-
         // More robust regex for bulk markdown paste
         var fenceRegex = /^```([a-zA-Z0-9+#._-]+)[ \t]*\r?\n([\s\S]*?)^```[ \t]*(?:\r?\n|$)/gm;
-        if ( ! fenceRegex.test(text) ) return;
+        
+        // Use a simple non-global match to check if we should proceed, 
+        // to avoid messing with lastIndex of the main regex.
+        if ( ! text.match(/^```/m) ) return;
 
         // Reset regex state for replace
         fenceRegex.lastIndex = 0;
@@ -509,7 +514,7 @@
             var htmlCode = code.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
             
             return '<!-- wp:stodum/code-block ' + json + ' -->\n' +
-                   '<div class="wp-block-stodum-code-block stodum-code-wrapper" data-lang="' + finalLang + '">\n' +
+                   '<div class="wp-block-stodum-code-block stodum-code-wrapper" data-stodum-lang="' + finalLang + '">\n' +
                    '<div class="stodum-code-body"><pre><code class="language-' + finalLang + '">' + htmlCode + '</code></pre></div>\n' +
                    '</div>\n' +
                    '<!-- /wp:stodum/code-block -->\n\n';
