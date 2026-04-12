@@ -263,17 +263,18 @@ class StoDum_Migrator {
                         $content = implode( "\n", $lines );
                     }
                 }
-            }
-        }
-                // Fallback for CLI prompt or comments
-                $first_lines = array_filter( array_map( 'trim', explode( "\n", $trimmed ) ) );
-                $first_line  = ! empty( $first_lines ) ? reset( $first_lines ) : '';
-                if ( preg_match( '/^(docker|curl|wget|apt|apt-get|npm|yarn|npx|composer|php|python|git|echo|ls|cat|sh|bash|sudo) /i', $first_line ) ) {
-                    $lang = 'bash';
-                } elseif ( preg_match( '/^\# /', $first_line ) ) {
-                    $lang = 'bash';
-                } elseif ( preg_match( '/^\/\//', $first_line ) ) {
-                    $lang = 'javascript';
+                
+                // Final fallback for CLI prompt or comments if nothing detected yet
+                if ( empty( $lang ) ) {
+                    $first_lines = array_filter( array_map( 'trim', explode( "\n", $trimmed ) ) );
+                    $first_line  = ! empty( $first_lines ) ? reset( $first_lines ) : '';
+                    if ( preg_match( '/^(docker|curl|wget|apt|apt-get|npm|yarn|npx|composer|php|python|git|echo|ls|cat|sh|bash|sudo) /i', $first_line ) ) {
+                        $lang = 'bash';
+                    } elseif ( preg_match( '/^\# /', $first_line ) ) {
+                        $lang = 'bash';
+                    } elseif ( preg_match( '/^\/\//', $first_line ) ) {
+                        $lang = 'javascript';
+                    }
                 }
             }
         }
