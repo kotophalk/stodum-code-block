@@ -188,13 +188,23 @@
         var detectedLang = explicitLang || '';
         if ( ! detectedLang ) {
             var match = ( codeEl.className || '' ).match( /language-(\S+)/ );
-            if ( match ) detectedLang = match[1];
+            if ( match ) {
+                detectedLang = match[1];
+                
+                // Swift Guard: HLJS version 11+ often misidentifies template braces {{ }} as Swift.
+                // If it detects Swift but it wasn't explicit, we suppress it.
+                if ( detectedLang.toLowerCase() === 'swift' ) {
+                    detectedLang = ''; // Force Auto Detect label
+                }
+            }
         }
 
         var badge = wrapper.querySelector( '.stodum-code-lang-badge' );
         var skipBadge = [ 'undefined', 'plaintext', 'text' ];
         if ( badge && detectedLang && skipBadge.indexOf( detectedLang.toLowerCase() ) === -1 ) {
             badge.textContent = langNames[ detectedLang.toLowerCase() ] || detectedLang;
+        } else if ( badge ) {
+            badge.textContent = langNames[''] || 'Auto Detect';
         }
 
         // Copy button

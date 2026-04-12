@@ -270,11 +270,11 @@
                     var decoded = decodeClipboardText( text );
                     
                     // Regex that safely handles Markdown fences with any line endings
-                    var fenceRegex = /(?:^|\r\n|\n)```([a-zA-Z0-9+#._-]+)[ \t]*\r?\n([\s\S]*?)(?:\r\n|\n)```[ \t]*(?:\r?\n|$)/;
+                    var fenceRegex = /(?:^|\r\n|\n)```([a-zA-Z0-9+#._-]+)?[ \t]*\r?\n([\s\S]*?)(?:\r\n|\n)```[ \t]*(?:\r?\n|$)/;
                     var match = decoded.match( fenceRegex );
                     
                     if ( match ) {
-                        var detectedLang = normalizeLanguage( match[1] );
+                        var detectedLang = normalizeLanguage( match[1] || '' );
                         var content = match[2];
                         props.setAttributes( { content: content, language: detectedLang } );
                         return;
@@ -285,8 +285,8 @@
                     if ( firstLineMatch ) {
                         var firstLine = firstLineMatch[1].toLowerCase();
                         var normalized = normalizeLanguage( firstLine );
-                        // Only auto-detect from first line if it's a strongly recognized language to avoid false positives with "if", "for", etc.
-                        var strictlyKnown = /^(bash|sh|php|python|javascript|js|json|html|css|sql|dockerfile|makefile)$/i.test( firstLine );
+                        // Restricted list for first-line-only detection to avoid collisions with "if", "for", etc.
+                        var strictlyKnown = /^(bash|sh|php|python|javascript|js|json|html|css|sql|dockerfile|makefile|docker|shell)$/i.test( firstLine );
                         
                         if ( strictlyKnown && normalized ) {
                             var lines = decoded.split(/\r?\n/);
@@ -493,44 +493,58 @@
         if ( ! isEditor ) return;
 
         // More robust regex for bulk markdown paste
-        var fenceRegex = /^```([a-zA-Z0-9+#._-]+)[ \t]*\r?\n([\s\S]*?)^```[ \t]*(?:\r?\n|$)/gm;
-        
-        // Use a simple non-global match to check if we should proceed, 
-        // to avoid messing with lastIndex of the main regex.
-        if ( ! text.match(/^```/m) ) return;
+        var text = event.clipboardData.getData('text/plain');
+        if ( ! text ) return;
 
-        // Reset regex state for replace
-        fenceRegex.lastIndex = 0;
+        // Check if there are any code fences at all
+        if ( ! text.match(/^```/m) ) return;
 
         event.preventDefault();
         
-        var newText = text.replace( fenceRegex, function(match, lang, code) {
-            var finalLang = normalizeLanguage( lang );
-            // If not normalized, still keep the raw string if it looks like a tag
-            if ( ! finalLang ) finalLang = lang.trim().toLowerCase();
+        var blocksToInsert = [];
+        var lastIndex = 0;
+        // Robust regex for bulk markdown paste (handles line endings and spaces)
+        var fenceRegex = /(?:^|\r\n|\n)```([a-zA-Z0-9+#._-]+)?[ \t]*\r?\n([\s\S]*?)(?:\r\n|\n)```[ \t]*(?:\r?\n|$)/g;
+        var match;
 
-            var attrs = { language: finalLang, content: code };
-            var json = JSON.stringify(attrs);
-            var htmlCode = code.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-            
-            return '<!-- wp:stodum/code-block ' + json + ' -->\n' +
-                   '<div class="wp-block-stodum-code-block stodum-code-wrapper" data-stodum-lang="' + finalLang + '">\n' +
-                   '<div class="stodum-code-body"><pre><code class="language-' + finalLang + '">' + htmlCode + '</code></pre></div>\n' +
-                   '</div>\n' +
-                   '<!-- /wp:stodum/code-block -->\n\n';
-        });
+        while ( ( match = fenceRegex.exec( text ) ) !== null ) {
+            // 1. Process text before the match
+            var before = text.substring( lastIndex, match.index ).trim();
+            if ( before ) {
+                // Let Gutenberg handle the text paragraphs normally
+                var textBlocks = window.wp.blocks.pasteHandler({ plainText: before, mode: 'BLOCKS' });
+                if ( textBlocks ) blocksToInsert = blocksToInsert.concat( textBlocks );
+            }
 
-        // Use WP native paste handler which fully understands WP Block comments!
-        var blocks = window.wp.blocks.pasteHandler({ plainText: newText, HTML: newText, mode: 'BLOCKS' });
-        
-        if ( blocks && blocks.length > 0 ) {
+            // 2. Process the code block match
+            var rawLang = match[1] || '';
+            var code = match[2];
+            var finalLang = normalizeLanguage( rawLang );
+            // If not in standard list, still keep the raw string if it looks like a tag
+            if ( ! finalLang && rawLang ) finalLang = rawLang.trim().toLowerCase();
+
+            blocksToInsert.push( createBlock( 'stodum/code-block', {
+                language: finalLang,
+                content: code
+            } ) );
+
+            lastIndex = fenceRegex.lastIndex;
+        }
+
+        // 3. Process remaining text
+        var remaining = text.substring( lastIndex ).trim();
+        if ( remaining ) {
+            var textBlocks = window.wp.blocks.pasteHandler({ plainText: remaining, mode: 'BLOCKS' });
+            if ( textBlocks ) blocksToInsert = blocksToInsert.concat( textBlocks );
+        }
+
+        if ( blocksToInsert.length > 0 ) {
             var editor = window.wp.data.dispatch('core/block-editor');
             var selectedIds = window.wp.data.select('core/block-editor').getSelectedBlockClientIds();
             if ( selectedIds && selectedIds.length > 0 ) {
-                // To support slicing empty paragraphs
-                editor.replaceBlocks( selectedIds, blocks );
+                editor.replaceBlocks( selectedIds, blocksToInsert );
             } else {
-                editor.insertBlocks( blocks );
+                editor.insertBlocks( blocksToInsert );
             }
         }
     }, true ); // Use capture to intercept before Gutenberg's vanilla plainText handler!
