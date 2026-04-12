@@ -87,6 +87,10 @@ msgstr "Отмена"
 msgid "Migrate This Post"
 msgstr "Конвертировать запись"
 
+#: includes/class-stodum-settings.php:108
+msgid "Settings Saved"
+msgstr "Настройки сохранены"
+
 #: includes/class-stodum-settings.php:62
 msgid "Scanning..."
 msgstr "Сканирование..."
@@ -234,6 +238,42 @@ msgstr "Tomorrow Night"
 #: stodum-code-block.php:139
 msgid "Shades of Purple"
 msgstr "Shades of Purple"
+
+#: stodum-code-block.php:200
+msgid "core code block found"
+msgstr "найден старый блок кода"
+
+#: stodum-code-block.php:201
+msgid "core code blocks found"
+msgstr "найдено старых блоков кода"
+
+#: stodum-code-block.php:202
+msgid "Convert All to StoDum"
+msgstr "Конвертировать блоки в StoDum"
+
+#: stodum-code-block.php:248
+msgid "Toggle line numbers"
+msgstr "Нумерация строк"
+
+#: stodum-code-block.php:251
+msgid "Toggle light/dark mode"
+msgstr "Переключить темную/светлую тему"
+
+#: stodum-code-block.php:251
+msgid "Toggle theme"
+msgstr "Смена темы"
+
+#: stodum-code-block.php:255
+msgid "Copy to clipboard"
+msgstr "Скопировать в буфер"
+
+#: stodum-code-block.php:255
+msgid "Copy code"
+msgstr "Скопировать код"
+
+#: stodum-code-block.php:258
+msgid "Copy"
+msgstr "Забрать"
 
 #: blocks/code/editor.js:15
 msgid "Auto Detect"

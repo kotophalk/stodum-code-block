@@ -88,6 +88,10 @@ msgstr ""
 msgid "Migrate This Post"
 msgstr ""
 
+#: includes/class-stodum-settings.php:108
+msgid "Settings Saved"
+msgstr ""
+
 #: includes/class-stodum-settings.php:62
 msgid "Scanning..."
 msgstr ""
@@ -234,6 +238,42 @@ msgstr ""
 
 #: stodum-code-block.php:139
 msgid "Shades of Purple"
+msgstr ""
+
+#: stodum-code-block.php:200
+msgid "core code block found"
+msgstr ""
+
+#: stodum-code-block.php:201
+msgid "core code blocks found"
+msgstr ""
+
+#: stodum-code-block.php:202
+msgid "Convert All to StoDum"
+msgstr ""
+
+#: stodum-code-block.php:248
+msgid "Toggle line numbers"
+msgstr ""
+
+#: stodum-code-block.php:251
+msgid "Toggle light/dark mode"
+msgstr ""
+
+#: stodum-code-block.php:251
+msgid "Toggle theme"
+msgstr ""
+
+#: stodum-code-block.php:255
+msgid "Copy to clipboard"
+msgstr ""
+
+#: stodum-code-block.php:255
+msgid "Copy code"
+msgstr ""
+
+#: stodum-code-block.php:258
+msgid "Copy"
 msgstr ""
 
 #: blocks/code/editor.js:15
