@@ -250,10 +250,11 @@
                             }
                             decoded = lines.join('\n');
                             // Look up language in options to normalize it
-                            var finalLang = extractLang;
+                            var finalLang = '';
+                            var searchLang = extractLang.toLowerCase();
                             for ( var i = 0; i < languageOptions.length; i++ ) {
-                                if ( languageOptions[i].value === extractLang.toLowerCase() || 
-                                     languageOptions[i].label.toLowerCase().indexOf(extractLang.toLowerCase()) !== -1 ) {
+                                if ( languageOptions[i].value === searchLang || 
+                                     languageOptions[i].label.toLowerCase() === searchLang ) {
                                     finalLang = languageOptions[i].value;
                                     break;
                                 }
@@ -377,9 +378,18 @@
                             var lines = content.split('\n');
                             var firstLine = lines[0].trim().replace(/^`{3}/, '').trim();
                             var isBacktick = lines[0].trim().indexOf('```') !== -1;
-                            var knownLang = /^(bash|sh|php|python|docker|dockerfile|js|javascript|json|html|css|sql|go|rust|c|cpp|csharp|java|ruby|swift|toml|yaml)$/i.test(firstLine);
+                            // Strict matching: Only if backticks exist or it is a known language
                             if ( isBacktick || knownLang ) {
-                                lang = firstLine;
+                                var searchLang = firstLine.toLowerCase();
+                                var normalized = '';
+                                for ( var i = 0; i < languageOptions.length; i++ ) {
+                                    if ( languageOptions[i].value === searchLang || 
+                                         languageOptions[i].label.toLowerCase() === searchLang ) {
+                                        normalized = languageOptions[i].value;
+                                        break;
+                                    }
+                                }
+                                lang = normalized || searchLang;
                                 lines.shift();
                                 if (lines.length > 0 && lines[lines.length - 1].trim() === '```') {
                                     lines.pop();
@@ -429,11 +439,12 @@
                         if ( m ) lang = m[1].toLowerCase();
                         
                         // Look up language in options to normalize it
-                        var finalLang = lang;
+                        var finalLang = '';
                         if ( lang ) {
+                            var searchLang = lang.toLowerCase();
                             for ( var i = 0; i < languageOptions.length; i++ ) {
-                                if ( languageOptions[i].value === lang || 
-                                     languageOptions[i].label.toLowerCase().indexOf(lang) !== -1 ) {
+                                if ( languageOptions[i].value === searchLang || 
+                                     languageOptions[i].label.toLowerCase() === searchLang ) {
                                     finalLang = languageOptions[i].value;
                                     break;
                                 }
@@ -478,13 +489,16 @@
             var cleanLang = lang.trim().toLowerCase();
             
             // Normalize language
-            var finalLang = cleanLang;
+            var finalLang = '';
+            var searchLang = cleanLang.toLowerCase();
             for ( var i = 0; i < languageOptions.length; i++ ) {
-                if ( languageOptions[i].value === cleanLang || languageOptions[i].label.toLowerCase().indexOf(cleanLang) !== -1 ) {
+                if ( languageOptions[i].value === searchLang || 
+                     languageOptions[i].label.toLowerCase() === searchLang ) {
                     finalLang = languageOptions[i].value;
                     break;
                 }
             }
+            if ( ! finalLang ) finalLang = searchLang; // Fallback to raw if not in list but detected via fence
 
             var attrs = { language: finalLang, content: code };
             var json = JSON.stringify(attrs);

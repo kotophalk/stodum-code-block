@@ -117,20 +117,18 @@
                 lang = b.attributes.language;
             }
 
-            var firstLineMatch = content.match(/^(`{3})?\s*([a-zA-Z0-9+#._-]+)\s*\n/);
+            var firstLineMatch = content.match(/^(`{2,3})\s*([a-zA-Z0-9+#._-]+)\s*\n/);
             if ( ! lang && firstLineMatch ) {
                 var lines = content.split('\n');
-                var firstLine = lines[0].trim().replace(/^`{3}/, '').trim();
+                var firstLine = lines[0].trim().replace(/^`{2,3}/, '').trim();
                 if ( firstLine.length > 0 && firstLine.length < 15 && firstLine.indexOf(' ') === -1 ) {
-                    // Check if it's not a generic word that happened to be on the first line alone without backticks
-                    // Only apply generic single words if they are known languages or if backticks were explicitly present
-                    var isBacktick = lines[0].trim().indexOf('```') !== -1;
-                    var knownLang = /^(bash|sh|php|python|docker|dockerfile|js|javascript|json|html|css|sql|go|rust|c|cpp|csharp|java|ruby|swift|toml|yaml)$/i.test(firstLine);
+                    var isBacktick = lines[0].indexOf('``') !== -1;
+                    var knownLang = /^(bash|sh|php|python|docker|dockerfile|js|javascript|json|html|css|sql|go|rust|c|cpp|csharp|java|ruby|swift|toml|yaml|xml|markdown)$/i.test(firstLine);
+                    
                     if ( isBacktick || knownLang ) {
-                        lang = firstLine;
+                        lang = firstLine.toLowerCase();
                         lines.shift();
-                        // Strip closing ``` if exists
-                        if (lines.length > 0 && lines[lines.length - 1].trim() === '```') {
+                        if (lines.length > 0 && lines[lines.length - 1].trim().match(/^`{2,3}$/)) {
                             lines.pop();
                         }
                         content = lines.join('\n');

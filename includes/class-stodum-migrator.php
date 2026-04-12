@@ -229,21 +229,22 @@ class StoDum_Migrator {
 
         if ( empty( $lang ) ) {
             $trimmed = ltrim( $content );
-            if ( preg_match( '/^(`{3})?\s*([a-zA-Z0-9+#._-]+)\s*[\r\n]/', $trimmed, $m ) ) {
+            // Require backticks for markdown detection OR a very specific set of known languages
+            if ( preg_match( '/^(`{2,3})\s*([a-zA-Z0-9+#._-]+)\s*[\r\n]/', $trimmed, $m ) ) {
                 $lines = explode( "\n", $trimmed );
-                $first_line = trim( $lines[0] );
-                $clean_first = trim( preg_replace( '/^`{3}/', '', $first_line ) );
+                $first_line = trim( $m[0] );
+                $clean_first = trim( $m[2] );
                 
                 if ( strlen( $clean_first ) > 0 && strlen( $clean_first ) < 15 && strpos( $clean_first, ' ' ) === false ) {
-                    $is_backtick = strpos( $first_line, '```' ) !== false;
-                    $known_lang = preg_match( '/^(bash|sh|php|python|docker|dockerfile|js|javascript|json|html|css|sql|go|rust|c|cpp|csharp|java|ruby|swift|toml|yaml)$/i', $clean_first );
+                    $is_backtick = strpos( $first_line, '``' ) !== false;
+                    $known_lang = preg_match( '/^(bash|sh|php|python|docker|dockerfile|js|javascript|json|html|css|sql|go|rust|c|cpp|csharp|java|ruby|swift|toml|yaml|xml|markdown)$/i', $clean_first );
                     
                     if ( $is_backtick || $known_lang ) {
                         $lang = strtolower( $clean_first );
                         array_shift( $lines );
                         
                         $last_idx = count( $lines ) - 1;
-                        if ( $last_idx >= 0 && trim( $lines[$last_idx] ) === '```' ) {
+                        if ( $last_idx >= 0 && preg_match( '/^`{2,3}$/', trim( $lines[$last_idx] ) ) ) {
                             array_pop( $lines );
                         }
                         $content = implode( "\n", $lines );
