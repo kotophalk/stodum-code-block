@@ -198,6 +198,11 @@ class StoDum_Code_Block {
 
     public static function enqueue_convert_script() {
         wp_enqueue_script( 'stodum-convert', plugins_url( 'assets/convert.js', __FILE__ ), [ 'wp-blocks', 'wp-data' ], self::VERSION, true );
+        wp_localize_script( 'stodum-convert', 'stodumConvertI18n', [
+            'found_1' => __( 'core code block found', 'stodum-code-block' ),
+            'found_n' => __( 'core code blocks found', 'stodum-code-block' ),
+            'convert' => __( 'Convert All to StoDum', 'stodum-code-block' ),
+        ] );
         wp_add_inline_style( 'stodum-code-block-editor', self::get_convert_toast_css() );
     }
 
