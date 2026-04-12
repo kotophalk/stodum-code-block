@@ -450,6 +450,70 @@
         }
     } );
 
+    // Global Paste Interceptor for Bulk Markdown
+    // This catches raw markdown pasted anywhere in the editor and forces Gutenberg
+    // to recognize the markdown fences as StoDum Code Blocks BEFORE WP core strips them!
+    document.addEventListener( 'paste', function( event ) {
+        if ( ! event.clipboardData ) return;
+        
+        var activeEl = document.activeElement;
+        var isEditor = activeEl && ( 
+            activeEl.closest('.block-editor-block-list__layout') || 
+            activeEl.closest('.editor-styles-wrapper') || 
+            activeEl.classList.contains('wp-block') 
+        );
+        
+        if ( ! isEditor ) return;
+
+        var text = event.clipboardData.getData('text/plain');
+        if ( ! text ) return;
+
+        var fenceRegex = /^```([a-zA-Z0-9+#._-]+)[ \t]*[\r\n]([\s\S]*?)^```[ \t]*$/gm;
+        if ( ! fenceRegex.test(text) ) return;
+
+        // If we found markdown fences, we must manually intervene.
+        event.preventDefault();
+        
+        var newText = text.replace( fenceRegex, function(match, lang, code) {
+            var cleanLang = lang.trim().toLowerCase();
+            
+            // Normalize language
+            var finalLang = cleanLang;
+            for ( var i = 0; i < languageOptions.length; i++ ) {
+                if ( languageOptions[i].value === cleanLang || languageOptions[i].label.toLowerCase().indexOf(cleanLang) !== -1 ) {
+                    finalLang = languageOptions[i].value;
+                    break;
+                }
+            }
+
+            var attrs = { language: finalLang, content: code };
+            var json = JSON.stringify(attrs);
+            
+            // Strictly escape for the HTML fallback
+            var htmlCode = code.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+            
+            return '<!-- wp:stodum/code-block ' + json + ' -->\n' +
+                   '<div class="wp-block-stodum-code-block stodum-code-wrapper">\n' +
+                   '<div class="stodum-code-body"><pre><code class="language-' + finalLang + '">' + htmlCode + '</code></pre></div>\n' +
+                   '</div>\n' +
+                   '<!-- /wp:stodum/code-block -->\n\n';
+        });
+
+        // Use WP native paste handler which fully understands WP Block comments!
+        var blocks = window.wp.blocks.pasteHandler({ plainText: newText, HTML: newText, mode: 'BLOCKS' });
+        
+        if ( blocks && blocks.length > 0 ) {
+            var editor = window.wp.data.dispatch('core/block-editor');
+            var selectedIds = window.wp.data.select('core/block-editor').getSelectedBlockClientIds();
+            if ( selectedIds && selectedIds.length > 0 ) {
+                // To support slicing empty paragraphs
+                editor.replaceBlocks( selectedIds, blocks );
+            } else {
+                editor.insertBlocks( blocks );
+            }
+        }
+    }, true ); // Use capture to intercept before Gutenberg's vanilla plainText handler!
+
 } )(
     window.wp.blocks,
     window.wp.element,
