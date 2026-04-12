@@ -11,7 +11,7 @@
     var createBlock       = blocks.createBlock;
     var __                = i18n.__;
 
-    console.log('STODUM: v1.0.6 loaded');
+    console.log('STODUM: v1.0.7 loaded');
 
     var languageOptions = [
         { label: __( 'Auto Detect', 'stodum-code-block' ), value: '' },
@@ -114,7 +114,8 @@
         }
 
         // 2. Bash/Shell detection
-        if ( /^(docker|sudo|apt-get|apt|curl|wget|npm|yarn|npx|composer|git|chmod|chown|ls|cd|mkdir|cat|echo|sh|bash) /m.test(trimmed) ||
+        if ( /^(docker|sudo|apt-get|apt|curl|wget|npm|yarn|npx|composer|git|chmod|chown|ls|cd|mkdir|cat|echo|sh|bash|wo|acme\.sh) /m.test(trimmed) ||
+             /^(export|unset|alias) [a-zA-Z0-9_]+=/m.test(trimmed) ||
              /^\$ /m.test(trimmed) || /^\# /m.test(trimmed)
         ) {
             return 'bash';
@@ -124,14 +125,25 @@
         if ( /^(import|export|const|let|async|await) /m.test(trimmed) || 
              (trimmed.indexOf('console.log') !== -1 && trimmed.indexOf('function') !== -1)
         ) {
+            // Re-check for export...= case (likely Bash)
+            if ( trimmed.indexOf('export ') === 0 && trimmed.indexOf('=') !== -1 && trimmed.indexOf(' ') === trimmed.lastIndexOf(' ') ) {
+                return 'bash';
+            }
             return 'javascript';
         }
 
         // 4. JSON / XML / HTML
         if ( trimmed.startsWith('{') && trimmed.endsWith('}') ) return 'json';
         if ( trimmed.startsWith('[') && trimmed.endsWith(']') ) return 'json';
-        if ( trimmed.indexOf('<html') !== -1 || trimmed.indexOf('<!DOCTYPE') !== -1 ) return 'html';
+        if ( (trimmed.indexOf('<html') !== -1 || trimmed.indexOf('<!DOCTYPE') !== -1) && trimmed.indexOf('<') !== -1 ) return 'html';
         if ( trimmed.startsWith('<') && (trimmed.indexOf('</') !== -1 || trimmed.indexOf('/>') !== -1) ) return 'xml';
+        
+        // 5. SQL (be strict with update/select/delete to avoid false CLI positives)
+        if ( /^(select|insert|update|delete|create|alter|drop|truncate|grant|revoke|use|begin|commit|rollback) /i.test(trimmed) ) {
+            // CLI commands like "wo site update" shouldn't trigger SQL
+            if ( /^(wo|git|docker|npm|apt) /i.test(trimmed) ) return 'bash';
+            return 'sql';
+        }
 
         return '';
     }
