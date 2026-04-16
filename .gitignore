@@ -1,0 +1,26 @@
+# Dependencies
+node_modules/
+vendor/
+
+# Build artifacts
+build/
+
+# OS files
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# IDE / Editor
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# WordPress
+*.log
+wp-content/debug.log
+
+# Archives
+*.zip
+*.tar.gz

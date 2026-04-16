@@ -104,7 +104,8 @@ class StoDum_Settings {
             return;
         }
 
-        if ( isset( $_GET['settings-updated'] ) ) {
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- standard WP settings redirect check.
+        if ( isset( $_GET['settings-updated'] ) && 'true' === sanitize_key( $_GET['settings-updated'] ) ) {
             add_settings_error( 'stodum_messages', 'stodum_message', __( 'Settings Saved', 'stodum-code-block' ), 'updated' );
         }
 

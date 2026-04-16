@@ -29,7 +29,14 @@
         fd.append('nonce', csDevtoolsMigrate.nonce);
         if (data) {
             Object.keys(data).forEach(function (k) {
-                fd.append(k, data[k]);
+                var val = data[k];
+                if (Array.isArray(val)) {
+                    val.forEach(function (item) {
+                        fd.append(k + '[]', item);
+                    });
+                } else {
+                    fd.append(k, val);
+                }
             });
         }
         fetch(csDevtoolsMigrate.ajaxUrl, { method: 'POST', body: fd })

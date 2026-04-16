@@ -194,14 +194,18 @@ class StoDum_Code_Block {
             'render_callback' => [ __CLASS__, 'render_block' ],
             'editor_script'   => 'stodum-code-block-editor-script',
         ] );
+
+        wp_set_script_translations( 'stodum-code-block-editor-script', 'stodum-code-block', plugin_dir_path( __FILE__ ) . 'languages' );
     }
 
     public static function enqueue_convert_script() {
         wp_enqueue_script( 'stodum-convert', plugins_url( 'assets/convert.js', __FILE__ ), [ 'wp-blocks', 'wp-data' ], self::VERSION, true );
         wp_localize_script( 'stodum-convert', 'stodumConvertI18n', [
-            'found_1' => __( 'core code block found', 'stodum-code-block' ),
-            'found_n' => __( 'core code blocks found', 'stodum-code-block' ),
-            'convert' => __( 'Convert All to StoDum', 'stodum-code-block' ),
+            'found_1'  => __( 'core code block found', 'stodum-code-block' ),
+            'found_n'  => __( 'core code blocks found', 'stodum-code-block' ),
+            'convert'  => __( 'Convert All to StoDum', 'stodum-code-block' ),
+            'merged_1' => __( 'Merged %d split fragment back into code block', 'stodum-code-block' ),
+            'merged_n' => __( 'Merged %d split fragments back into code block', 'stodum-code-block' ),
         ] );
         wp_add_inline_style( 'stodum-code-block-editor', self::get_convert_toast_css() );
     }
@@ -229,7 +233,7 @@ class StoDum_Code_Block {
             . '}';
     }
 
-    public static function render_block( $attributes, $block_content = '' ) {
+    public static function render_block( $attributes, $block_content = '', $block = null ) {
         self::maybe_enqueue_frontend();
         self::$instance_count++;
 
@@ -242,12 +246,31 @@ class StoDum_Code_Block {
         $lang_class = $lang ? 'language-' . esc_attr( $lang ) : '';
         $title_html = $title ? '<div class="stodum-code-title">' . esc_html( $title ) . '</div>' : '';
 
+        $extra_attrs = array( 'id' => $id );
+        if ( $theme ) {
+            $extra_attrs['data-theme'] = $theme;
+        }
+        if ( $lang ) {
+            $extra_attrs['data-stodum-lang'] = $lang;
+        }
+
+        $wrapper_attrs = get_block_wrapper_attributes( array(
+            'class' => 'stodum-code-wrapper',
+            'id'    => esc_attr( $id ),
+        ) );
+
+        // Inject data-attributes into the wrapper string.
+        $data_attrs = '';
+        if ( $theme ) {
+            $data_attrs .= ' data-theme="' . esc_attr( $theme ) . '"';
+        }
+        if ( $lang ) {
+            $data_attrs .= ' data-stodum-lang="' . esc_attr( $lang ) . '"';
+        }
+
         ob_start();
         ?>
-        <div class="stodum-code-wrapper" 
-             id="<?php echo esc_attr( $id ); ?>"
-             <?php if ( $theme ) echo ' data-theme="' . esc_attr( $theme ) . '"'; ?>
-             <?php if ( $lang )  echo ' data-stodum-lang="' . esc_attr( $lang ) . '"'; ?>>
+        <div <?php echo $wrapper_attrs . $data_attrs; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped above ?>>
             <div class="stodum-code-toolbar">
                 <span class="stodum-code-brand"><span class="stodum-brand-bolt">&#9889;</span> StoDum</span>
                 <?php echo wp_kses_post( $title_html ); ?>
@@ -256,7 +279,7 @@ class StoDum_Code_Block {
                     <button class="stodum-code-lines-toggle" title="<?php esc_attr_e( 'Toggle line numbers', 'stodum-code-block' ); ?>" aria-label="<?php esc_attr_e( 'Toggle line numbers', 'stodum-code-block' ); ?>">
                         <svg class="stodum-icon-lines" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="10" y1="6" x2="21" y2="6"/><line x1="10" y1="12" x2="21" y2="12"/><line x1="10" y1="18" x2="21" y2="18"/><text x="4" y="7" font-size="7" fill="currentColor" stroke="none" font-family="monospace">1</text><text x="4" y="13" font-size="7" fill="currentColor" stroke="none" font-family="monospace">2</text><text x="4" y="19" font-size="7" fill="currentColor" stroke="none" font-family="monospace">3</text></svg>
                     </button>
-                    <button class="stodum-code-theme-toggle" title="<?php esc_attr_e( 'Toggle light/dark mode', 'stodum-code-block' ); ?>" aria-label="<?php esc_attr_e( 'Toggle theme', 'stodum-code-block' ); ?>">
+                    <button class="stodum-code-theme-toggle" title="<?php esc_attr_e( 'Toggle light/dark mode', 'stodum-code-block' ); ?>" aria-label="<?php esc_attr_e( 'Toggle light/dark mode', 'stodum-code-block' ); ?>">
                         <svg class="stodum-icon-sun" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
                         <svg class="stodum-icon-moon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
                     </button>

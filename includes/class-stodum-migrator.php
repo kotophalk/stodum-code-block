@@ -103,16 +103,12 @@ class StoDum_Migrator {
         }
 
         $new_content = self::convert_content( $post->post_content );
-        
-        global $wpdb;
-        $wpdb->update(
-            $wpdb->posts,
-            [ 'post_content' => $new_content ],
-            [ 'ID' => $post_id ],
-            [ '%s' ],
-            [ '%d' ]
-        );
-        clean_post_cache( $post_id );
+
+        wp_update_post( [
+            'ID'           => $post_id,
+            'post_content' => $new_content,
+        ] );
+
         wp_send_json_success( [
             'message'         => 'Migrated successfully',
             'blocks_migrated' => 'all',
@@ -132,8 +128,6 @@ class StoDum_Migrator {
         $migrated_blocks = 0;
         $details = [];
 
-        global $wpdb;
-        
         foreach ( $post_ids as $pid ) {
             $post = get_post( $pid );
             if ( ! $post ) continue;
@@ -141,14 +135,11 @@ class StoDum_Migrator {
             $count = self::count_migrate_blocks( $post->post_content );
             if ( $count > 0 ) {
                 $new_content = self::convert_content( $post->post_content );
-                $wpdb->update(
-                    $wpdb->posts,
-                    [ 'post_content' => $new_content ],
-                    [ 'ID' => $post->ID ],
-                    [ '%s' ],
-                    [ '%d' ]
-                );
-                clean_post_cache( $post->ID );
+
+                wp_update_post( [
+                    'ID'           => $post->ID,
+                    'post_content' => $new_content,
+                ] );
 
                 $migrated_posts++;
                 $migrated_blocks += $count;

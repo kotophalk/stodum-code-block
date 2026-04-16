@@ -3,7 +3,6 @@
  */
 
 /* Force full width in the editor content area */
-.wp-block-cloudscale-code-block,
 .wp-block[data-type="stodum/code-block"] {
     width: 100% !important;
     max-width: 100% !important;
@@ -47,7 +46,7 @@
 }
 
 .stodum-code-editor-lang {
-    margin-left: auto;
+    margin-left: 0;
     padding: 2px 8px;
     background: rgba(255, 255, 255, 0.08);
     border-radius: 4px;
@@ -115,10 +114,6 @@
     gap: 6px;
     margin-left: auto;
     flex-shrink: 0;
-}
-
-.stodum-code-editor-lang {
-    margin-left: 0;
 }
 
 .stodum-code-editor-btn {

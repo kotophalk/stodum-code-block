@@ -428,8 +428,8 @@
             + 'box-shadow:0 4px 16px rgba(0,0,0,0.25);'
             + 'font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;'
             + 'animation:cs-toast-in 0.3s ease-out;';
-        toast.textContent = '\u26A1 Merged ' + count + ' split code block '
-            + ( count === 1 ? 'fragment' : 'fragments' ) + ' back into code block';
+        var template = count === 1 ? stodumConvertI18n.merged_1 : stodumConvertI18n.merged_n;
+        toast.textContent = '\u26A1 ' + template.replace( '%d', count );
         document.body.appendChild( toast );
         setTimeout( function() { if ( toast.parentNode ) toast.remove(); }, 4000 );
     }

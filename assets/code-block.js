@@ -1,5 +1,5 @@
 /**
- * StoDum Code Block — Frontend Script v1.7.5
+ * StoDum Code Block — Frontend Script v1.0.7
  *
  * Reads theme colours from stodumCodeConfig (set by PHP) and applies them
  * via CSS custom properties so any highlight.js theme pair works.
