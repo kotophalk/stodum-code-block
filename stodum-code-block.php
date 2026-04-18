@@ -3,7 +3,7 @@
  * Plugin Name: StoDum Code Block
  * Plugin URI: https://github.com/kotophalk/stodum-code-block
  * Description: Lightweight Gutenberg code block with Highlight.js syntax highlighting and legacy block migrator.
- * Version: 1.0.7
+ * Version: 1.0.8
  * Author: kotophalk
  * License: GPL-2.0-or-later
  * Requires at least: 6.0
@@ -22,9 +22,8 @@ require_once plugin_dir_path( __FILE__ ) . 'includes/class-stodum-migrator.php';
 
 class StoDum_Code_Block {
 
-    const VERSION      = '1.0.7';
+    const VERSION      = '1.0.8';
     const HLJS_VERSION = '11.11.1';
-    const HLJS_CDN     = 'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/';
 
     private static $instance_count  = 0;
     private static $assets_enqueued = false;
@@ -174,16 +173,16 @@ class StoDum_Code_Block {
     }
 
     public static function register_block() {
-        $cdn = self::HLJS_CDN . self::HLJS_VERSION;
+        $hljs_base = plugins_url( 'vendor/hljs', __FILE__ );
 
-        wp_register_script( 'hljs-core', $cdn . '/highlight.min.js', [], self::HLJS_VERSION, true );
-        
+        wp_register_script( 'hljs-core', $hljs_base . '/highlight.min.js', [], self::HLJS_VERSION, true );
+
         $theme_pair = get_option( 'stodum_code_theme_pair', 'atom-one' );
         $registry   = self::get_theme_registry();
         $pair       = isset( $registry[ $theme_pair ] ) ? $registry[ $theme_pair ] : $registry['atom-one'];
 
-        wp_register_style( 'hljs-theme-dark', $cdn . '/styles/' . $pair['dark_css'] . '.min.css', [], self::HLJS_VERSION );
-        wp_register_style( 'hljs-theme-light', $cdn . '/styles/' . $pair['light_css'] . '.min.css', [], self::HLJS_VERSION );
+        wp_register_style( 'hljs-theme-dark',  $hljs_base . '/styles/' . $pair['dark_css']  . '.min.css', [], self::HLJS_VERSION );
+        wp_register_style( 'hljs-theme-light', $hljs_base . '/styles/' . $pair['light_css'] . '.min.css', [], self::HLJS_VERSION );
 
         wp_register_style( 'stodum-code-block-frontend', plugins_url( 'assets/code-block.css', __FILE__ ), [ 'hljs-theme-dark', 'hljs-theme-light' ], self::VERSION );
         wp_register_script( 'stodum-code-block-frontend', plugins_url( 'assets/code-block.js', __FILE__ ), [ 'hljs-core' ], self::VERSION, true );

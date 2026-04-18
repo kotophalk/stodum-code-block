@@ -2,7 +2,7 @@
     "$schema": "https://schemas.wp.org/trunk/block.json",
     "apiVersion": 3,
     "name": "stodum/code-block",
-    "version": "1.0.7",
+    "version": "1.0.8",
     "title": "StoDum Code Block",
     "category": "formatting",
     "icon": "editor-code",

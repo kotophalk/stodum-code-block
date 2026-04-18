@@ -1,6 +1,10 @@
 # Dependencies
 node_modules/
-vendor/
+vendor/composer/
+vendor/autoload.php
+
+# Bundled third-party assets (DO commit these — shipped with the plugin)
+# vendor/hljs/ is intentionally tracked
 
 # Build artifacts
 build/

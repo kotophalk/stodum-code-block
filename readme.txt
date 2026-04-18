@@ -4,7 +4,7 @@ Tags: code, syntax highlighting, gutenberg, code block, developer
 Requires at least: 6.0
 Tested up to: 6.8
 Requires PHP: 7.4
-Stable tag: 1.0.7
+Stable tag: 1.0.8
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -74,6 +74,9 @@ The plugin removes its settings (theme preference and color palette) from the da
 
 == Changelog ==
 
+= 1.0.8 =
+* Changed: Highlight.js is now bundled locally (vendor/hljs/). CDN dependency removed. Plugin is now fully self-contained and compatible with WordPress.org guidelines.
+
 = 1.0.7 =
 * Fixed: Block now uses `get_block_wrapper_attributes()` for proper wide/full alignment support.
 * Fixed: Migrator creates revisions via `wp_update_post()`.
@@ -104,6 +107,9 @@ The plugin removes its settings (theme preference and color palette) from the da
 * Initial release.
 
 == Upgrade Notice ==
+
+= 1.0.8 =
+Highlight.js is now bundled locally — no more external CDN requests. Safe to upgrade; no data migration needed.
 
 = 1.0.7 =
 Important fixes: block alignment support (wide/full), migration now creates revisions for safe rollback, all UI strings are now translatable.
