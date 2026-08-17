@@ -2,9 +2,9 @@
 Contributors: kotophalk
 Tags: code, syntax highlighting, gutenberg, code block, developer
 Requires at least: 6.0
-Tested up to: 6.8
+Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 1.0.8
+Stable tag: 1.0.9
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -65,14 +65,28 @@ Yes. The migrator uses `wp_update_post()`, so WordPress creates a revision for e
 
 The plugin removes its settings (theme preference and color palette) from the database. Your code block content remains in the posts as Gutenberg block comments.
 
+== Third-Party Libraries ==
+
+Syntax highlighting is powered by [Highlight.js](https://highlightjs.org/) 11.11.1, bundled locally in `vendor/hljs/` (core build + 22 theme stylesheets). Highlight.js is licensed under the BSD-3-Clause License; the unminified source is available at [github.com/highlightjs/highlight.js](https://github.com/highlightjs/highlight.js). No external requests are made at runtime.
+
 == Screenshots ==
 
-1. Code block with Atom One Dark theme and syntax highlighting.
-2. Block editor with language selection and toolbar.
-3. Migration tool with scan results and preview modal.
-4. Dark/light theme toggle.
+1. Code blocks on the frontend: Atom One Dark palette, language badge, line-numbers / theme / copy buttons in the toolbar.
+2. Block editor: the block selected, Language and Title settings in the sidebar.
+3. Tools → StoDum Code Block: scan results of the legacy block migrator.
+4. Light mode with line numbers turned on — one click switches every block on the page.
+5. Migrator preview modal: original `core/code` markup vs. the converted `stodum/code-block`.
 
 == Changelog ==
+
+= 1.0.9 =
+* Fixed: Migrator preview modal showed "undefined (undefined blocks)" instead of the post title and block count.
+* Fixed: Missing translator comments and unescaped output flagged by Plugin Check; `$wpdb->prepare()` call inlined.
+* Changed: Highlight.js script/style handles are now prefixed (`stodum-hljs-*`) to avoid clashes with other plugins.
+* Changed: Block title now has a small gap from the brand label in the toolbar.
+* Added: `Author URI`, `License URI`, LICENSE file for the bundled Highlight.js, "Third-Party Libraries" section in readme.
+* Added: JS translation JSON for the block editor (`wp i18n make-json`); POT/ru_RU refreshed.
+* Tested up to WordPress 7.0.
 
 = 1.0.8 =
 * Changed: Highlight.js is now bundled locally (vendor/hljs/). CDN dependency removed. Plugin is now fully self-contained and compatible with WordPress.org guidelines.
@@ -107,6 +121,9 @@ The plugin removes its settings (theme preference and color palette) from the da
 * Initial release.
 
 == Upgrade Notice ==
+
+= 1.0.9 =
+Plugin Check clean-up before WordPress.org submission, migrator preview title fix, prefixed Highlight.js handles. Safe to upgrade.
 
 = 1.0.8 =
 Highlight.js is now bundled locally — no more external CDN requests. Safe to upgrade; no data migration needed.

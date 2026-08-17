@@ -1,5 +1,5 @@
 /**
- * StoDum Code Block — Frontend Styles v1.0.7
+ * StoDum Code Block — Frontend Styles v1.0.9
  *
  * Uses CSS custom properties (--cs-bg, --cs-toolbar-bg, etc.) set by the
  * frontend JS from csCodeConfig, so any highlight.js theme pair works.
@@ -93,6 +93,7 @@
 
 /* 3. TITLE */
 .stodum-code-title {
+    margin-left: 10px;
     font-size: 0.75rem;
     font-weight: 600;
     letter-spacing: 0.02em;

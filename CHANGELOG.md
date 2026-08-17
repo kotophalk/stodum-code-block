@@ -3,6 +3,24 @@
 Все заметные изменения в проекте StoDum Code Block документируются здесь.
 Формат основан на [Keep a Changelog](https://keepachangelog.com/ru/1.1.0/).
 
+## [1.0.9] — 2026-08-17
+
+Подготовка к подаче на WordPress.org.
+
+### Fixed
+- Модалка превью в мигаторе показывала «undefined (undefined blocks)» — `ajax_preview` не возвращал `title` и `block_count`.
+- Замечания Plugin Check 2.1.0: `translators:`-комментарии к строкам с плейсхолдерами, экранирование вывода кода (`esc_html` + замена скобок вынесены в переменную), `$wpdb->prepare()` инлайн, `wp_unslash` на входе AJAX.
+
+### Changed
+- Хендлы Highlight.js — `stodum-hljs-core`, `stodum-hljs-theme-dark|light` (были generic `hljs-*`, конфликтовали бы с другими плагинами). Фолбэк в JS ищет `hljs/styles/`, а не `highlight.js` (остаток CDN).
+- Заголовок блока в тулбаре — отступ 10px от бренда.
+
+### Added
+- `Author URI`, `License URI` в заголовке; `vendor/hljs/LICENSE` (BSD-3-Clause); секция «Third-Party Libraries» в readme.txt.
+- `languages/*.json` для строк редактора (`wp i18n make-json`); POT перегенерирован, ru_RU дополнен (19 строк).
+- `.wp-env.json` (порт 8891, Plugin Check) — не входит в архив.
+- `Tested up to: 7.0` (проверено в wp-env на 7.0.4).
+
 ## [1.0.8] — 2026-04-19
 
 ### Changed

@@ -1,284 +1,403 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: StoDum Code Block 1.0.0\n"
-"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/stodum-code-block\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/stodum-code-"
+"block\n"
+"POT-Creation-Date: 2026-08-17T08:55:05+00:00\n"
 "Last-Translator: kotophalk\n"
 "Language-Team: RU\n"
 "Language: ru_RU\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 "X-Domain: stodum-code-block\n"
 
-#: includes/class-stodum-settings.php:66
+#. Plugin Name of the plugin
+#: stodum-code-block.php includes/class-stodum-settings.php:97
+#: includes/class-stodum-settings.php:98 includes/class-stodum-settings.php:120
 msgid "StoDum Code Block"
 msgstr "Блок кода StoDum"
 
-#: includes/class-stodum-settings.php:87
-msgid "Frontend Settings"
-msgstr "Настройки интерфейса"
+#. Plugin URI of the plugin
+#: stodum-code-block.php
+msgid "https://github.com/kotophalk/stodum-code-block"
+msgstr "https://github.com/kotophalk/stodum-code-block"
 
-#: includes/class-stodum-settings.php:94
-msgid "Default Theme"
-msgstr "Тема по умолчанию"
+#. Description of the plugin
+#: stodum-code-block.php
+msgid ""
+"Lightweight Gutenberg code block with Highlight.js syntax highlighting and "
+"legacy block migrator."
+msgstr ""
 
-#: includes/class-stodum-settings.php:97
-#: blocks/code/editor.js:52
-msgid "Dark"
-msgstr "Темная"
+#. Author of the plugin
+#: stodum-code-block.php
+msgid "kotophalk"
+msgstr "kotophalk"
 
-#: includes/class-stodum-settings.php:98
-#: blocks/code/editor.js:53
-msgid "Light"
-msgstr "Светлая"
+#. Author URI of the plugin
+#: stodum-code-block.php
+msgid "https://delosvod.ru/"
+msgstr "https://delosvod.ru/"
 
-#: includes/class-stodum-settings.php:101
-msgid "Select the default colour mode for your code blocks."
-msgstr "Укажите цветовую схему для блоков кода по умолчанию."
-
-#: includes/class-stodum-settings.php:106
-msgid "Syntax Color Theme"
-msgstr "Цветовая тема синтаксиса"
-
-#: includes/class-stodum-settings.php:112
-msgid "Select the syntax highlighting color palette."
-msgstr "Выберите палитру для подсветки синтаксиса."
-
-#: includes/class-stodum-settings.php:116
-msgid "Save Settings"
-msgstr "Сохранить настройки"
-
-#: includes/class-stodum-settings.php:123
-msgid "Code Block Migrator"
-msgstr "Мигратор блоков кода"
-
-#: includes/class-stodum-settings.php:124
-msgid "Use this tool to automatically migrate old <code>core/code</code> or <code>core/preformatted</code> blocks into modern <code>stodum/code-block</code> structures."
-msgstr "Используйте этот инструмент для автоматического конвертирования старых блоков <code>core/code</code> или <code>core/preformatted</code> в современный <code>stodum/code-block</code>."
-
-#: includes/class-stodum-settings.php:127
-msgid "Scan Posts"
-msgstr "Сканировать записи"
-
-#: includes/class-stodum-settings.php:131
-msgid "Scan Results"
-msgstr "Результаты сканирования"
-
-#: includes/class-stodum-settings.php:134
-msgid "Migrate All Found Posts"
-msgstr "Конвертировать все найденные"
-
-#: includes/class-stodum-settings.php:143
-#: includes/class-stodum-settings.php:73
-msgid "Preview"
-msgstr "Предпросмотр"
-
-#: includes/class-stodum-settings.php:146
-msgid "Loading..."
-msgstr "Загрузка..."
-
-#: includes/class-stodum-settings.php:149
-msgid "Cancel"
-msgstr "Отмена"
-
-#: includes/class-stodum-settings.php:151
-#: includes/class-stodum-settings.php:78
-msgid "Migrate This Post"
-msgstr "Конвертировать запись"
-
-#: includes/class-stodum-settings.php:108
-msgid "Settings Saved"
-msgstr "Настройки сохранены"
-
-#: includes/class-stodum-settings.php:62
+#: includes/class-stodum-settings.php:63
 msgid "Scanning..."
 msgstr "Сканирование..."
 
-#: includes/class-stodum-settings.php:63
+#: includes/class-stodum-settings.php:64
 msgid "Scan failed:"
 msgstr "Ошибка сканирования:"
 
-#: includes/class-stodum-settings.php:64
+#: includes/class-stodum-settings.php:65
 msgid "No legacy code blocks found."
 msgstr "Старых блоков кода не найдено."
 
-#: includes/class-stodum-settings.php:65
-msgid "No posts with legacy code blocks were found. Everything is already migrated."
+#: includes/class-stodum-settings.php:66
+msgid ""
+"No posts with legacy code blocks were found. Everything is already migrated."
 msgstr "Записей со старыми блоками не обнаружено. Всё уже сконвертировано."
 
-#: includes/class-stodum-settings.php:66
+#. translators: 1: post title, 2: number of code blocks in it
+#: includes/class-stodum-settings.php:68
+#, php-format
+msgid "%1$s (%2$s block(s))"
+msgstr "%1$s (блоков: %2$s)"
+
+#. translators: 1: number of code blocks, 2: number of posts
+#: includes/class-stodum-settings.php:70
+#, php-format
 msgid "Found %1$s block(s) across %2$s post(s)."
 msgstr "Найдено %1$s блок(ов) в %2$s запис(ях)."
 
-#: includes/class-stodum-settings.php:67
+#: includes/class-stodum-settings.php:71
 msgid "Posts with legacy blocks"
 msgstr "Записей со старыми блоками"
 
-#: includes/class-stodum-settings.php:68
+#: includes/class-stodum-settings.php:72
 msgid "Total code blocks to migrate"
 msgstr "Всего блоков для миграции"
 
-#: includes/class-stodum-settings.php:69
+#: includes/class-stodum-settings.php:73
 msgid "Post"
 msgstr "Запись"
 
-#: includes/class-stodum-settings.php:70
+#: includes/class-stodum-settings.php:74
 msgid "Blocks"
 msgstr "Блоки"
 
-#: includes/class-stodum-settings.php:71
+#: includes/class-stodum-settings.php:75
 msgid "Status"
 msgstr "Статус"
 
-#: includes/class-stodum-settings.php:72
+#: includes/class-stodum-settings.php:76
 msgid "Actions"
 msgstr "Действия"
 
-#: includes/class-stodum-settings.php:73
+#: includes/class-stodum-settings.php:77
 msgid "Pending"
 msgstr "Ожидает"
 
-#: includes/class-stodum-settings.php:75
+#: includes/class-stodum-settings.php:78 includes/class-stodum-settings.php:178
+msgid "Preview"
+msgstr "Предпросмотр"
+
+#: includes/class-stodum-settings.php:79
 msgid "Migrate"
 msgstr "Миграция"
 
-#: includes/class-stodum-settings.php:76
+#: includes/class-stodum-settings.php:80
 msgid "Loading preview..."
 msgstr "Загрузка превью..."
 
-#: includes/class-stodum-settings.php:77
+#: includes/class-stodum-settings.php:81
 msgid "Loading block preview..."
 msgstr "Отрисовка блоков..."
 
-#: includes/class-stodum-settings.php:78
+#: includes/class-stodum-settings.php:82
 msgid "Error:"
 msgstr "Ошибка:"
 
-#: includes/class-stodum-settings.php:79
+#: includes/class-stodum-settings.php:83
 msgid "Migrating..."
 msgstr "Конвертируем..."
 
-#: includes/class-stodum-settings.php:81
+#: includes/class-stodum-settings.php:84 includes/class-stodum-settings.php:187
+msgid "Migrate This Post"
+msgstr "Конвертировать запись"
+
+#: includes/class-stodum-settings.php:85
 msgid "Migration failed:"
 msgstr "Ошибка миграции:"
 
-#: includes/class-stodum-settings.php:82
+#: includes/class-stodum-settings.php:86
 msgid "Migrate all code blocks in this post to StoDum format?"
 msgstr "Конвертировать все блоки в этой записи?"
 
-#: includes/class-stodum-settings.php:83
+#: includes/class-stodum-settings.php:87
 msgid "Done"
 msgstr "Готово"
 
-#: includes/class-stodum-settings.php:84
+#: includes/class-stodum-settings.php:88
 msgid "View Post"
 msgstr "Просмотр"
 
-#: includes/class-stodum-settings.php:85
+#: includes/class-stodum-settings.php:89
 msgid "All posts migrated successfully!"
 msgstr "Все записи успешно конвертированы!"
 
-#: includes/class-stodum-settings.php:86
-msgid "Are you sure you want to migrate ALL found posts? This action cannot be undone."
-msgstr "Вы уверены, что хотите сконвертировать ВСЕ найденные записи? Это действие необратимо."
+#: includes/class-stodum-settings.php:90
+msgid ""
+"Are you sure you want to migrate ALL found posts? This action cannot be "
+"undone."
+msgstr ""
+"Вы уверены, что хотите сконвертировать ВСЕ найденные записи? Это действие "
+"необратимо."
 
-#: stodum-code-block.php:35
+#: includes/class-stodum-settings.php:112
+msgid "Settings Saved"
+msgstr "Настройки сохранены"
+
+#: includes/class-stodum-settings.php:123
+msgid "Frontend Settings"
+msgstr "Настройки интерфейса"
+
+#: includes/class-stodum-settings.php:128
+msgid "Default Theme"
+msgstr "Тема по умолчанию"
+
+#: includes/class-stodum-settings.php:131 blocks/code/editor.js:50
+msgid "Dark"
+msgstr "Темная"
+
+#: includes/class-stodum-settings.php:132 blocks/code/editor.js:51
+msgid "Light"
+msgstr "Светлая"
+
+#: includes/class-stodum-settings.php:134
+msgid "Select the default colour mode for your code blocks."
+msgstr "Укажите цветовую схему для блоков кода по умолчанию."
+
+#: includes/class-stodum-settings.php:138
+msgid "Syntax Color Theme"
+msgstr "Цветовая тема синтаксиса"
+
+#: includes/class-stodum-settings.php:147
+msgid "Select the syntax highlighting color palette."
+msgstr "Выберите палитру для подсветки синтаксиса."
+
+#: includes/class-stodum-settings.php:151
+msgid "Save Settings"
+msgstr "Сохранить настройки"
+
+#: includes/class-stodum-settings.php:156
+msgid "Code Block Migrator"
+msgstr "Мигратор блоков кода"
+
+#: includes/class-stodum-settings.php:157
+msgid ""
+"Use this tool to automatically migrate old <code>core/code</code> or "
+"<code>core/preformatted</code> blocks into modern <code>stodum/code-block</"
+"code> structures."
+msgstr ""
+"Используйте этот инструмент для автоматического конвертирования старых "
+"блоков <code>core/code</code> или <code>core/preformatted</code> в "
+"современный <code>stodum/code-block</code>."
+
+#: includes/class-stodum-settings.php:160
+msgid "Scan Posts"
+msgstr "Сканировать записи"
+
+#: includes/class-stodum-settings.php:165
+msgid "Scan Results"
+msgstr "Результаты сканирования"
+
+#: includes/class-stodum-settings.php:168
+msgid "Migrate All Found Posts"
+msgstr "Конвертировать все найденные"
+
+#: includes/class-stodum-settings.php:182
+msgid "Loading..."
+msgstr "Загрузка..."
+
+#: includes/class-stodum-settings.php:185
+msgid "Cancel"
+msgstr "Отмена"
+
+#: stodum-code-block.php:36
 msgid "Atom One"
 msgstr "Atom One"
 
-#: stodum-code-block.php:43
+#: stodum-code-block.php:45
 msgid "GitHub"
 msgstr "GitHub"
 
-#: stodum-code-block.php:51
+#: stodum-code-block.php:54
 msgid "Monokai"
 msgstr "Monokai"
 
-#: stodum-code-block.php:59
+#: stodum-code-block.php:63
 msgid "Nord"
 msgstr "Nord"
 
-#: stodum-code-block.php:67
+#: stodum-code-block.php:72
 msgid "Dracula"
 msgstr "Dracula"
 
-#: stodum-code-block.php:75
+#: stodum-code-block.php:81
 msgid "Tokyo Night"
 msgstr "Tokyo Night"
 
-#: stodum-code-block.php:83
+#: stodum-code-block.php:90
 msgid "VS 2015 / VS Code"
 msgstr "VS 2015 / VS Code"
 
-#: stodum-code-block.php:91
+#: stodum-code-block.php:99
 msgid "Stack Overflow"
 msgstr "Stack Overflow"
 
-#: stodum-code-block.php:99
+#: stodum-code-block.php:108
 msgid "Night Owl"
 msgstr "Night Owl"
 
-#: stodum-code-block.php:107
+#: stodum-code-block.php:117
 msgid "Gruvbox"
 msgstr "Gruvbox"
 
-#: stodum-code-block.php:115
+#: stodum-code-block.php:126
 msgid "Solarized"
 msgstr "Solarized"
 
-#: stodum-code-block.php:123
+#: stodum-code-block.php:135
 msgid "Panda"
 msgstr "Panda"
 
-#: stodum-code-block.php:131
+#: stodum-code-block.php:144
 msgid "Tomorrow Night"
 msgstr "Tomorrow Night"
 
-#: stodum-code-block.php:139
+#: stodum-code-block.php:153
 msgid "Shades of Purple"
 msgstr "Shades of Purple"
 
-#: stodum-code-block.php:200
+#: stodum-code-block.php:208
 msgid "core code block found"
 msgstr "найден старый блок кода"
 
-#: stodum-code-block.php:201
+#: stodum-code-block.php:209
 msgid "core code blocks found"
 msgstr "найдено старых блоков кода"
 
-#: stodum-code-block.php:202
+#: stodum-code-block.php:210
 msgid "Convert All to StoDum"
 msgstr "Конвертировать блоки в StoDum"
 
-#: stodum-code-block.php:248
+#. translators: %d: number of merged fragments (always 1 here)
+#: stodum-code-block.php:212
+#, php-format
+msgid "Merged %d split fragment back into code block"
+msgstr "Склеен %d разорванный фрагмент обратно в блок кода"
+
+#. translators: %d: number of merged fragments
+#: stodum-code-block.php:214
+#, php-format
+msgid "Merged %d split fragments back into code block"
+msgstr "Склеено разорванных фрагментов обратно в блок кода: %d"
+
+#: stodum-code-block.php:289
 msgid "Toggle line numbers"
 msgstr "Нумерация строк"
 
-#: stodum-code-block.php:251
+#: stodum-code-block.php:292
 msgid "Toggle light/dark mode"
 msgstr "Переключить темную/светлую тему"
 
-#: stodum-code-block.php:251
-msgid "Toggle theme"
-msgstr "Смена темы"
-
-#: stodum-code-block.php:255
+#: stodum-code-block.php:296
 msgid "Copy to clipboard"
 msgstr "Скопировать в буфер"
 
-#: stodum-code-block.php:255
+#: stodum-code-block.php:296
 msgid "Copy code"
 msgstr "Скопировать код"
 
-#: stodum-code-block.php:258
+#: stodum-code-block.php:299 blocks/code/editor.js:251
+#: blocks/code/editor.js:259
 msgid "Copy"
 msgstr "Забрать"
 
-#: blocks/code/editor.js:15
+#: blocks/code/editor.js:16
 msgid "Auto Detect"
 msgstr "Автоопределение"
 
-#: blocks/code/editor.js:51
+#: blocks/code/editor.js:49
 msgid "Default (from settings)"
 msgstr "По умолчанию (из настроек)"
+
+#: blocks/code/editor.js:258
+msgid "Copied!"
+msgstr "Скопировано!"
+
+#: blocks/code/editor.js:303
+msgid "Code Settings"
+msgstr "Настройки кода"
+
+#: blocks/code/editor.js:305
+msgid "Language"
+msgstr "Язык"
+
+#: blocks/code/editor.js:311
+msgid "Title"
+msgstr "Заголовок"
+
+#: blocks/code/editor.js:319
+msgid "StoDum Code"
+msgstr "StoDum Code"
+
+#: blocks/code/editor.js:323
+msgid "Paste"
+msgstr "Вставить"
+
+#: blocks/code/editor.js:324
+msgid "Clear"
+msgstr "Очистить"
+
+#: blocks/code/block.json
+msgctxt "block title"
+msgid "StoDum Code Block"
+msgstr "StoDum Code Block"
+
+#: blocks/code/block.json
+msgctxt "block description"
+msgid ""
+"Syntax highlighted code block with auto language detection, clipboard copy, "
+"and dark/light mode toggle."
+msgstr ""
+
+#: blocks/code/block.json
+msgctxt "block keyword"
+msgid "code"
+msgstr "код"
+
+#: blocks/code/block.json
+msgctxt "block keyword"
+msgid "syntax"
+msgstr "синтаксис"
+
+#: blocks/code/block.json
+msgctxt "block keyword"
+msgid "highlight"
+msgstr "подсветка"
+
+#: blocks/code/block.json
+msgctxt "block keyword"
+msgid "developer"
+msgstr "разработчик"
+
+#: blocks/code/block.json
+msgctxt "block keyword"
+msgid "programming"
+msgstr "программирование"
+
+#~ msgid "Toggle theme"
+#~ msgstr "Смена темы"

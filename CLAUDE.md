@@ -7,7 +7,7 @@
 
 - **Название**: StoDum Code Block
 - **Тип**: WordPress плагин (Gutenberg-блок с Server-Side Rendering)
-- **Версия**: 1.0.7
+- **Версия**: 1.0.9
 - **Лицензия**: GPL-2.0-or-later
 - **Автор**: kotophalk
 - **Репозиторий**: https://github.com/kotophalk/stodum-code-block
@@ -15,7 +15,7 @@
 ## Назначение
 
 Легковесный блок кода для WordPress Gutenberg с:
-- Подсветкой синтаксиса через Highlight.js (CDN)
+- Подсветкой синтаксиса через Highlight.js (локально, `vendor/hljs/`)
 - Автоматическим определением языка (эвристики)
 - Переключением светлой/тёмной темы
 - 14 цветовых палитрами
@@ -28,7 +28,7 @@
 |---|---|---|
 | PHP | WordPress Plugin API | 7.4+ |
 | WordPress | Gutenberg Block API v3 | 6.0+ |
-| Highlight.js | CDN (cdnjs.cloudflare.com) | 11.11.1 |
+| Highlight.js | локально, `vendor/hljs/` (BSD-3) | 11.11.1 |
 | JavaScript | Vanilla JS (IIFE, no build step) | ES5+ |
 | CSS | Vanilla CSS с Custom Properties | — |
 | i18n | WordPress l10n (PHP + JS) | — |

@@ -30,18 +30,22 @@ class StoDum_Migrator {
         self::check_ajax_permissions();
 
         global $wpdb;
-        $posts_table = $wpdb->posts;
-        
-        $query = $wpdb->prepare( "
-            SELECT ID, post_title, post_content, post_type, post_status, post_date 
-            FROM {$posts_table} 
-            WHERE post_status IN ('publish', 'draft', 'private', 'pending', 'future')
-            AND (post_content LIKE %s OR post_content LIKE %s)
-            ORDER BY post_date DESC
-            LIMIT 500
-        ", '%<!-- wp:code %', '%<!-- wp:preformatted %' );
-        
-        $posts = $wpdb->get_results( $query );
+
+        // One-off admin scan for legacy blocks; a LIKE over post_content has no
+        // WP_Query equivalent and the result is not worth caching.
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+        $posts = $wpdb->get_results(
+            $wpdb->prepare(
+                "SELECT ID, post_title, post_content, post_type, post_status, post_date
+                FROM {$wpdb->posts}
+                WHERE post_status IN ('publish', 'draft', 'private', 'pending', 'future')
+                AND (post_content LIKE %s OR post_content LIKE %s)
+                ORDER BY post_date DESC
+                LIMIT 500",
+                '%<!-- wp:code %',
+                '%<!-- wp:preformatted %'
+            )
+        );
         
         $found = [];
         $total_blocks = 0;
@@ -71,7 +75,8 @@ class StoDum_Migrator {
     public static function ajax_preview() {
         self::check_ajax_permissions();
 
-        $post_id = isset( $_POST['post_id'] ) ? intval( $_POST['post_id'] ) : 0;
+        // Nonce verified in check_ajax_permissions() above.
+        $post_id = isset( $_POST['post_id'] ) ? intval( wp_unslash( $_POST['post_id'] ) ) : 0; // phpcs:ignore WordPress.Security.NonceVerification.Missing
         if ( ! $post_id ) {
             wp_send_json_error( 'Invalid post ID' );
             return;
@@ -84,13 +89,18 @@ class StoDum_Migrator {
         }
 
         $previews = self::get_migration_preview( $post->post_content );
-        wp_send_json_success( [ 'blocks' => $previews ] );
+        wp_send_json_success( [
+            'title'       => $post->post_title,
+            'block_count' => count( $previews ),
+            'blocks'      => $previews,
+        ] );
     }
 
     public static function ajax_migrate_single() {
         self::check_ajax_permissions();
 
-        $post_id = isset( $_POST['post_id'] ) ? intval( $_POST['post_id'] ) : 0;
+        // Nonce verified in check_ajax_permissions() above.
+        $post_id = isset( $_POST['post_id'] ) ? intval( wp_unslash( $_POST['post_id'] ) ) : 0; // phpcs:ignore WordPress.Security.NonceVerification.Missing
         if ( ! $post_id ) {
             wp_send_json_error( 'Invalid post ID' );
             return;
@@ -118,7 +128,8 @@ class StoDum_Migrator {
     public static function ajax_migrate_all() {
         self::check_ajax_permissions();
 
-        $post_ids = isset( $_POST['post_ids'] ) && is_array( $_POST['post_ids'] ) ? array_map( 'intval', $_POST['post_ids'] ) : [];
+        // Nonce verified in check_ajax_permissions() above.
+        $post_ids = isset( $_POST['post_ids'] ) && is_array( $_POST['post_ids'] ) ? array_map( 'intval', wp_unslash( $_POST['post_ids'] ) ) : []; // phpcs:ignore WordPress.Security.NonceVerification.Missing
         if ( empty( $post_ids ) ) {
             wp_send_json_error( 'No post IDs provided' );
             return;

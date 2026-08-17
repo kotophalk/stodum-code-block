@@ -1,5 +1,5 @@
 /**
- * StoDum Code Block — Frontend Script v1.0.7
+ * StoDum Code Block — Frontend Script v1.0.9
  *
  * Reads theme colours from stodumCodeConfig (set by PHP) and applies them
  * via CSS custom properties so any highlight.js theme pair works.
@@ -80,18 +80,18 @@
         var dark = null, light = null;
         for ( var i = 0; i < links.length; i++ ) {
             var id = links[i].getAttribute( 'id' ) || '';
-            if ( id === 'hljs-theme-dark-css' ) dark = links[i];
-            if ( id === 'hljs-theme-light-css' ) light = links[i];
+            if ( id === 'stodum-hljs-theme-dark-css' ) dark = links[i];
+            if ( id === 'stodum-hljs-theme-light-css' ) light = links[i];
         }
         // Fallback: find by href pattern
         if ( !dark || !light ) {
             for ( var j = 0; j < links.length; j++ ) {
                 var href = links[j].getAttribute( 'href' ) || '';
-                if ( !dark && href.indexOf( 'highlight.js' ) !== -1 && href.indexOf( 'styles/' ) !== -1 ) {
+                if ( !dark && href.indexOf( 'hljs/styles/' ) !== -1 ) {
                     // First hljs style link = dark
                     if ( !dark ) { dark = links[j]; continue; }
                 }
-                if ( dark && !light && href.indexOf( 'highlight.js' ) !== -1 && href.indexOf( 'styles/' ) !== -1 ) {
+                if ( dark && !light && href.indexOf( 'hljs/styles/' ) !== -1 ) {
                     light = links[j];
                 }
             }

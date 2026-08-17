@@ -64,6 +64,9 @@ class StoDum_Settings {
                 'scan_failed'        => __( 'Scan failed:', 'stodum-code-block' ),
                 'no_blocks'          => __( 'No legacy code blocks found.', 'stodum-code-block' ),
                 'no_blocks_hint'     => __( 'No posts with legacy code blocks were found. Everything is already migrated.', 'stodum-code-block' ),
+                /* translators: 1: post title, 2: number of code blocks in it */
+                'preview_title'      => __( '%1$s (%2$s block(s))', 'stodum-code-block' ),
+                /* translators: 1: number of code blocks, 2: number of posts */
                 'found_blocks'       => __( 'Found %1$s block(s) across %2$s post(s).', 'stodum-code-block' ),
                 'posts_with_legacy'  => __( 'Posts with legacy blocks', 'stodum-code-block' ),
                 'total_blocks_mig'   => __( 'Total code blocks to migrate', 'stodum-code-block' ),

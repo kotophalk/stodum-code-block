@@ -170,7 +170,7 @@
                 return;
             }
 
-            modalTitle.textContent = data.title + ' (' + data.block_count + ' block' + (data.block_count !== 1 ? 's' : '') + ')';
+            modalTitle.textContent = csDevtoolsMigrate.i18n.preview_title.replace('%1$s', data.title).replace('%2$s', data.block_count);
 
             var html = '';
             data.blocks.forEach(function (block) {

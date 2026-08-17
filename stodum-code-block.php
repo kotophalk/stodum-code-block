@@ -3,9 +3,11 @@
  * Plugin Name: StoDum Code Block
  * Plugin URI: https://github.com/kotophalk/stodum-code-block
  * Description: Lightweight Gutenberg code block with Highlight.js syntax highlighting and legacy block migrator.
- * Version: 1.0.8
+ * Version: 1.0.9
  * Author: kotophalk
+ * Author URI: https://delosvod.ru/
  * License: GPL-2.0-or-later
+ * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  * Requires at least: 6.0
  * Requires PHP: 7.4
  * Text Domain: stodum-code-block
@@ -22,7 +24,7 @@ require_once plugin_dir_path( __FILE__ ) . 'includes/class-stodum-migrator.php';
 
 class StoDum_Code_Block {
 
-    const VERSION      = '1.0.8';
+    const VERSION      = '1.0.9';
     const HLJS_VERSION = '11.11.1';
 
     private static $instance_count  = 0;
@@ -160,6 +162,9 @@ class StoDum_Code_Block {
     }
 
     public static function load_textdomain() {
+        // Kept on purpose: the bundled ru_RU translation lives in the plugin's own
+        // languages/ directory and is not picked up automatically until a language
+        // pack exists on translate.wordpress.org.
         load_plugin_textdomain( 'stodum-code-block', false, dirname( plugin_basename( __FILE__ ) ) . '/languages' );
     }
 
@@ -175,17 +180,17 @@ class StoDum_Code_Block {
     public static function register_block() {
         $hljs_base = plugins_url( 'vendor/hljs', __FILE__ );
 
-        wp_register_script( 'hljs-core', $hljs_base . '/highlight.min.js', [], self::HLJS_VERSION, true );
+        wp_register_script( 'stodum-hljs-core', $hljs_base . '/highlight.min.js', [], self::HLJS_VERSION, true );
 
         $theme_pair = get_option( 'stodum_code_theme_pair', 'atom-one' );
         $registry   = self::get_theme_registry();
         $pair       = isset( $registry[ $theme_pair ] ) ? $registry[ $theme_pair ] : $registry['atom-one'];
 
-        wp_register_style( 'hljs-theme-dark',  $hljs_base . '/styles/' . $pair['dark_css']  . '.min.css', [], self::HLJS_VERSION );
-        wp_register_style( 'hljs-theme-light', $hljs_base . '/styles/' . $pair['light_css'] . '.min.css', [], self::HLJS_VERSION );
+        wp_register_style( 'stodum-hljs-theme-dark',  $hljs_base . '/styles/' . $pair['dark_css']  . '.min.css', [], self::HLJS_VERSION );
+        wp_register_style( 'stodum-hljs-theme-light', $hljs_base . '/styles/' . $pair['light_css'] . '.min.css', [], self::HLJS_VERSION );
 
-        wp_register_style( 'stodum-code-block-frontend', plugins_url( 'assets/code-block.css', __FILE__ ), [ 'hljs-theme-dark', 'hljs-theme-light' ], self::VERSION );
-        wp_register_script( 'stodum-code-block-frontend', plugins_url( 'assets/code-block.js', __FILE__ ), [ 'hljs-core' ], self::VERSION, true );
+        wp_register_style( 'stodum-code-block-frontend', plugins_url( 'assets/code-block.css', __FILE__ ), [ 'stodum-hljs-theme-dark', 'stodum-hljs-theme-light' ], self::VERSION );
+        wp_register_script( 'stodum-code-block-frontend', plugins_url( 'assets/code-block.js', __FILE__ ), [ 'stodum-hljs-core' ], self::VERSION, true );
         wp_register_style( 'stodum-code-block-editor', plugins_url( 'assets/code-block-editor.css', __FILE__ ), [], self::VERSION );
         wp_register_script( 'stodum-code-block-editor-script', plugins_url( 'blocks/code/editor.js', __FILE__ ), [ 'wp-blocks', 'wp-element', 'wp-block-editor', 'wp-components', 'wp-i18n', 'wp-data', 'wp-hooks' ], self::VERSION, true );
 
@@ -203,7 +208,9 @@ class StoDum_Code_Block {
             'found_1'  => __( 'core code block found', 'stodum-code-block' ),
             'found_n'  => __( 'core code blocks found', 'stodum-code-block' ),
             'convert'  => __( 'Convert All to StoDum', 'stodum-code-block' ),
+            /* translators: %d: number of merged fragments (always 1 here) */
             'merged_1' => __( 'Merged %d split fragment back into code block', 'stodum-code-block' ),
+            /* translators: %d: number of merged fragments */
             'merged_n' => __( 'Merged %d split fragments back into code block', 'stodum-code-block' ),
         ] );
         wp_add_inline_style( 'stodum-code-block-editor', self::get_convert_toast_css() );
@@ -267,6 +274,10 @@ class StoDum_Code_Block {
             $data_attrs .= ' data-stodum-lang="' . esc_attr( $lang ) . '"';
         }
 
+        // Escaped here; square brackets are then replaced with entities so WordPress
+        // does not treat code samples like [foo] as shortcodes.
+        $code_html = str_replace( [ '[', ']' ], [ '&#91;', '&#93;' ], esc_html( $code ) );
+
         ob_start();
         ?>
         <div <?php echo $wrapper_attrs . $data_attrs; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped above ?>>
@@ -290,7 +301,7 @@ class StoDum_Code_Block {
                 </div>
             </div>
             <div class="stodum-code-body">
-                <pre><code class="<?php echo esc_attr( $lang_class ); ?>"><?php echo str_replace( [ '[', ']' ], [ '&#91;', '&#93;' ], esc_html( $code ) ); ?></code></pre>
+                <pre><code class="<?php echo esc_attr( $lang_class ); ?>"><?php echo $code_html; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- esc_html() applied above. ?></code></pre>
             </div>
         </div>
         <?php
@@ -301,10 +312,10 @@ class StoDum_Code_Block {
         if ( self::$assets_enqueued ) return;
         self::$assets_enqueued = true;
 
-        wp_enqueue_style( 'hljs-theme-dark' );
-        wp_enqueue_style( 'hljs-theme-light' );
+        wp_enqueue_style( 'stodum-hljs-theme-dark' );
+        wp_enqueue_style( 'stodum-hljs-theme-light' );
         wp_enqueue_style( 'stodum-code-block-frontend' );
-        wp_enqueue_script( 'hljs-core' );
+        wp_enqueue_script( 'stodum-hljs-core' );
         wp_enqueue_script( 'stodum-code-block-frontend' );
 
         $theme_pair    = get_option( 'stodum_code_theme_pair', 'atom-one' );

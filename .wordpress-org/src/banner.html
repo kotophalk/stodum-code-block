@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="utf-8">
+<link rel="stylesheet" href="atom-one-dark.min.css">
+<link rel="stylesheet" href="code-block.css">
+<style>
+@font-face{font-family:'Geist Sans';src:url('Geist-Variable.woff2') format('woff2');font-weight:100 900}
+@font-face{font-family:'Geist Mono';src:url('GeistMono-Variable.woff2') format('woff2');font-weight:100 900}
+html,body{margin:0;padding:0}
+body{width:772px;height:250px;overflow:hidden;background:#171717;color:#fff;font-family:'Geist Sans',sans-serif;position:relative;-webkit-font-smoothing:antialiased}
+.grid{position:absolute;inset:0;
+  background-image:linear-gradient(rgba(255,255,255,.055) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.055) 1px,transparent 1px);
+  background-size:20px 20px;
+  -webkit-mask-image:linear-gradient(90deg,rgba(0,0,0,.35),rgba(0,0,0,1) 60%);mask-image:linear-gradient(90deg,rgba(0,0,0,.35),rgba(0,0,0,1) 60%)}
+.copy{position:absolute;left:44px;top:0;bottom:0;width:340px;display:flex;flex-direction:column;justify-content:center;gap:12px}
+.label{font-family:'Geist Mono',monospace;font-size:12px;letter-spacing:.06em;color:#a3a3a3;font-weight:500}
+h1{margin:0;font-size:54px;line-height:1;font-weight:600;letter-spacing:-.05em;color:#fff}
+.sub{font-size:15px;line-height:1.45;color:#a3a3a3;margin:0}
+.sub b{color:#fff;font-weight:500}
+.tag{font-family:'Geist Mono',monospace;font-size:11px;color:#666;letter-spacing:.02em}
+/* настоящий блок плагина */
+.stage{position:absolute;right:36px;top:44px;width:334px}
+.stage .stodum-code-wrapper{margin:0;font-size:10.5px;line-height:1.6;box-shadow:0 8px 28px rgba(0,0,0,.45);font-family:'Geist Mono','SF Mono',Consolas,monospace}
+.stage .stodum-code-toolbar{padding:5px 10px;min-height:30px}
+.stage .stodum-code-body pre{margin:0;padding:10px 12px;overflow:hidden}
+.stage .stodum-code-body code{font-family:inherit;background:transparent;padding:0}
+.stage .stodum-code-brand{color:#61afef;text-decoration:none;font-size:.6rem}
+.stage .stodum-code-lang-badge{font-size:.55rem}
+.stage .stodum-code-copy .stodum-copy-label{font-size:.6rem}
+.stage button{color:var(--cs-text-muted)}
+</style></head><body>
+<div class="grid"></div>
+<div class="copy">
+  <div class="label">[ БЕРИТЕ И ПОЛЬЗУЙТЕСЬ ]</div>
+  <h1>Кодосвет</h1>
+  <p class="sub">Блок кода для Gutenberg: <b>Highlight.js внутри</b>, 14 палитр, автоопределение языка, мигратор со старых <b>core/code</b>. Без сборки и без CDN.</p>
+  <div class="tag">StoDum Code Block · delosvod.ru</div>
+</div>
+<div class="stage">
+  <div class="stodum-code-wrapper" data-active-theme="dark" data-stodum-lang="php">
+    <div class="stodum-code-toolbar">
+      <span class="stodum-code-brand"><span class="stodum-brand-bolt">&#9889;</span> StoDum</span>
+      <div class="stodum-code-title">functions.php</div>
+      <div class="stodum-code-actions">
+        <span class="stodum-code-lang-badge">PHP</span>
+        <button class="stodum-code-theme-toggle" aria-label="theme"><svg class="stodum-icon-sun" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button>
+        <button class="stodum-code-copy" aria-label="copy"><svg class="stodum-icon-copy" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="stodum-copy-label">Copy</span></button>
+      </div>
+    </div>
+    <div class="stodum-code-body"><pre><code class="language-php">// Ассеты — только там, где есть блок
+if ( has_block( 'stodum/code-block' ) ) {
+    wp_enqueue_script( 'stodum-hljs-core' );
+}
+echo esc_html( $code ); // и никакого CDN</code></pre></div>
+  </div>
+</div>
+<script src="highlight.min.js"></script>
+<script>hljs.highlightAll();</script>
+</body></html>
