@@ -1,5 +1,5 @@
 /**
- * StoDum Code Block - Auto Convert
+ * Kodosvet Code Block - Auto Convert
  *
  * This script runs independently of the block registration.
  * It watches for core/code and core/preformatted blocks and provides

@@ -158,9 +158,9 @@ HLJS: Два <link> тега (dark + light), один disabled
 register_block()
   ├─ wp_register_style('stodum-hljs-theme-dark')     ← только зарегистрирован
   ├─ wp_register_style('stodum-hljs-theme-light')    ← только зарегистрирован
-  ├─ wp_register_style('stodum-code-block-frontend')  ← только зарегистрирован
+  ├─ wp_register_style('kodosvet-code-block-frontend')  ← только зарегистрирован
   ├─ wp_register_script('stodum-hljs-core')          ← только зарегистрирован
-  └─ wp_register_script('stodum-code-block-frontend') ← только зарегистрирован
+  └─ wp_register_script('kodosvet-code-block-frontend') ← только зарегистрирован
 
 render_block() [вызывается ТОЛЬКО если блок на странице]
   └─ maybe_enqueue_frontend()

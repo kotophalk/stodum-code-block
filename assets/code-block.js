@@ -1,5 +1,5 @@
 /**
- * StoDum Code Block — Frontend Script v1.0.9
+ * Kodosvet Code Block — Frontend Script v1.1.0
  *
  * Reads theme colours from stodumCodeConfig (set by PHP) and applies them
  * via CSS custom properties so any highlight.js theme pair works.
@@ -218,7 +218,7 @@
                         copyBtn.classList.remove( 'copied' );
                     }, 2000 );
                 } ).catch( function( e ) {
-                    console.error( 'stodum-code-block: clipboard write failed', e );
+                    console.error( 'kodosvet-code-block: clipboard write failed', e );
                 } );
             } );
         }

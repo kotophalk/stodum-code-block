@@ -38,12 +38,12 @@ sanitize_key( $_GET['key'] );
 
 ```php
 // Все видимые строки:
-__( 'Text', 'stodum-code-block' )
-esc_html__( 'Text', 'stodum-code-block' )
-esc_html_e( 'Text', 'stodum-code-block' )
-esc_attr_e( 'Text', 'stodum-code-block' )
+__( 'Text', 'kodosvet-code-block' )
+esc_html__( 'Text', 'kodosvet-code-block' )
+esc_html_e( 'Text', 'kodosvet-code-block' )
+esc_attr_e( 'Text', 'kodosvet-code-block' )
 
-// Text domain: stodum-code-block (всегда литерал, не переменная)
+// Text domain: kodosvet-code-block (всегда литерал, не переменная)
 ```
 
 ### Именование
@@ -77,7 +77,7 @@ var useBlockProps = wp.blockEditor.useBlockProps;
 
 // Блок edit — через el() вызовы (без JSX):
 el( 'div', blockProps,
-    el( 'span', {}, __( 'Label', 'stodum-code-block' ) )
+    el( 'span', {}, __( 'Label', 'kodosvet-code-block' ) )
 );
 
 // save: return null (SSR-блок)
@@ -88,7 +88,7 @@ el( 'div', blockProps,
 ```js
 // Используй wp.i18n.__() для всех видимых строк:
 var __ = wp.i18n.__;
-__( 'Copy', 'stodum-code-block' );
+__( 'Copy', 'kodosvet-code-block' );
 
 // Для скриптов без wp.i18n (convert.js) — используй wp_localize_script:
 // PHP: wp_localize_script( 'handle', 'stodumConvertI18n', [...] );
@@ -159,7 +159,7 @@ i18n: add missing translation for Paste button
 ### Версионирование
 
 При бампе версии обновлять **все 4 места**:
-1. `stodum-code-block.php` → Plugin Header `Version:`
-2. `stodum-code-block.php` → `const VERSION`
+1. `kodosvet-code-block.php` → Plugin Header `Version:`
+2. `kodosvet-code-block.php` → `const VERSION`
 3. `blocks/code/block.json` → `"version"`
 4. `CHANGELOG.md` → новая секция

@@ -1,8 +1,8 @@
 <?php
 /**
- * StoDum Code Block Migrator Logic
+ * Kodosvet Code Block Migrator Logic
  *
- * @package StoDum_Code_Block
+ * @package Kodosvet_Code_Block
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -242,7 +242,7 @@ class StoDum_Migrator {
                     'json', 'html', 'css', 'sql', 'go', 'rust', 'c', 'cpp', 'c++', 'csharp', 'cs', 
                     'java', 'ruby', 'rb', 'swift', 'toml', 'yaml', 'yml', 'xml', 'md', 'markdown'
                 ];
-                if ( ! in_array( $lang, $known_langs ) ) {
+                if ( ! in_array( $lang, $known_langs, true ) ) {
                     // Check if it's an alias we should resolve
                     $aliases = [
                         'js' => 'javascript', 'ts' => 'typescript', 'py' => 'python', 'rb' => 'ruby',

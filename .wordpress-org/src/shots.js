@@ -47,7 +47,7 @@ const BASE = 'http://localhost:8891';
   catch(e){ console.log('select failed', e.message); }
   await page.screenshot({path:OUT+'/screenshot-2.png'});
   // 3. migrator
-  await page.goto(BASE+'/wp-admin/tools.php?page=stodum-code-block', {waitUntil:'load', timeout:90000});
+  await page.goto(BASE+'/wp-admin/tools.php?page=kodosvet-code-block', {waitUntil:'load', timeout:90000});
   await page.waitForTimeout(500);
   const scan = await page.$('#cs-scan-btn, #stodum-scan-btn, button.cs-scan, #scan-posts');
   const btn = scan || (await page.getByRole('button',{name:/scan/i}).first());

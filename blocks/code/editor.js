@@ -13,7 +13,7 @@
 
 
     var languageOptions = [
-        { label: __( 'Auto Detect', 'stodum-code-block' ), value: '' },
+        { label: __( 'Auto Detect', 'kodosvet-code-block' ), value: '' },
         { label: 'Bash / Shell', value: 'bash' },
         { label: 'C', value: 'c' },
         { label: 'C++', value: 'cpp' },
@@ -46,9 +46,9 @@
     ];
 
     var themeOptions = [
-        { label: __( 'Default (from settings)', 'stodum-code-block' ), value: '' },
-        { label: __( 'Dark', 'stodum-code-block' ), value: 'dark' },
-        { label: __( 'Light', 'stodum-code-block' ), value: 'light' }
+        { label: __( 'Default (from settings)', 'kodosvet-code-block' ), value: '' },
+        { label: __( 'Dark', 'kodosvet-code-block' ), value: 'dark' },
+        { label: __( 'Light', 'kodosvet-code-block' ), value: 'light' }
     ];
 
     function cleanHtml( text ) {
@@ -248,15 +248,15 @@
                 }
             }
 
-            var copyLabelState = element.useState( __( 'Copy', 'stodum-code-block' ) );
+            var copyLabelState = element.useState( __( 'Copy', 'kodosvet-code-block' ) );
             var getCopyLabel = copyLabelState[0], setCopyLabel = copyLabelState[1];
 
             function onCopyCode() {
                 var code = attributes.content || '';
                 if ( ! code ) return;
                 navigator.clipboard.writeText( code ).then( function() {
-                    setCopyLabel( __( 'Copied!', 'stodum-code-block' ) );
-                    setTimeout( function() { setCopyLabel( __( 'Copy', 'stodum-code-block' ) ); }, 1500 );
+                    setCopyLabel( __( 'Copied!', 'kodosvet-code-block' ) );
+                    setTimeout( function() { setCopyLabel( __( 'Copy', 'kodosvet-code-block' ) ); }, 1500 );
                 } );
             }
 
@@ -300,15 +300,15 @@
 
             return el( Fragment, {},
                 el( InspectorControls, {},
-                    el( PanelBody, { title: __( 'Code Settings', 'stodum-code-block' ), initialOpen: true },
+                    el( PanelBody, { title: __( 'Code Settings', 'kodosvet-code-block' ), initialOpen: true },
                         el( SelectControl, {
-                            label: __( 'Language', 'stodum-code-block' ),
+                            label: __( 'Language', 'kodosvet-code-block' ),
                             value: attributes.language,
                             options: languageOptions,
                             onChange: function( val ) { props.setAttributes( { language: val } ); }
                         } ),
                         el( TextControl, {
-                            label: __( 'Title', 'stodum-code-block' ),
+                            label: __( 'Title', 'kodosvet-code-block' ),
                             value: attributes.title,
                             onChange: function( val ) { props.setAttributes( { title: val } ); }
                         } )
@@ -316,12 +316,12 @@
                 ),
                 el( 'div', blockProps,
                     el( 'div', { className: 'stodum-code-editor-toolbar' },
-                        el( 'span', { className: 'stodum-code-editor-label' }, __( 'StoDum Code', 'stodum-code-block' ) ),
+                        el( 'span', { className: 'stodum-code-editor-label' }, __( 'Kodosvet', 'kodosvet-code-block' ) ),
                         el( 'span', { className: 'stodum-code-editor-lang' + ( attributes.language ? '' : ' stodum-code-editor-lang-auto' ) }, langLabel ),
                         el( 'div', { className: 'stodum-code-editor-toolbar-actions' },
                             el( 'button', { className: 'stodum-code-editor-btn', onClick: onCopyCode }, getCopyLabel ),
-                            el( 'button', { className: 'stodum-code-editor-btn', onClick: onPasteCode }, __( 'Paste', 'stodum-code-block' ) ),
-                            el( 'button', { className: 'stodum-code-editor-btn', onClick: function() { props.setAttributes({content:''}); } }, __( 'Clear', 'stodum-code-block' ) )
+                            el( 'button', { className: 'stodum-code-editor-btn', onClick: onPasteCode }, __( 'Paste', 'kodosvet-code-block' ) ),
+                            el( 'button', { className: 'stodum-code-editor-btn', onClick: function() { props.setAttributes({content:''}); } }, __( 'Clear', 'kodosvet-code-block' ) )
                         )
                     ),
                     el( 'textarea', {

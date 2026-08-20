@@ -1,18 +1,18 @@
 <?php
 /**
- * Plugin Name: StoDum Code Block
- * Plugin URI: https://github.com/kotophalk/stodum-code-block
+ * Plugin Name: Kodosvet Code Block
+ * Plugin URI: https://github.com/kotophalk/kodosvet-code-block
  * Description: Lightweight Gutenberg code block with Highlight.js syntax highlighting and legacy block migrator.
- * Version: 1.0.9
+ * Version: 1.1.0
  * Author: kotophalk
  * Author URI: https://delosvod.ru/
  * License: GPL-2.0-or-later
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  * Requires at least: 6.0
  * Requires PHP: 7.4
- * Text Domain: stodum-code-block
+ * Text Domain: kodosvet-code-block
  *
- * @package StoDum_Code_Block
+ * @package Kodosvet_Code_Block
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -24,7 +24,7 @@ require_once plugin_dir_path( __FILE__ ) . 'includes/class-stodum-migrator.php';
 
 class StoDum_Code_Block {
 
-    const VERSION      = '1.0.9';
+    const VERSION      = '1.1.0';
     const HLJS_VERSION = '11.11.1';
 
     private static $instance_count  = 0;
@@ -33,7 +33,7 @@ class StoDum_Code_Block {
     public static function get_theme_registry(): array {
         return [
             'atom-one' => [
-                'label'        => __( 'Atom One', 'stodum-code-block' ),
+                'label'        => __( 'Atom One', 'kodosvet-code-block' ),
                 'dark_css'     => 'atom-one-dark',
                 'light_css'    => 'atom-one-light',
                 'dark_bg'      => '#282c34',
@@ -42,7 +42,7 @@ class StoDum_Code_Block {
                 'light_toolbar'=> '#e8eaed',
             ],
             'github' => [
-                'label'        => __( 'GitHub', 'stodum-code-block' ),
+                'label'        => __( 'GitHub', 'kodosvet-code-block' ),
                 'dark_css'     => 'github-dark',
                 'light_css'    => 'github',
                 'dark_bg'      => '#24292e',
@@ -51,7 +51,7 @@ class StoDum_Code_Block {
                 'light_toolbar'=> '#f6f8fa',
             ],
             'monokai' => [
-                'label'        => __( 'Monokai', 'stodum-code-block' ),
+                'label'        => __( 'Monokai', 'kodosvet-code-block' ),
                 'dark_css'     => 'monokai',
                 'light_css'    => 'atom-one-light',
                 'dark_bg'      => '#272822',
@@ -60,7 +60,7 @@ class StoDum_Code_Block {
                 'light_toolbar'=> '#e8eaed',
             ],
             'nord' => [
-                'label'        => __( 'Nord', 'stodum-code-block' ),
+                'label'        => __( 'Nord', 'kodosvet-code-block' ),
                 'dark_css'     => 'nord',
                 'light_css'    => 'atom-one-light',
                 'dark_bg'      => '#2e3440',
@@ -69,7 +69,7 @@ class StoDum_Code_Block {
                 'light_toolbar'=> '#e8eaed',
             ],
             'dracula' => [
-                'label'        => __( 'Dracula', 'stodum-code-block' ),
+                'label'        => __( 'Dracula', 'kodosvet-code-block' ),
                 'dark_css'     => 'dracula',
                 'light_css'    => 'atom-one-light',
                 'dark_bg'      => '#282a36',
@@ -78,7 +78,7 @@ class StoDum_Code_Block {
                 'light_toolbar'=> '#e8eaed',
             ],
             'tokyo-night' => [
-                'label'        => __( 'Tokyo Night', 'stodum-code-block' ),
+                'label'        => __( 'Tokyo Night', 'kodosvet-code-block' ),
                 'dark_css'     => 'tokyo-night-dark',
                 'light_css'    => 'tokyo-night-light',
                 'dark_bg'      => '#1a1b26',
@@ -87,7 +87,7 @@ class StoDum_Code_Block {
                 'light_toolbar'=> '#c8c9ce',
             ],
             'vs2015' => [
-                'label'        => __( 'VS 2015 / VS Code', 'stodum-code-block' ),
+                'label'        => __( 'VS 2015 / VS Code', 'kodosvet-code-block' ),
                 'dark_css'     => 'vs2015',
                 'light_css'    => 'vs',
                 'dark_bg'      => '#1e1e1e',
@@ -96,7 +96,7 @@ class StoDum_Code_Block {
                 'light_toolbar'=> '#f3f3f3',
             ],
             'stackoverflow' => [
-                'label'        => __( 'Stack Overflow', 'stodum-code-block' ),
+                'label'        => __( 'Stack Overflow', 'kodosvet-code-block' ),
                 'dark_css'     => 'stackoverflow-dark',
                 'light_css'    => 'stackoverflow-light',
                 'dark_bg'      => '#1c1b1b',
@@ -105,7 +105,7 @@ class StoDum_Code_Block {
                 'light_toolbar'=> '#e8e8e8',
             ],
             'night-owl' => [
-                'label'        => __( 'Night Owl', 'stodum-code-block' ),
+                'label'        => __( 'Night Owl', 'kodosvet-code-block' ),
                 'dark_css'     => 'night-owl',
                 'light_css'    => 'atom-one-light',
                 'dark_bg'      => '#011627',
@@ -114,7 +114,7 @@ class StoDum_Code_Block {
                 'light_toolbar'=> '#e8eaed',
             ],
             'gruvbox' => [
-                'label'        => __( 'Gruvbox', 'stodum-code-block' ),
+                'label'        => __( 'Gruvbox', 'kodosvet-code-block' ),
                 'dark_css'     => 'base16/gruvbox-dark-hard',
                 'light_css'    => 'base16/gruvbox-light-hard',
                 'dark_bg'      => '#1d2021',
@@ -123,7 +123,7 @@ class StoDum_Code_Block {
                 'light_toolbar'=> '#ece8c8',
             ],
             'solarized' => [
-                'label'        => __( 'Solarized', 'stodum-code-block' ),
+                'label'        => __( 'Solarized', 'kodosvet-code-block' ),
                 'dark_css'     => 'base16/solarized-dark',
                 'light_css'    => 'base16/solarized-light',
                 'dark_bg'      => '#002b36',
@@ -132,7 +132,7 @@ class StoDum_Code_Block {
                 'light_toolbar'=> '#eee8d5',
             ],
             'panda' => [
-                'label'        => __( 'Panda', 'stodum-code-block' ),
+                'label'        => __( 'Panda', 'kodosvet-code-block' ),
                 'dark_css'     => 'panda-syntax-dark',
                 'light_css'    => 'panda-syntax-light',
                 'dark_bg'      => '#292a2b',
@@ -141,7 +141,7 @@ class StoDum_Code_Block {
                 'light_toolbar'=> '#d9d9d9',
             ],
             'tomorrow' => [
-                'label'        => __( 'Tomorrow Night', 'stodum-code-block' ),
+                'label'        => __( 'Tomorrow Night', 'kodosvet-code-block' ),
                 'dark_css'     => 'tomorrow-night-bright',
                 'light_css'    => 'atom-one-light',
                 'dark_bg'      => '#000',
@@ -150,7 +150,7 @@ class StoDum_Code_Block {
                 'light_toolbar'=> '#e8eaed',
             ],
             'shades-of-purple' => [
-                'label'        => __( 'Shades of Purple', 'stodum-code-block' ),
+                'label'        => __( 'Shades of Purple', 'kodosvet-code-block' ),
                 'dark_css'     => 'shades-of-purple',
                 'light_css'    => 'atom-one-light',
                 'dark_bg'      => '#2d2b55',
@@ -161,15 +161,7 @@ class StoDum_Code_Block {
         ];
     }
 
-    public static function load_textdomain() {
-        // Kept on purpose: the bundled ru_RU translation lives in the plugin's own
-        // languages/ directory and is not picked up automatically until a language
-        // pack exists on translate.wordpress.org.
-        load_plugin_textdomain( 'stodum-code-block', false, dirname( plugin_basename( __FILE__ ) ) . '/languages' );
-    }
-
     public static function init() {
-        add_action( 'init', [ __CLASS__, 'load_textdomain' ], 1 );
         add_action( 'init', [ __CLASS__, 'register_block' ] );
         add_action( 'enqueue_block_editor_assets', [ __CLASS__, 'enqueue_convert_script' ] );
 
@@ -189,31 +181,31 @@ class StoDum_Code_Block {
         wp_register_style( 'stodum-hljs-theme-dark',  $hljs_base . '/styles/' . $pair['dark_css']  . '.min.css', [], self::HLJS_VERSION );
         wp_register_style( 'stodum-hljs-theme-light', $hljs_base . '/styles/' . $pair['light_css'] . '.min.css', [], self::HLJS_VERSION );
 
-        wp_register_style( 'stodum-code-block-frontend', plugins_url( 'assets/code-block.css', __FILE__ ), [ 'stodum-hljs-theme-dark', 'stodum-hljs-theme-light' ], self::VERSION );
-        wp_register_script( 'stodum-code-block-frontend', plugins_url( 'assets/code-block.js', __FILE__ ), [ 'stodum-hljs-core' ], self::VERSION, true );
-        wp_register_style( 'stodum-code-block-editor', plugins_url( 'assets/code-block-editor.css', __FILE__ ), [], self::VERSION );
-        wp_register_script( 'stodum-code-block-editor-script', plugins_url( 'blocks/code/editor.js', __FILE__ ), [ 'wp-blocks', 'wp-element', 'wp-block-editor', 'wp-components', 'wp-i18n', 'wp-data', 'wp-hooks' ], self::VERSION, true );
+        wp_register_style( 'kodosvet-code-block-frontend', plugins_url( 'assets/code-block.css', __FILE__ ), [ 'stodum-hljs-theme-dark', 'stodum-hljs-theme-light' ], self::VERSION );
+        wp_register_script( 'kodosvet-code-block-frontend', plugins_url( 'assets/code-block.js', __FILE__ ), [ 'stodum-hljs-core' ], self::VERSION, true );
+        wp_register_style( 'kodosvet-code-block-editor', plugins_url( 'assets/code-block-editor.css', __FILE__ ), [], self::VERSION );
+        wp_register_script( 'kodosvet-code-block-editor-script', plugins_url( 'blocks/code/editor.js', __FILE__ ), [ 'wp-blocks', 'wp-element', 'wp-block-editor', 'wp-components', 'wp-i18n', 'wp-data', 'wp-hooks' ], self::VERSION, true );
 
         register_block_type( __DIR__ . '/blocks/code', [
             'render_callback' => [ __CLASS__, 'render_block' ],
-            'editor_script'   => 'stodum-code-block-editor-script',
+            'editor_script'   => 'kodosvet-code-block-editor-script',
         ] );
 
-        wp_set_script_translations( 'stodum-code-block-editor-script', 'stodum-code-block', plugin_dir_path( __FILE__ ) . 'languages' );
+        wp_set_script_translations( 'kodosvet-code-block-editor-script', 'kodosvet-code-block' );
     }
 
     public static function enqueue_convert_script() {
         wp_enqueue_script( 'stodum-convert', plugins_url( 'assets/convert.js', __FILE__ ), [ 'wp-blocks', 'wp-data' ], self::VERSION, true );
         wp_localize_script( 'stodum-convert', 'stodumConvertI18n', [
-            'found_1'  => __( 'core code block found', 'stodum-code-block' ),
-            'found_n'  => __( 'core code blocks found', 'stodum-code-block' ),
-            'convert'  => __( 'Convert All to StoDum', 'stodum-code-block' ),
+            'found_1'  => __( 'core code block found', 'kodosvet-code-block' ),
+            'found_n'  => __( 'core code blocks found', 'kodosvet-code-block' ),
+            'convert'  => __( 'Convert All to Kodosvet', 'kodosvet-code-block' ),
             /* translators: %d: number of merged fragments (always 1 here) */
-            'merged_1' => __( 'Merged %d split fragment back into code block', 'stodum-code-block' ),
+            'merged_1' => __( 'Merged %d split fragment back into code block', 'kodosvet-code-block' ),
             /* translators: %d: number of merged fragments */
-            'merged_n' => __( 'Merged %d split fragments back into code block', 'stodum-code-block' ),
+            'merged_n' => __( 'Merged %d split fragments back into code block', 'kodosvet-code-block' ),
         ] );
-        wp_add_inline_style( 'stodum-code-block-editor', self::get_convert_toast_css() );
+        wp_add_inline_style( 'kodosvet-code-block-editor', self::get_convert_toast_css() );
     }
 
     private static function get_convert_toast_css(): string {
@@ -282,21 +274,21 @@ class StoDum_Code_Block {
         ?>
         <div <?php echo $wrapper_attrs . $data_attrs; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped above ?>>
             <div class="stodum-code-toolbar">
-                <span class="stodum-code-brand"><span class="stodum-brand-bolt">&#9889;</span> StoDum</span>
+                <span class="stodum-code-brand"><span class="stodum-brand-bolt">&#9889;</span> Kodosvet</span>
                 <?php echo wp_kses_post( $title_html ); ?>
                 <div class="stodum-code-actions">
                     <span class="stodum-code-lang-badge"></span>
-                    <button class="stodum-code-lines-toggle" title="<?php esc_attr_e( 'Toggle line numbers', 'stodum-code-block' ); ?>" aria-label="<?php esc_attr_e( 'Toggle line numbers', 'stodum-code-block' ); ?>">
+                    <button class="stodum-code-lines-toggle" title="<?php esc_attr_e( 'Toggle line numbers', 'kodosvet-code-block' ); ?>" aria-label="<?php esc_attr_e( 'Toggle line numbers', 'kodosvet-code-block' ); ?>">
                         <svg class="stodum-icon-lines" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="10" y1="6" x2="21" y2="6"/><line x1="10" y1="12" x2="21" y2="12"/><line x1="10" y1="18" x2="21" y2="18"/><text x="4" y="7" font-size="7" fill="currentColor" stroke="none" font-family="monospace">1</text><text x="4" y="13" font-size="7" fill="currentColor" stroke="none" font-family="monospace">2</text><text x="4" y="19" font-size="7" fill="currentColor" stroke="none" font-family="monospace">3</text></svg>
                     </button>
-                    <button class="stodum-code-theme-toggle" title="<?php esc_attr_e( 'Toggle light/dark mode', 'stodum-code-block' ); ?>" aria-label="<?php esc_attr_e( 'Toggle light/dark mode', 'stodum-code-block' ); ?>">
+                    <button class="stodum-code-theme-toggle" title="<?php esc_attr_e( 'Toggle light/dark mode', 'kodosvet-code-block' ); ?>" aria-label="<?php esc_attr_e( 'Toggle light/dark mode', 'kodosvet-code-block' ); ?>">
                         <svg class="stodum-icon-sun" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
                         <svg class="stodum-icon-moon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
                     </button>
-                    <button class="stodum-code-copy" title="<?php esc_attr_e( 'Copy to clipboard', 'stodum-code-block' ); ?>" aria-label="<?php esc_attr_e( 'Copy code', 'stodum-code-block' ); ?>">
+                    <button class="stodum-code-copy" title="<?php esc_attr_e( 'Copy to clipboard', 'kodosvet-code-block' ); ?>" aria-label="<?php esc_attr_e( 'Copy code', 'kodosvet-code-block' ); ?>">
                         <svg class="stodum-icon-copy" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
                         <svg class="stodum-icon-check" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-                        <span class="stodum-copy-label"><?php esc_html_e( 'Copy', 'stodum-code-block' ); ?></span>
+                        <span class="stodum-copy-label"><?php esc_html_e( 'Copy', 'kodosvet-code-block' ); ?></span>
                     </button>
                 </div>
             </div>
@@ -314,16 +306,16 @@ class StoDum_Code_Block {
 
         wp_enqueue_style( 'stodum-hljs-theme-dark' );
         wp_enqueue_style( 'stodum-hljs-theme-light' );
-        wp_enqueue_style( 'stodum-code-block-frontend' );
+        wp_enqueue_style( 'kodosvet-code-block-frontend' );
         wp_enqueue_script( 'stodum-hljs-core' );
-        wp_enqueue_script( 'stodum-code-block-frontend' );
+        wp_enqueue_script( 'kodosvet-code-block-frontend' );
 
         $theme_pair    = get_option( 'stodum_code_theme_pair', 'atom-one' );
         $default_theme = get_option( 'stodum_code_default_theme', 'dark' );
         $registry      = self::get_theme_registry();
         $pair          = isset( $registry[ $theme_pair ] ) ? $registry[ $theme_pair ] : $registry['atom-one'];
 
-        wp_localize_script( 'stodum-code-block-frontend', 'stodumCodeConfig', [
+        wp_localize_script( 'kodosvet-code-block-frontend', 'stodumCodeConfig', [
             'defaultTheme'  => $default_theme,
             'themePair'     => $theme_pair,
             'darkBg'        => $pair['dark_bg'],

@@ -1,16 +1,16 @@
-# CLAUDE.md — AI Agent Context for StoDum Code Block
+# CLAUDE.md — AI Agent Context for Kodosvet Code Block
 
 > Этот файл содержит контекст для ИИ-агентов (Claude, GPT, Gemini и др.), работающих с данным проектом.
 > Прочитай этот файл **первым** перед началом любой работы.
 
 ## Идентификация проекта
 
-- **Название**: StoDum Code Block
+- **Название**: Kodosvet Code Block (до 1.1.0 — StoDum Code Block; внутренние префиксы остались stodum_)
 - **Тип**: WordPress плагин (Gutenberg-блок с Server-Side Rendering)
-- **Версия**: 1.0.9
+- **Версия**: 1.1.0
 - **Лицензия**: GPL-2.0-or-later
 - **Автор**: kotophalk
-- **Репозиторий**: https://github.com/kotophalk/stodum-code-block
+- **Репозиторий**: https://github.com/kotophalk/kodosvet-code-block
 
 ## Назначение
 
@@ -36,8 +36,8 @@
 ## Структура файлов
 
 ```
-stodum-code-block/
-├── stodum-code-block.php          # Точка входа. Главный класс StoDum_Code_Block.
+kodosvet-code-block/
+├── kodosvet-code-block.php          # Точка входа. Главный класс StoDum_Code_Block.
 │                                  # Рендеринг блока (SSR), регистрация ассетов,
 │                                  # реестр цветовых тем, lazy enqueuing.
 │
@@ -68,9 +68,9 @@ stodum-code-block/
 │   └── code-migrate.css           # Admin CSS: migrator table, modal, spinner.
 │
 ├── languages/
-│   ├── stodum-code-block.pot      # Шаблон переводов.
-│   ├── stodum-code-block-ru_RU.po # Русский перевод (source).
-│   └── stodum-code-block-ru_RU.mo # Русский перевод (compiled).
+│   ├── kodosvet-code-block.pot      # Шаблон переводов.
+│   ├── kodosvet-code-block-ru_RU.po # Русский перевод (source).
+│   └── kodosvet-code-block-ru_RU.mo # Русский перевод (compiled).
 │
 ├── uninstall.php                  # Очистка опций при удалении плагина.
 ├── .gitignore
@@ -86,7 +86,7 @@ stodum-code-block/
 
 | Класс | Файл | Назначение |
 |---|---|---|
-| `StoDum_Code_Block` | `stodum-code-block.php` | Регистрация блока, SSR-рендер, ассеты, тема-реестр |
+| `StoDum_Code_Block` | `kodosvet-code-block.php` | Регистрация блока, SSR-рендер, ассеты, тема-реестр |
 | `StoDum_Settings` | `includes/class-stodum-settings.php` | Admin UI, Settings API, мигратор UI |
 | `StoDum_Migrator` | `includes/class-stodum-migrator.php` | AJAX миграции, парсинг/конвертация блоков |
 
@@ -94,9 +94,9 @@ stodum-code-block/
 
 | Скрипт | Контекст | Handle |
 |---|---|---|
-| `editor.js` | Block Editor | `stodum-code-block-editor-script` |
+| `editor.js` | Block Editor | `kodosvet-code-block-editor-script` |
 | `convert.js` | Block Editor | `stodum-convert` |
-| `code-block.js` | Frontend | `stodum-code-block-frontend` |
+| `code-block.js` | Frontend | `kodosvet-code-block-frontend` |
 | `code-migrate.js` | Admin (Tools page) | `stodum-code-migrate` |
 
 ### WordPress опции (wp_options)
@@ -137,7 +137,7 @@ stodum-code-block/
 ### CDN-зависимость
 Highlight.js загружается с `cdnjs.cloudflare.com`. Это **блокирует публикацию на WordPress.org** (требуется локальный bundle). При переходе на локальный bundle:
 1. Скачать highlight.js + нужные языки + темы в `vendor/hljs/`
-2. Обновить `register_block()` в `stodum-code-block.php`
+2. Обновить `register_block()` в `kodosvet-code-block.php`
 3. Обновить `.gitignore` при необходимости
 
 ### Отсутствие тестов
@@ -153,10 +153,10 @@ Highlight.js загружается с `cdnjs.cloudflare.com`. Это **блок
 
 1. **Не ломай рендер-блока**: `render_block()` использует `get_block_wrapper_attributes()`. Любые изменения в wrapper-div обязаны сохранить этот вызов.
 2. **Обновляй ВСЕ копии**: При изменении `guessLanguage()` или `normalizeLanguage()` — обновляй editor.js, convert.js **и** class-stodum-migrator.php.
-3. **Версии синхронно**: `stodum-code-block.php` (header + const), `block.json`, комментарии в CSS/JS, POT — всё должно иметь одинаковую версию.
+3. **Версии синхронно**: `kodosvet-code-block.php` (header + const), `block.json`, комментарии в CSS/JS, POT — всё должно иметь одинаковую версию.
 4. **Nonce + capabilities**: Все AJAX-обработчики **обязаны** вызывать `check_ajax_referer()` и `current_user_can()`.
 5. **Sanitize/Escape**: Весь вывод — через `esc_html()`, `esc_attr()`, `wp_kses_post()`. Все входные данные — через `intval()`, `sanitize_key()`, `sanitize_text_field()`.
-6. **i18n**: Все строки, видимые пользователю — через `__()` / `esc_html_e()` с text domain `stodum-code-block`.
+6. **i18n**: Все строки, видимые пользователю — через `__()` / `esc_html_e()` с text domain `kodosvet-code-block`.
 
 ### Запрещено
 

@@ -8,3 +8,4 @@ docs/ export-ignore
 .wp-env.json export-ignore
 .wp-env.override.json export-ignore
 .wordpress-org/ export-ignore
+languages/ export-ignore

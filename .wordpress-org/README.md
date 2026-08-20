@@ -1,6 +1,6 @@
 # Ассеты для каталога WordPress.org
 
-Содержимое папки `assets/` в SVN плагина (после одобрения — `https://plugins.svn.wordpress.org/stodum-code-block/assets/`).
+Содержимое папки `assets/` в SVN плагина (после одобрения — `https://plugins.svn.wordpress.org/kodosvet-code-block/assets/`).
 В zip плагина не входит (`export-ignore`).
 
 | Файл | Что |

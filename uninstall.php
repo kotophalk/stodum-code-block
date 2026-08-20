@@ -1,11 +1,11 @@
 <?php
 /**
- * StoDum Code Block — Uninstall
+ * Kodosvet Code Block — Uninstall
  *
  * Fired when the plugin is uninstalled (deleted) from the WordPress admin.
  * Cleans up plugin options from the database.
  *
- * @package StoDum_Code_Block
+ * @package Kodosvet_Code_Block
  */
 
 if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {

@@ -2,8 +2,8 @@
     "$schema": "https://schemas.wp.org/trunk/block.json",
     "apiVersion": 3,
     "name": "stodum/code-block",
-    "version": "1.0.9",
-    "title": "StoDum Code Block",
+    "version": "1.1.0",
+    "title": "Kodosvet Code Block",
     "category": "formatting",
     "icon": "editor-code",
     "description": "Syntax highlighted code block with auto language detection, clipboard copy, and dark/light mode toggle.",
@@ -32,8 +32,8 @@
             "default": ""
         }
     },
-    "textdomain": "stodum-code-block",
-    "editorStyle": "stodum-code-block-editor",
-    "style": "stodum-code-block-frontend",
-    "viewScript": "stodum-code-block-frontend"
+    "textdomain": "kodosvet-code-block",
+    "editorStyle": "kodosvet-code-block-editor",
+    "style": "kodosvet-code-block-frontend",
+    "viewScript": "kodosvet-code-block-frontend"
 }

@@ -1,5 +1,5 @@
 /**
- * StoDum Code Block Migrator - Admin JS
+ * Kodosvet Code Block Migrator - Admin JS
  */
 (function () {
     'use strict';

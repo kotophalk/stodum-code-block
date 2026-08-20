@@ -2,319 +2,319 @@
 # This file is distributed under the GPL-2.0-or-later.
 msgid ""
 msgstr ""
-"Project-Id-Version: StoDum Code Block 1.0.9\n"
-"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/stodum-code-block\n"
+"Project-Id-Version: Kodosvet Code Block 1.1.0\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/kodosvet-code-block\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-08-17T08:55:05+00:00\n"
+"POT-Creation-Date: 2026-08-20T14:51:54+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
-"X-Domain: stodum-code-block\n"
+"X-Domain: kodosvet-code-block\n"
 
 #. Plugin Name of the plugin
-#: stodum-code-block.php
-#: includes/class-stodum-settings.php:97
-#: includes/class-stodum-settings.php:98
-#: includes/class-stodum-settings.php:120
-msgid "StoDum Code Block"
+#: kodosvet-code-block.php
+#: includes/class-stodum-settings.php:99
+#: includes/class-stodum-settings.php:100
+#: includes/class-stodum-settings.php:122
+msgid "Kodosvet Code Block"
 msgstr ""
 
 #. Plugin URI of the plugin
-#: stodum-code-block.php
-msgid "https://github.com/kotophalk/stodum-code-block"
+#: kodosvet-code-block.php
+msgid "https://github.com/kotophalk/kodosvet-code-block"
 msgstr ""
 
 #. Description of the plugin
-#: stodum-code-block.php
+#: kodosvet-code-block.php
 msgid "Lightweight Gutenberg code block with Highlight.js syntax highlighting and legacy block migrator."
 msgstr ""
 
 #. Author of the plugin
-#: stodum-code-block.php
+#: kodosvet-code-block.php
 msgid "kotophalk"
 msgstr ""
 
 #. Author URI of the plugin
-#: stodum-code-block.php
+#: kodosvet-code-block.php
 msgid "https://delosvod.ru/"
 msgstr ""
 
-#: includes/class-stodum-settings.php:63
+#: includes/class-stodum-settings.php:65
 msgid "Scanning..."
 msgstr ""
 
-#: includes/class-stodum-settings.php:64
+#: includes/class-stodum-settings.php:66
 msgid "Scan failed:"
 msgstr ""
 
-#: includes/class-stodum-settings.php:65
+#: includes/class-stodum-settings.php:67
 msgid "No legacy code blocks found."
 msgstr ""
 
-#: includes/class-stodum-settings.php:66
+#: includes/class-stodum-settings.php:68
 msgid "No posts with legacy code blocks were found. Everything is already migrated."
 msgstr ""
 
 #. translators: 1: post title, 2: number of code blocks in it
-#: includes/class-stodum-settings.php:68
+#: includes/class-stodum-settings.php:70
 #, php-format
 msgid "%1$s (%2$s block(s))"
 msgstr ""
 
 #. translators: 1: number of code blocks, 2: number of posts
-#: includes/class-stodum-settings.php:70
+#: includes/class-stodum-settings.php:72
 #, php-format
 msgid "Found %1$s block(s) across %2$s post(s)."
 msgstr ""
 
-#: includes/class-stodum-settings.php:71
+#: includes/class-stodum-settings.php:73
 msgid "Posts with legacy blocks"
 msgstr ""
 
-#: includes/class-stodum-settings.php:72
+#: includes/class-stodum-settings.php:74
 msgid "Total code blocks to migrate"
 msgstr ""
 
-#: includes/class-stodum-settings.php:73
+#: includes/class-stodum-settings.php:75
 msgid "Post"
 msgstr ""
 
-#: includes/class-stodum-settings.php:74
+#: includes/class-stodum-settings.php:76
 msgid "Blocks"
 msgstr ""
 
-#: includes/class-stodum-settings.php:75
+#: includes/class-stodum-settings.php:77
 msgid "Status"
 msgstr ""
 
-#: includes/class-stodum-settings.php:76
+#: includes/class-stodum-settings.php:78
 msgid "Actions"
 msgstr ""
 
-#: includes/class-stodum-settings.php:77
+#: includes/class-stodum-settings.php:79
 msgid "Pending"
 msgstr ""
 
-#: includes/class-stodum-settings.php:78
-#: includes/class-stodum-settings.php:178
+#: includes/class-stodum-settings.php:80
+#: includes/class-stodum-settings.php:180
 msgid "Preview"
 msgstr ""
 
-#: includes/class-stodum-settings.php:79
+#: includes/class-stodum-settings.php:81
 msgid "Migrate"
 msgstr ""
 
-#: includes/class-stodum-settings.php:80
+#: includes/class-stodum-settings.php:82
 msgid "Loading preview..."
 msgstr ""
 
-#: includes/class-stodum-settings.php:81
+#: includes/class-stodum-settings.php:83
 msgid "Loading block preview..."
 msgstr ""
 
-#: includes/class-stodum-settings.php:82
+#: includes/class-stodum-settings.php:84
 msgid "Error:"
 msgstr ""
 
-#: includes/class-stodum-settings.php:83
+#: includes/class-stodum-settings.php:85
 msgid "Migrating..."
 msgstr ""
 
-#: includes/class-stodum-settings.php:84
-#: includes/class-stodum-settings.php:187
+#: includes/class-stodum-settings.php:86
+#: includes/class-stodum-settings.php:189
 msgid "Migrate This Post"
 msgstr ""
 
-#: includes/class-stodum-settings.php:85
+#: includes/class-stodum-settings.php:87
 msgid "Migration failed:"
 msgstr ""
 
-#: includes/class-stodum-settings.php:86
+#: includes/class-stodum-settings.php:88
 msgid "Migrate all code blocks in this post to StoDum format?"
 msgstr ""
 
-#: includes/class-stodum-settings.php:87
+#: includes/class-stodum-settings.php:89
 msgid "Done"
 msgstr ""
 
-#: includes/class-stodum-settings.php:88
+#: includes/class-stodum-settings.php:90
 msgid "View Post"
 msgstr ""
 
-#: includes/class-stodum-settings.php:89
+#: includes/class-stodum-settings.php:91
 msgid "All posts migrated successfully!"
 msgstr ""
 
-#: includes/class-stodum-settings.php:90
+#: includes/class-stodum-settings.php:92
 msgid "Are you sure you want to migrate ALL found posts? This action cannot be undone."
 msgstr ""
 
-#: includes/class-stodum-settings.php:112
+#: includes/class-stodum-settings.php:114
 msgid "Settings Saved"
 msgstr ""
 
-#: includes/class-stodum-settings.php:123
+#: includes/class-stodum-settings.php:125
 msgid "Frontend Settings"
 msgstr ""
 
-#: includes/class-stodum-settings.php:128
+#: includes/class-stodum-settings.php:130
 msgid "Default Theme"
 msgstr ""
 
-#: includes/class-stodum-settings.php:131
+#: includes/class-stodum-settings.php:133
 #: blocks/code/editor.js:50
 msgid "Dark"
 msgstr ""
 
-#: includes/class-stodum-settings.php:132
+#: includes/class-stodum-settings.php:134
 #: blocks/code/editor.js:51
 msgid "Light"
 msgstr ""
 
-#: includes/class-stodum-settings.php:134
+#: includes/class-stodum-settings.php:136
 msgid "Select the default colour mode for your code blocks."
 msgstr ""
 
-#: includes/class-stodum-settings.php:138
+#: includes/class-stodum-settings.php:140
 msgid "Syntax Color Theme"
 msgstr ""
 
-#: includes/class-stodum-settings.php:147
+#: includes/class-stodum-settings.php:149
 msgid "Select the syntax highlighting color palette."
 msgstr ""
 
-#: includes/class-stodum-settings.php:151
+#: includes/class-stodum-settings.php:153
 msgid "Save Settings"
 msgstr ""
 
-#: includes/class-stodum-settings.php:156
+#: includes/class-stodum-settings.php:158
 msgid "Code Block Migrator"
 msgstr ""
 
-#: includes/class-stodum-settings.php:157
+#: includes/class-stodum-settings.php:159
 msgid "Use this tool to automatically migrate old <code>core/code</code> or <code>core/preformatted</code> blocks into modern <code>stodum/code-block</code> structures."
 msgstr ""
 
-#: includes/class-stodum-settings.php:160
+#: includes/class-stodum-settings.php:162
 msgid "Scan Posts"
 msgstr ""
 
-#: includes/class-stodum-settings.php:165
+#: includes/class-stodum-settings.php:167
 msgid "Scan Results"
 msgstr ""
 
-#: includes/class-stodum-settings.php:168
+#: includes/class-stodum-settings.php:170
 msgid "Migrate All Found Posts"
 msgstr ""
 
-#: includes/class-stodum-settings.php:182
+#: includes/class-stodum-settings.php:184
 msgid "Loading..."
 msgstr ""
 
-#: includes/class-stodum-settings.php:185
+#: includes/class-stodum-settings.php:187
 msgid "Cancel"
 msgstr ""
 
-#: stodum-code-block.php:36
+#: kodosvet-code-block.php:36
 msgid "Atom One"
 msgstr ""
 
-#: stodum-code-block.php:45
+#: kodosvet-code-block.php:45
 msgid "GitHub"
 msgstr ""
 
-#: stodum-code-block.php:54
+#: kodosvet-code-block.php:54
 msgid "Monokai"
 msgstr ""
 
-#: stodum-code-block.php:63
+#: kodosvet-code-block.php:63
 msgid "Nord"
 msgstr ""
 
-#: stodum-code-block.php:72
+#: kodosvet-code-block.php:72
 msgid "Dracula"
 msgstr ""
 
-#: stodum-code-block.php:81
+#: kodosvet-code-block.php:81
 msgid "Tokyo Night"
 msgstr ""
 
-#: stodum-code-block.php:90
+#: kodosvet-code-block.php:90
 msgid "VS 2015 / VS Code"
 msgstr ""
 
-#: stodum-code-block.php:99
+#: kodosvet-code-block.php:99
 msgid "Stack Overflow"
 msgstr ""
 
-#: stodum-code-block.php:108
+#: kodosvet-code-block.php:108
 msgid "Night Owl"
 msgstr ""
 
-#: stodum-code-block.php:117
+#: kodosvet-code-block.php:117
 msgid "Gruvbox"
 msgstr ""
 
-#: stodum-code-block.php:126
+#: kodosvet-code-block.php:126
 msgid "Solarized"
 msgstr ""
 
-#: stodum-code-block.php:135
+#: kodosvet-code-block.php:135
 msgid "Panda"
 msgstr ""
 
-#: stodum-code-block.php:144
+#: kodosvet-code-block.php:144
 msgid "Tomorrow Night"
 msgstr ""
 
-#: stodum-code-block.php:153
+#: kodosvet-code-block.php:153
 msgid "Shades of Purple"
 msgstr ""
 
-#: stodum-code-block.php:208
+#: kodosvet-code-block.php:200
 msgid "core code block found"
 msgstr ""
 
-#: stodum-code-block.php:209
+#: kodosvet-code-block.php:201
 msgid "core code blocks found"
 msgstr ""
 
-#: stodum-code-block.php:210
-msgid "Convert All to StoDum"
+#: kodosvet-code-block.php:202
+msgid "Convert All to Kodosvet"
 msgstr ""
 
 #. translators: %d: number of merged fragments (always 1 here)
-#: stodum-code-block.php:212
+#: kodosvet-code-block.php:204
 #, php-format
 msgid "Merged %d split fragment back into code block"
 msgstr ""
 
 #. translators: %d: number of merged fragments
-#: stodum-code-block.php:214
+#: kodosvet-code-block.php:206
 #, php-format
 msgid "Merged %d split fragments back into code block"
 msgstr ""
 
-#: stodum-code-block.php:289
+#: kodosvet-code-block.php:281
 msgid "Toggle line numbers"
 msgstr ""
 
-#: stodum-code-block.php:292
+#: kodosvet-code-block.php:284
 msgid "Toggle light/dark mode"
 msgstr ""
 
-#: stodum-code-block.php:296
+#: kodosvet-code-block.php:288
 msgid "Copy to clipboard"
 msgstr ""
 
-#: stodum-code-block.php:296
+#: kodosvet-code-block.php:288
 msgid "Copy code"
 msgstr ""
 
-#: stodum-code-block.php:299
+#: kodosvet-code-block.php:291
 #: blocks/code/editor.js:251
 #: blocks/code/editor.js:259
 msgid "Copy"
@@ -345,7 +345,7 @@ msgid "Title"
 msgstr ""
 
 #: blocks/code/editor.js:319
-msgid "StoDum Code"
+msgid "Kodosvet"
 msgstr ""
 
 #: blocks/code/editor.js:323
@@ -358,7 +358,7 @@ msgstr ""
 
 #: blocks/code/block.json
 msgctxt "block title"
-msgid "StoDum Code Block"
+msgid "Kodosvet Code Block"
 msgstr ""
 
 #: blocks/code/block.json

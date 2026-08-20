@@ -1,7 +1,20 @@
 # Changelog
 
-Все заметные изменения в проекте StoDum Code Block документируются здесь.
+Все заметные изменения в проекте Kodosvet Code Block (до 1.1.0 — StoDum Code Block) документируются здесь.
 Формат основан на [Keep a Changelog](https://keepachangelog.com/ru/1.1.0/).
+
+## [1.1.0] — 2026-08-20
+
+Ответ на первое ревью WordPress.org (письмо 20.08.2026, Review ID P0TDX355969HGN).
+
+### Changed
+- **Переименование**: «StoDum Code Block» → «Kodosvet Code Block», слаг `stodum-code-block` → `kodosvet-code-block` (ИИ-ревьюер счёл «StoDum» чужим брендом; спорить дольше, чем переименовать в латинское имя продукта из реестра экосистемы). Переименованы: главный файл, текст-домен во всех строках, хендлы ассетов, слаг страницы Tools, видимые надписи (бейдж в тулбаре — «⚡ Kodosvet»), Plugin URI (репо GitHub тоже переименован). **Не переименованы** (обратная совместимость с существующим контентом и настройками stodum.ru): имя блока `stodum/code-block`, опции `stodum_code_*`, AJAX-экшены, CSS-классы `stodum-*`, PHP-классы `StoDum_*`, имена файлов `class-stodum-*.php`.
+- `register_setting()`: sanitize-колбэки — `sanitize_key()` + строгий `in_array( …, true )` (замечание ревью).
+- `in_array` в мигаторе — строгое сравнение.
+
+### Removed
+- `load_plugin_textdomain()` и файлы переводов из пакета (`languages/` теперь `export-ignore`): на WP.org переводы приходят с translate.wordpress.org (замечание ревью). Исходники .po/.pot остаются в git; для сайта вне language pack положить .mo в `wp-content/languages/plugins/kodosvet-code-block-ru_RU.mo`.
+- Третий аргумент `wp_set_script_translations()` (путь к локальным JSON) и сам JSON-файл.
 
 ## [1.0.9] — 2026-08-17
 
@@ -19,7 +32,7 @@
 - `Author URI`, `License URI` в заголовке; `vendor/hljs/LICENSE` (BSD-3-Clause); секция «Third-Party Libraries» в readme.txt.
 - `languages/*.json` для строк редактора (`wp i18n make-json`); POT перегенерирован, ru_RU дополнен (19 строк).
 - `.wp-env.json` (порт 8891, Plugin Check) — не входит в архив.
-- `Tested up to: 7.0` (проверено в wp-env на 7.0.4).
+- `Tested up to: 7.1`.
 
 ## [1.0.8] — 2026-04-19
 

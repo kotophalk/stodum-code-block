@@ -1,10 +1,10 @@
-=== StoDum Code Block ===
+=== Kodosvet Code Block ===
 Contributors: kotophalk
 Tags: code, syntax highlighting, gutenberg, code block, developer
 Requires at least: 6.0
-Tested up to: 7.0
+Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 1.0.9
+Stable tag: 1.1.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -12,7 +12,7 @@ Lightweight Gutenberg code block with Highlight.js syntax highlighting, smart la
 
 == Description ==
 
-StoDum Code Block is a zero-bloat Gutenberg block for displaying code with syntax highlighting powered by Highlight.js.
+Kodosvet Code Block is a zero-bloat Gutenberg block for displaying code with syntax highlighting powered by Highlight.js.
 
 **Key Features:**
 
@@ -29,20 +29,20 @@ StoDum Code Block is a zero-bloat Gutenberg block for displaying code with synta
 
 **Migrator Tool:**
 
-Navigate to **Tools → StoDum Code Block** to scan your site for legacy code blocks and migrate them to the modern StoDum format with a before/after preview.
+Navigate to **Tools → Kodosvet Code Block** to scan your site for legacy code blocks and migrate them to the modern Kodosvet format with a before/after preview.
 
 == Installation ==
 
-1. Upload the `stodum-code-block` folder to `/wp-content/plugins/`.
+1. Upload the `kodosvet-code-block` folder to `/wp-content/plugins/`.
 2. Activate the plugin through the 'Plugins' menu in WordPress.
-3. In the Block Editor, search for "StoDum Code" to insert a code block.
-4. Configure default theme and color palette under **Tools → StoDum Code Block**.
+3. In the Block Editor, search for "Kodosvet" to insert a code block.
+4. Configure default theme and color palette under **Tools → Kodosvet Code Block**.
 
 == Frequently Asked Questions ==
 
 = Does this plugin require any build tools? =
 
-No. StoDum Code Block ships as vanilla JavaScript and CSS — no Node.js, webpack, or build step required.
+No. Kodosvet Code Block ships as vanilla JavaScript and CSS — no Node.js, webpack, or build step required.
 
 = How does the language auto-detection work? =
 
@@ -55,7 +55,7 @@ The plugin uses a multi-layer approach:
 
 = Can I migrate my existing code blocks? =
 
-Yes! Go to **Tools → StoDum Code Block** and click **Scan Posts**. The migrator will find all posts with `core/code` or `core/preformatted` blocks and let you preview and migrate them individually or in bulk.
+Yes! Go to **Tools → Kodosvet Code Block** and click **Scan Posts**. The migrator will find all posts with `core/code` or `core/preformatted` blocks and let you preview and migrate them individually or in bulk.
 
 = Does migration create revisions? =
 
@@ -73,11 +73,16 @@ Syntax highlighting is powered by [Highlight.js](https://highlightjs.org/) 11.11
 
 1. Code blocks on the frontend: Atom One Dark palette, language badge, line-numbers / theme / copy buttons in the toolbar.
 2. Block editor: the block selected, Language and Title settings in the sidebar.
-3. Tools → StoDum Code Block: scan results of the legacy block migrator.
+3. Tools → Kodosvet Code Block: scan results of the legacy block migrator.
 4. Light mode with line numbers turned on — one click switches every block on the page.
 5. Migrator preview modal: original `core/code` markup vs. the converted `stodum/code-block`.
 
 == Changelog ==
+
+= 1.1.0 =
+* Renamed: plugin is now "Kodosvet Code Block" (slug `kodosvet-code-block`). Internal identifiers (block name `stodum/code-block`, option names, CSS classes) are unchanged so existing content keeps working.
+* Removed: bundled translation files and `load_plugin_textdomain()` — translations are handled by translate.wordpress.org.
+* Changed: `register_setting()` sanitize callbacks use `sanitize_key()` + strict whitelist comparison.
 
 = 1.0.9 =
 * Fixed: Migrator preview modal showed "undefined (undefined blocks)" instead of the post title and block count.
@@ -121,6 +126,9 @@ Syntax highlighting is powered by [Highlight.js](https://highlightjs.org/) 11.11
 * Initial release.
 
 == Upgrade Notice ==
+
+= 1.1.0 =
+Plugin renamed to Kodosvet Code Block for the WordPress.org directory. No data migration needed; existing blocks keep working.
 
 = 1.0.9 =
 Plugin Check clean-up before WordPress.org submission, migrator preview title fix, prefixed Highlight.js handles. Safe to upgrade.
